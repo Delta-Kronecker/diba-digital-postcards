@@ -20,22 +20,29 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
+      # ۱. پاک کردن فایل‌های قفل و پوشه‌های قدیمی برای جلوگیری از تداخل
+      - name: Clean up old dependencies
+        run: |
+          rm -rf node_modules
+          rm -f package-lock.json
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          
-      # این مرحله بسیار مهم است: فایل lock قدیمی را نادیده می‌گیرد و نصب تمیز انجام می‌دهد
+
+      # ۲. نصب وابستگی‌ها (به جای npm ci از npm install استفاده می‌کنیم)
       - name: Install dependencies
         run: npm install
-        
-      - name: Build
-        run: npm run build
-        
+
+      # ۳. اجرای مستقیم Vite با Node برای دور زدن مشکل مجوز (Permission denied)
+      - name: Build project
+        run: node node_modules/vite/bin/vite.js build
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
-        
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
