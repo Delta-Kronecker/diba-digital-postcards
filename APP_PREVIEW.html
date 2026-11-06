@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>پنیشا — پیش‌نمایش نهایی اپلیکیشن React</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Estedad:wght@100..900&family=Vazirmatn:wght@100..900&display=swap">
+<style>
+  :root{
+    --canvas:#F6F1E9;
+    --ink:#25231F;
+    --gold:#B49A70;
+    --sage:#687567;
+    --rose:#A77D80;
+    --ink-faint:rgba(37,35,31,0.12);
+    --ink-weak:rgba(37,35,31,0.5);
+  }
+  *,::before,::after{box-sizing:border-box}
+  body{
+    margin:0;background:var(--canvas);color:var(--ink);
+    font-family:'Vazirmatn','Tahoma','Segoe UI',sans-serif;
+    padding:40px;line-height:1.6;
+  }
+  h1{font-family:'Estedad',serif;font-weight:600;font-size:36px;margin-bottom:8px;}
+  p.sub{color:var(--ink-weak);font-size:16px;margin-bottom:40px;}
+  .card{
+    background:#fff;border:1px solid var(--ink-faint);padding:32px;border-radius:4px;
+    max-width:800px;margin-bottom:24px;box-shadow:0 4px 20px rgba(37,35,31,0.04);
+  }
+  .card h2{font-family:'Estedad',serif;font-size:24px;color:var(--ink);margin-top:0;margin-bottom:12px;display:flex;align-items:center;gap:12px;}
+  .badge{font-size:12px;background:var(--gold);color:#fff;padding:2px 8px;border-radius:2px;font-family:Vazirmatn,sans-serif;}
+  .badge.sage{background:var(--sage);}
+  p{margin:0 0 16px 0;color:var(--ink);}
+  ul{margin:0;padding-inline-start:20px;color:var(--ink-weak);}
+  li{margin-bottom:8px;}
+  .preview-btn{
+    display:inline-block;background:var(--ink);color:var(--canvas);
+    padding:10px 24px;text-decoration:none;font-weight:500;border-radius:2px;
+    margin-top:12px;font-family:'Vazirmatn',sans-serif;
+  }
+  .preview-btn:hover{background:var(--gold);}
+</style>
+</head>
+<body>
+
+<h1>پلتفرم پنیشا — اپلیکیشن React کامل شد</h1>
+<p class="sub">نسخه نهایی کامپوننت‌های فرانت‌اند، انیمیشن‌های سه‌بعدی، و سیستم لایسنس لوکس با موفقیت بیلد شد.</p>
+
+<div class="card">
+  <h2>۱. صفحه اصلی (Homepage & Exhibition) <span class="badge">عالی</span></h2>
+  <p>طراحی شده با گرادیان متالیک طلایی، هرو ادیتوریال بزرگ، ۶ دسته‌بندی با تصاویر واقعی Unsplash، فیلترهای گالری، و استودیوی شخصی‌ساز زنده (Live Customizer).</p>
+  <ul>
+    <li>فونت‌های Estedad و Vazirmatn با پشتیبانی کامل RTL</li>
+    <li>پالت رنگی Warm Ivory و Charcoal با accents طلایی کنترل‌شده</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>۲. دعوت‌نامه عروسی (Wedding Viewer) <span class="badge">سه‌بعدی</span></h2>
+  <p>شامل انیمیشن فیزیکی سه‌بعدی پاکت، شکست مهر موم، تایمر معکوس زنده، پخش‌کننده صوتی مصنوعی (Web Audio Synth)، و مودال شیشه‌ای RSVP.</p>
+  <ul>
+    <li>انیمیشن ۱۶۵۰ میلی‌ثانیه‌ای باز شدن کارت</li>
+    <li>ذخیره‌سازی اطلاعات حضور در LocalStorage</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>۳. دعوت‌نامه ترحیم (Memorial Viewer) <span class="badge sage">بدون طلایی</span></h2>
+  <p>رعایت کامل قانون صفر طلایی، استفاده اختصاصی از رنگ سبز مایل به خاکستری محترم (Sage Green)، و افشای آرام فید (500ms Fade).</p>
+  <ul>
+    <li>مودال تسلیت و RSVP یادبود</li>
+    <li>گالری تصاویر بی‌رنگ با لایت‌باکس</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h2>۴. سایر Viewerها (افتتاحیه، تولد، اعیاد، عمومی) <span class="badge">کامل</span></h2>
+  <p>تمام نماهای دیگر با تصاویر اختصاصی، موسیقی پس‌زمینه، و قابلیت اشتراک‌گذاری پیوند عمیق (Deep Link Copy) پیاده‌سازی شده‌اند.</p>
+</div>
+
+</body>
+</html>

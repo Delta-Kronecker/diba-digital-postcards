@@ -1,0 +1,17 @@
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      fontFamily: {
+        estedad: ['Estedad', 'Vazirmatn', 'sans-serif'],
+        vazir: ['Vazirmatn', 'sans-serif'],
+        sans: ['Vazirmatn', 'Estedad', 'sans-serif'],
+      },
+    },
+  },
+  plugins: [],
+}
