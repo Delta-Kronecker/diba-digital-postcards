@@ -7,8 +7,8 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
 
   const navItems = [
     { id: 'home', label: 'صفحه اصلی', icon: Home },
-    { id: 'wedding-amir-sara', label: 'دعوت‌نامه عروسی (P0)', icon: Heart },
-    { id: 'memorial-haj-reza', label: 'دعوت‌نامه ترحیم (P0)', icon: Moon },
+    { id: 'wedding-amir-sara', label: 'دعوت‌نامه عروسی', icon: Heart },
+    { id: 'memorial-haj-reza', label: 'دعوت‌نامه ترحیم', icon: Moon },
     { id: 'customizer', label: 'استودیو شخصی‌سازی', icon: Sliders },
     { id: 'gallery', label: 'نمایشگاه نمونه‌ها', icon: Layers },
   ];
@@ -20,7 +20,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[var(--color-canvas)]/90 dark:bg-[#121212]/90 backdrop-blur-md border-b border-amber-900/10 dark:border-stone-800 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 md:px-8 h-16 flex items-center justify-between">
         
         {/* Brand Logo */}
         <button

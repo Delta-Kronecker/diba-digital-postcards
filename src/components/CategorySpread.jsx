@@ -149,22 +149,12 @@ export default function CategorySpread({ onNavigate = () => {} }) {
 
               {/* Content Body */}
               <div className="space-y-3 text-right flex-1">
-                <h3 className="text-2xl font-bold font-estedad text-stone-900 group-hover:text-amber-800 transition-colors">
+                <h3 className="text-2xl font-normal font-estedad text-stone-900 group-hover:text-amber-800 transition-colors">
                   {spread.title}
                 </h3>
                 <p className="text-xs text-stone-600 font-vazir leading-relaxed">
                   {spread.subtitle}
                 </p>
-
-                {/* Feature Checkmarks */}
-                <div className="pt-3 pb-4 space-y-1.5 border-t border-stone-200">
-                  {spread.features.map((feat, idx) => (
-                    <div key={idx} className="flex items-center gap-2 text-[11px] font-vazir text-stone-700">
-                      <CheckCircle className="w-3.5 h-3.5 text-amber-700 flex-shrink-0" />
-                      <span>{feat}</span>
-                    </div>
-                  ))}
-                </div>
               </div>
 
               {/* View Card CTA Button */}

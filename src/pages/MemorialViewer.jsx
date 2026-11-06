@@ -12,6 +12,10 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
   const data = INVITATIONS_DATA['memorial-haj-reza'];
   const [isOpen, setIsOpen] = useState(false);
   const [isRsvpOpen, setIsRsvpOpen] = useState(false);
+  const [isCondolenceOpen, setIsCondolenceOpen] = useState(false);
+  const [condolenceName, setCondolenceName] = useState('');
+  const [condolenceText, setCondolenceText] = useState('');
+  const [condolenceSubmitted, setCondolenceSubmitted] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [copiedToast, setCopiedToast] = useState(false);
@@ -165,14 +169,22 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
               </div>
             </div>
 
-            {/* RSVP Modal Button */}
-            <div className="pt-6">
+            {/* Separated RSVP and Condolence Buttons (Zero Gold Mandate) */}
+            <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 onClick={() => setIsRsvpOpen(true)}
-                className="w-full md:w-auto px-10 py-4 rounded-2xl font-vazir font-bold text-sm text-white bg-[#687567] hover:bg-[#576356] shadow-lg active:scale-95 transition-all flex items-center justify-center gap-3 mx-auto"
+                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl font-vazir font-semibold text-xs text-white bg-[#687567] hover:bg-[#576356] shadow-md active:scale-95 transition-all flex items-center justify-center gap-2"
               >
-                <Send className="w-4 h-4" />
-                تأیید حضور و ارسال پیام تسلیت به خانواده
+                <Calendar className="w-4 h-4" />
+                تأیید حضور در مراسم (RSVP)
+              </button>
+
+              <button
+                onClick={() => setIsCondolenceOpen(true)}
+                className="w-full sm:w-auto px-8 py-3.5 rounded-2xl font-vazir font-semibold text-xs text-[#687567] bg-stone-200/90 hover:bg-stone-300 border border-stone-300 shadow-sm active:scale-95 transition-all flex items-center justify-center gap-2"
+              >
+                <MessageSquare className="w-4 h-4" />
+                ارسال پیام تسلیت به خانواده
               </button>
             </div>
 
@@ -191,6 +203,99 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
         accentColor="#687567"
         hasGold={false}
       />
+
+      {/* Condolence Message Modal (Zero Gold) */}
+      {isCondolenceOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-300">
+          <div className="relative w-full max-w-lg rounded-3xl p-6 md:p-8 shadow-2xl bg-[#F6F1E9] border border-stone-300 text-stone-900">
+            
+            <div className="h-1 w-full absolute top-0 left-0 right-0 bg-[#687567]" />
+
+            <button
+              onClick={() => setIsCondolenceOpen(false)}
+              className="absolute top-5 left-5 p-2 rounded-full hover:bg-stone-200/80 text-stone-600 transition-colors"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            <div className="text-center mb-6">
+              <span className="text-xs uppercase tracking-widest text-[#687567] font-vazir block mb-1">
+                دفتر یادبود و تسلیت
+              </span>
+              <h3 className="text-xl font-bold font-estedad text-stone-900">
+                {data.title}
+              </h3>
+            </div>
+
+            {condolenceSubmitted ? (
+              <div className="text-center py-6 space-y-4">
+                <div className="w-14 h-14 rounded-full mx-auto flex items-center justify-center bg-[#687567]/10 text-[#687567]">
+                  <CheckCircle2 className="w-8 h-8" />
+                </div>
+                <h4 className="text-lg font-bold font-estedad text-stone-900">
+                  پیام تسلیت شما با احترام ثبت شد
+                </h4>
+                <p className="text-xs font-vazir text-stone-600 leading-relaxed">
+                  با تشکر از {condolenceName} گرامی؛ پیام شما به خانواده داغدار ابلاغ خواهد گردید.
+                </p>
+                <button
+                  onClick={() => setIsCondolenceOpen(false)}
+                  className="px-6 py-2.5 rounded-xl text-xs font-vazir font-semibold text-white bg-[#687567] hover:bg-[#576356] transition-all"
+                >
+                  بستن پنجره
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={(e) => {
+                e.preventDefault();
+                if (!condolenceName.trim() || !condolenceText.trim()) return;
+                setCondolenceSubmitted(true);
+              }} className="space-y-4 text-right">
+                
+                <div>
+                  <label className="block text-xs font-vazir font-medium text-stone-700 mb-1.5 flex items-center gap-1.5">
+                    <User className="w-3.5 h-3.5 text-[#687567]" />
+                    نام و نام خانوادگی (ارسال‌کننده)
+                  </label>
+                  <input
+                    type="text"
+                    value={condolenceName}
+                    onChange={(e) => setCondolenceName(e.target.value)}
+                    placeholder="مثال: رضا مهدوی"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-stone-50 text-stone-800 text-sm font-vazir focus:outline-none focus:ring-2 focus:ring-[#687567]/40"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-vazir font-medium text-stone-700 mb-1.5 flex items-center gap-1.5">
+                    <MessageSquare className="w-3.5 h-3.5 text-[#687567]" />
+                    متن تسلیت و ابراز همدردی
+                  </label>
+                  <textarea
+                    value={condolenceText}
+                    onChange={(e) => setCondolenceText(e.target.value)}
+                    rows={4}
+                    placeholder="مصیبت وارده را به خانواده محترم تسلیت عرض نموده، بقای عمر بازماندگان را از خداوند مسئلت داریم..."
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-stone-300 bg-stone-50 text-stone-800 text-sm font-vazir focus:outline-none focus:ring-2 focus:ring-[#687567]/40"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3.5 rounded-xl font-vazir font-semibold text-xs text-white bg-[#687567] hover:bg-[#576356] shadow-md transition-all flex items-center justify-center gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                  ارسال پیام تسلیت
+                </button>
+
+              </form>
+            )}
+
+          </div>
+        </div>
+      )}
 
       {/* Photo Lightbox */}
       <PhotoLightbox
