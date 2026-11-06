@@ -6,6 +6,7 @@ import CountdownTimer from '../components/CountdownTimer';
 import AudioPlayer from '../components/AudioPlayer';
 import RSVPModal from '../components/RSVPModal';
 import PhotoLightbox from '../components/PhotoLightbox';
+import ThemeToggle from '../components/ThemeToggle';
 
 export default function MemorialViewer({ onNavigate = () => {} }) {
   const data = INVITATIONS_DATA['memorial-haj-reza'];
@@ -27,10 +28,10 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F1E9] text-[#25231F] font-vazir relative selection:bg-emerald-100">
+    <div className="min-h-screen bg-[var(--color-canvas)] text-[var(--color-ink)] dark:bg-[#121212] dark:text-stone-100 font-vazir relative selection:bg-emerald-100">
       
       {/* Top Floating Action Bar */}
-      <div className="sticky top-0 z-40 w-full bg-[#F6F1E9]/90 backdrop-blur-md border-b border-stone-300 px-4 py-3 flex items-center justify-between">
+      <div className="sticky top-0 z-40 w-full bg-[var(--color-canvas)]/90 dark:bg-[#121212]/90 backdrop-blur-md border-b border-stone-300 dark:border-stone-800 px-4 py-3 flex items-center justify-between">
         <button
           onClick={() => onNavigate('home')}
           className="flex items-center gap-2 text-xs font-vazir text-stone-700 hover:text-stone-900 transition-colors"
@@ -40,14 +41,15 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
         </button>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           <AudioPlayer trackType={data.audioTrack.type} trackTitle={data.audioTrack.title} accentColor="#687567" />
 
           <button
             onClick={handleCopyLink}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-800 text-xs font-vazir transition-all"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-stone-200 dark:bg-stone-800 hover:bg-stone-300 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 text-xs font-vazir transition-all"
             title="کپی لینک اختصاصی کارت"
           >
-            <Copy className="w-3.5 h-3.5 text-stone-700" />
+            <Copy className="w-3.5 h-3.5 text-stone-700 dark:text-stone-300" />
             کپی لینک
           </button>
         </div>

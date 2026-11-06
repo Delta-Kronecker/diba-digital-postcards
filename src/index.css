@@ -4,12 +4,17 @@
 
 @layer base {
   :root {
-    --color-canvas: #F6F1E9;
-    --color-ink: #25231F;
+    --color-canvas: #121212;
+    --color-ink: #F3F4F6;
     --color-gold: #B49A70;
     --color-gold-light: #E6D5B8;
     --color-sage: #687567;
     --color-rose: #A77D80;
+  }
+
+  html.light {
+    --color-canvas: #F6F1E9;
+    --color-ink: #25231F;
   }
 
   html {
@@ -21,8 +26,8 @@
   }
 
   body {
-    background-color: #F6F1E9;
-    color: #25231F;
+    background-color: var(--color-canvas);
+    color: var(--color-ink);
     margin: 0;
     padding: 0;
     overflow-x: hidden;

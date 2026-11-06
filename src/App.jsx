@@ -26,6 +26,19 @@ export default function App() {
   };
 
   useEffect(() => {
+    // Default to dark theme if not explicitly set in localStorage
+    const saved = localStorage.getItem('theme');
+    const isDark = saved ? saved === 'dark' : true;
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light');
+    }
+  }, []);
+
+  useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace('#', '');
       if (hash) {
@@ -70,7 +83,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F6F1E9]">
+    <div className="min-h-screen bg-[var(--color-canvas)] text-[var(--color-ink)] dark:bg-[#121212] dark:text-stone-100 transition-colors duration-300">
       {renderView()}
     </div>
   );

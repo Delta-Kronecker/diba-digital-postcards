@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Sparkles, Sliders, Layers, Heart, Moon, Home, Menu, X, ArrowLeft } from 'lucide-react';
+import ThemeToggle from './ThemeToggle';
 
 export default function Navbar({ currentRoute = 'home', onNavigate = () => {} }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -18,7 +19,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-[#F6F1E9]/90 backdrop-blur-md border-b border-amber-900/10 transition-all duration-300">
+    <header className="sticky top-0 z-40 w-full bg-[var(--color-canvas)]/90 dark:bg-[#121212]/90 backdrop-blur-md border-b border-amber-900/10 dark:border-stone-800 transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 md:px-8 h-20 flex items-center justify-between">
         
         {/* Brand Logo */}
@@ -63,25 +64,29 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
           })}
         </nav>
 
-        {/* Primary CTA */}
+        {/* Primary CTA & Theme Toggle */}
         <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
           <button
             onClick={() => handleNavClick('customizer')}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-vazir font-semibold text-stone-900 bg-gold-foil shadow-md hover:brightness-105 active:scale-95 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-full text-xs font-vazir font-semibold text-stone-900 dark:text-stone-900 bg-gold-foil shadow-md hover:brightness-105 active:scale-95 transition-all"
           >
             شخصی‌سازی زنده
             <ArrowLeft className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="lg:hidden p-2 rounded-xl text-stone-700 hover:bg-stone-200/60 transition-colors"
-          aria-label="منو"
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        {/* Mobile Menu & Theme Toggle */}
+        <div className="flex items-center gap-2 lg:hidden">
+          <ThemeToggle />
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-xl text-stone-700 dark:text-stone-200 hover:bg-stone-200/60 dark:hover:bg-stone-800 transition-colors"
+            aria-label="منو"
+          >
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Drawer */}
