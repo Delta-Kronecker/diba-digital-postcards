@@ -1,36 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Sun, Moon } from 'lucide-react';
 
-export default function ThemeToggle() {
+export default function ThemeToggle({ className = '' }) {
   const [isDark, setIsDark] = useState(() => {
-    const saved = localStorage.getItem('theme');
-    if (saved) return saved === 'dark';
-    return true; // DEFAULT TO DARK
+    try {
+      return window.localStorage.getItem('theme') === 'dark';
+    } catch {
+      return false;
+    }
   });
 
   useEffect(() => {
     const theme = isDark ? 'dark' : 'light';
-    localStorage.setItem('theme', theme);
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
+    try {
+      window.localStorage.setItem('theme', theme);
+    } catch {
+      // Storage can be unavailable in private mode; the class still applies.
     }
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.classList.toggle('light', !isDark);
   }, [isDark]);
 
   return (
     <button
+      type="button"
       onClick={() => setIsDark(!isDark)}
-      className="relative p-2.5 rounded-xl bg-stone-200/80 dark:bg-stone-800 text-stone-700 dark:text-amber-300 hover:bg-stone-300 dark:hover:bg-stone-700 transition-all duration-300 shadow-sm flex items-center justify-center group"
-      aria-label="تغییر تم (تاریک / روشن)"
+      aria-pressed={isDark}
+      aria-label={isDark ? 'تغییر به حالت روشن' : 'تغییر به حالت تاریک'}
       title={isDark ? 'تغییر به حالت روشن' : 'تغییر به حالت تاریک'}
+      className={`relative inline-flex h-10 w-10 items-center justify-center border border-line text-ink-muted transition-colors duration-300 hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 ${className}`}
     >
       {isDark ? (
-        <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-90 transition-transform duration-500" />
+        <Sun className="h-4 w-4" aria-hidden="true" />
       ) : (
-        <Moon className="w-4 h-4 text-stone-700 group-hover:-rotate-12 transition-transform duration-500" />
+        <Moon className="h-4 w-4" aria-hidden="true" />
       )}
     </button>
   );

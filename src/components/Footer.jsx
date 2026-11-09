@@ -1,108 +1,173 @@
-import React from 'react';
-import { Sparkles, Heart, Moon, Building2, Gift, PartyPopper, Mail } from 'lucide-react';
+import React, { useState } from 'react';
+import { ArrowUpLeft, Instagram, Mail, MapPin, Phone } from 'lucide-react';
+import { toPersianDigits } from '../utils/numbers';
+
+const COLLECTIONS = [
+  ['wedding-amir-sara', 'عروسی و عقد'],
+  ['memorial-haj-reza', 'ترحیم و یادبود'],
+  ['general-gallery-opening', 'نمایشگاه و عمومی'],
+  ['opening-tech-hub', 'افتتاحیهٔ تجاری'],
+  ['festival-nowruz-1404', 'جشن‌ها و مناسبت‌ها'],
+  ['birthday-aria-10', 'تولد و جشن اختصاصی'],
+];
+
+const STUDIO = [
+  ['home', 'دربارهٔ آتلیه'],
+  ['customizer', 'استودیو طراحی'],
+  ['gallery', 'نمایشگاه نمونه‌ها'],
+  ['wedding-amir-sara', 'تجربهٔ گشودن پاکت'],
+];
 
 export default function Footer({ onNavigate = () => {} }) {
-  const categories = [
-    { id: 'wedding-amir-sara', label: 'عروسی و عقد (P0)', icon: Heart },
-    { id: 'memorial-haj-reza', label: 'ترحیم و یادبود (P0 - Zero Gold)', icon: Moon },
-    { id: 'general-gallery-opening', label: 'نمایشگاه و عمومی', icon: Building2 },
-    { id: 'opening-tech-hub', label: 'افتتاحیه تجاری', icon: Mail },
-    { id: 'festival-nowruz-1404', label: 'جشن‌ها و مناسبت‌ها', icon: PartyPopper },
-    { id: 'birthday-aria-10', label: 'تولد و جشن اختصاصی', icon: Gift },
-  ];
+  const [email, setEmail] = useState('');
+  const [sent, setSent] = useState(false);
+  const year = toPersianDigits(new Date().getFullYear() + 621);
 
   return (
-    <footer className="bg-[#25231F] text-stone-200 border-t border-amber-900/30 pt-16 pb-12 font-vazir relative overflow-hidden">
-      {/* Subtle Background Glow */}
-      <div className="absolute top-0 right-1/4 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-7xl mx-auto px-6 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-stone-800">
-          
-          {/* Col 1: Brand Info */}
-          <div className="md:col-span-2 space-y-4">
+    <footer className="bg-ink-band text-cream">
+      <div className="shell pt-16 md:pt-20">
+        <div className="grid grid-cols-1 gap-12 border-b border-cream/12 pb-14 md:grid-cols-12">
+          <div className="md:col-span-5">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-gold-foil p-0.5 flex items-center justify-center">
-                <div className="w-full h-full bg-[#25231F] rounded-[10px] flex items-center justify-center">
-                  <Sparkles className="w-4 h-4 text-amber-400" />
-                </div>
+              <span className="flex h-11 w-11 items-center justify-center border border-gold/50">
+                <span className="font-display text-lg text-gold">د</span>
+              </span>
+              <div>
+                <p className="font-display text-2xl font-semibold leading-none">دیبا</p>
+                <p className="latin mt-1 text-[9px] text-cream/60">Diba Atelier</p>
               </div>
-              <span className="text-2xl font-bold font-estedad text-stone-100">دیبا</span>
             </div>
-            <p className="text-sm text-stone-400 leading-relaxed max-w-md">
-              پلتفرم استودیو طراحی کارت‌پستال‌ها و دعوت‌نامه‌های دیجیتال مجلل. ترکیبی هوشمندانه از ظرافت چاپ کلاسیک، تایپوگرافی اصیل ایرانی و انیمیشن‌های سه‌بعدی پیشرفته.
+
+            <p className="mt-6 max-w-sm text-xs leading-[2.1] text-cream/65">
+              آتلیهٔ دعوت دیجیتال؛ طراحی کارت‌پستال و دعوت‌نامه‌های فاخر با
+              تایپوگرافی فارسی، مهر موم و تجربهٔ گشودن پاکت.
             </p>
-            <div className="pt-2 text-xs text-amber-400/80">
-              طراحی شده مطابق استانداردهای بین‌المللی تایپوگرافی دیجیتال (Estedad & Vazirmatn)
+
+            <div className="mt-8 flex items-center gap-2">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex h-9 w-9 items-center justify-center border border-cream/15 text-cream/60 transition-colors hover:border-gold hover:text-gold"
+                aria-label="اینستاگرام دیبا"
+              >
+                <Instagram className="h-4 w-4" aria-hidden="true" />
+              </a>
+              <a
+                href="mailto:hello@diba.studio"
+                className="flex h-9 w-9 items-center justify-center border border-cream/15 text-cream/60 transition-colors hover:border-gold hover:text-gold"
+                aria-label="ایمیل دیبا"
+              >
+                <Mail className="h-4 w-4" aria-hidden="true" />
+              </a>
             </div>
           </div>
 
-          {/* Col 2: Category Viewers */}
-          <div>
-            <h4 className="text-sm font-bold font-estedad text-stone-100 mb-4 tracking-wider uppercase text-amber-400/90">
-              نمونه کارت‌ها (Viewers)
-            </h4>
-            <ul className="space-y-2.5 text-xs text-stone-300">
-              {categories.map((cat) => {
-                const Icon = cat.icon;
-                return (
-                  <li key={cat.id}>
-                    <button
-                      onClick={() => onNavigate(cat.id)}
-                      className="flex items-center gap-2 hover:text-amber-300 transition-colors text-right"
-                    >
-                      <Icon className="w-3.5 h-3.5 text-amber-500/70" />
-                      {cat.label}
-                    </button>
-                  </li>
-                );
-              })}
+          <nav aria-label="مجموعه‌ها" className="md:col-span-3">
+            <h3 className="latin mb-5 text-[10px] text-gold-soft/90">Collections</h3>
+            <ul className="space-y-3">
+              {COLLECTIONS.map(([id, label]) => (
+                <li key={id}>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate(id)}
+                    className="text-[12px] text-cream/60 transition-colors hover:text-cream"
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
             </ul>
-          </div>
+          </nav>
 
-          {/* Col 3: Features & Studio */}
-          <div>
-            <h4 className="text-sm font-bold font-estedad text-stone-100 mb-4 tracking-wider uppercase text-amber-400/90">
-              بخش‌های دموی پلتفرم
-            </h4>
-            <ul className="space-y-2.5 text-xs text-stone-300">
-              <li>
-                <button onClick={() => onNavigate('home')} className="hover:text-amber-300 transition-colors">
-                  صفحه اصلی و ویژگی‌ها
-                </button>
+          <nav aria-label="آتلیه" className="md:col-span-2">
+            <h3 className="latin mb-5 text-[10px] text-gold-soft/90">Atelier</h3>
+            <ul className="space-y-3">
+              {STUDIO.map(([id, label]) => (
+                <li key={id}>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate(id)}
+                    className="text-[12px] text-cream/60 transition-colors hover:text-cream"
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <div className="md:col-span-2">
+            <h3 className="latin mb-5 text-[10px] text-gold-soft/90">Contact</h3>
+            <ul className="space-y-3 text-[11px] text-cream/65">
+              <li className="flex items-start gap-2">
+                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold/70" aria-hidden="true" />
+                تهران، فرشته
+              </li>
+              <li className="flex items-center gap-2" dir="ltr">
+                <Phone className="h-3.5 w-3.5 shrink-0 text-gold/70" aria-hidden="true" />
+                +98 21 2200 0000
               </li>
               <li>
-                <button onClick={() => onNavigate('customizer')} className="hover:text-amber-300 transition-colors">
-                  استودیو سفارشی‌سازی زنده
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('gallery')} className="hover:text-amber-300 transition-colors">
-                  گالری و فیلترهای موضوعی
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('wedding-amir-sara')} className="hover:text-amber-300 transition-colors">
-                  انیمیشن پاکت سه‌بعدی و مهر موم
-                </button>
-              </li>
-              <li>
-                <button onClick={() => onNavigate('memorial-haj-reza')} className="hover:text-amber-300 transition-colors">
-                  قالب وقارآمیز ترحیم (Zero Gold)
-                </button>
+                <a href="mailto:hello@diba.studio" className="hover:text-cream">
+                  hello@diba.studio
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-stone-500 gap-4">
-          <div>
-            © ۱۴۰۴ دیبا (Ponisha) — تمامی حقوق برای دمو دیجیتال محفوظ است.
+        <div className="grid grid-cols-1 items-end gap-8 py-10 md:grid-cols-12">
+          <div className="md:col-span-7">
+            <h3 className="font-display text-xl text-cream">از آتلیه باخبر شوید.</h3>
+            <p className="mt-2 text-[11px] text-cream/65">
+              هر چند هفته، یک مجموعهٔ تازه و یادداشتی دربارهٔ طراحی دعوت.
+            </p>
           </div>
-          <div className="flex items-center gap-6">
-            <span className="text-stone-400">100% RTL & Accessible</span>
-            <span className="text-stone-400">Responsive Desktop & Mobile</span>
+
+          <form
+            className="md:col-span-5"
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (!email.trim()) return;
+              setSent(true);
+              setEmail('');
+            }}
+          >
+            <label htmlFor="footer-email" className="sr-only">
+              ایمیل شما
+            </label>
+            <div className="flex items-center border-b border-cream/25 focus-within:border-gold">
+              <input
+                id="footer-email"
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="ایمیل شما"
+                className="h-11 w-full bg-transparent text-sm text-cream placeholder:text-cream/55 focus:outline-none"
+              />
+              <button
+                type="submit"
+                aria-label="عضویت در خبرنامه"
+                className="flex h-10 w-10 shrink-0 items-center justify-center text-gold transition-transform hover:-translate-x-1"
+              >
+                <ArrowUpLeft className="h-4 w-4" aria-hidden="true" />
+              </button>
+            </div>
+            <p className="mt-2 min-h-[1rem] text-[10px] text-gold-soft/90" aria-live="polite">
+              {sent ? 'ثبت شد؛ به‌زودی از آتلیه می‌شنوید.' : ''}
+            </p>
+          </form>
+        </div>
+      </div>
+
+      <div className="border-t border-cream/12">
+        <div className="shell flex flex-col items-center justify-between gap-3 py-5 text-[10px] text-cream/60 sm:flex-row">
+          <p>© {year} دیبا — تمامی حقوق محفوظ است.</p>
+          <div className="flex items-center gap-5">
+            <span className="latin tracking-[0.2em]">Made in Tehran</span>
+            <span>دسترس‌پذیر و راست‌به‌چپ</span>
           </div>
         </div>
       </div>

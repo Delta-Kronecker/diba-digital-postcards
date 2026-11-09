@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://delta-kronecker.github.io/diba-digital-postcards/sitemap.xml

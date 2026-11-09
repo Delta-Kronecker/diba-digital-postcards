@@ -1,106 +1,167 @@
-import React, { useState } from 'react';
-import { X, ChevronLeft, ChevronRight, Image as ImageIcon } from 'lucide-react';
+import React, { useState, useEffect, useRef } from 'react';
+import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useScrollLock } from '../hooks/useScrollLock';
+import Picture from './Picture';
 
 export default function PhotoLightbox({
   isOpen = false,
   onClose = () => {},
   images = [],
-  initialIndex = 0
+  initialIndex = 0,
 }) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex);
+  const dialogRef = useRef(null);
+  const closeRef = useRef(null);
+  const triggerRef = useRef(null);
+
+  useScrollLock(isOpen);
+
+  useEffect(() => {
+    if (isOpen) {
+      triggerRef.current = document.activeElement;
+      setCurrentIndex(initialIndex);
+      const timer = window.setTimeout(() => closeRef.current?.focus(), 60);
+      return () => window.clearTimeout(timer);
+    }
+    triggerRef.current?.focus?.();
+    return undefined;
+  }, [isOpen, initialIndex]);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const onKey = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+      }
+      if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        setCurrentIndex((p) => (p - 1 + images.length) % images.length);
+      }
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        setCurrentIndex((p) => (p + 1) % images.length);
+      }
+      if (e.key === 'Home') {
+        e.preventDefault();
+        setCurrentIndex(0);
+      }
+      if (e.key === 'End') {
+        e.preventDefault();
+        setCurrentIndex(images.length - 1);
+      }
+      if (e.key === 'Tab') {
+        const nodes = dialogRef.current?.querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])');
+        if (!nodes?.length) return;
+        const first = nodes[0];
+        const last = nodes[nodes.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [isOpen, images.length, onClose]);
 
   if (!isOpen || images.length === 0) return null;
 
   const currentImage = images[currentIndex] || images[0];
-
-  const handleNext = (e) => {
-    e.stopPropagation();
+  const next = (e) => {
+    e?.stopPropagation();
     setCurrentIndex((prev) => (prev + 1) % images.length);
   };
-
-  const handlePrev = (e) => {
-    e.stopPropagation();
+  const prev = (e) => {
+    e?.stopPropagation();
     setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   return (
-    <div 
-      onClick={onClose}
-      className="fixed inset-0 z-50 flex flex-col items-center justify-between p-4 md:p-8 bg-black/90 backdrop-blur-xl animate-in fade-in duration-300"
+    <div
+      ref={dialogRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label="گالری تصاویر"
+      className="fixed inset-0 z-50 flex flex-col bg-[#0d0b09]/96 backdrop-blur-xl"
     >
-      {/* Header bar */}
-      <div className="w-full max-w-6xl flex items-center justify-between z-10 text-white">
-        <div className="flex items-center gap-2">
-          <ImageIcon className="w-5 h-5 text-amber-400" />
-          <span className="text-sm font-vazir text-stone-300">
-            گالری تصاویر ({currentIndex + 1} از {images.length})
-          </span>
+      <div className="flex items-center justify-between gap-4 border-b border-cream/12 px-5 py-4 text-cream md:px-8">
+        <div aria-live="polite">
+          <p className="latin text-[9px] text-cream/60">Gallery</p>
+          <p className="mt-1 font-display text-sm text-cream">{currentImage.title || 'تصویر'}</p>
         </div>
-
-        <button
-          onClick={onClose}
-          className="p-2.5 rounded-full bg-stone-800/80 hover:bg-stone-700 text-stone-200 transition-colors"
-          aria-label="بستن گالری"
-        >
-          <X className="w-6 h-6" />
-        </button>
+        <div className="flex items-center gap-4">
+          <span className="text-[11px] tabular-nums text-cream/65" dir="ltr">
+            {currentIndex + 1} / {images.length}
+          </span>
+          <button
+            ref={closeRef}
+            type="button"
+            onClick={onClose}
+            aria-label="بستن گالری"
+            className="flex h-10 w-10 items-center justify-center border border-cream/20 text-cream transition-colors hover:border-cream/50"
+          >
+            <X className="h-5 w-5" aria-hidden="true" />
+          </button>
+        </div>
       </div>
 
-      {/* Main Image Stage */}
-      <div 
-        onClick={(e) => e.stopPropagation()}
-        className="relative my-auto w-full max-w-5xl h-[65vh] flex items-center justify-center overflow-hidden rounded-2xl border border-stone-800 shadow-2xl"
-      >
-        <img
-          src={currentImage.url}
-          alt={currentImage.title || 'تصویر گالری'}
-          className="max-w-full max-h-full object-contain transition-all duration-500 rounded-lg select-none"
-        />
-
-        {/* Navigation Arrows */}
-        {images.length > 1 && (
-          <>
-            <button
-              onClick={handlePrev}
-              className="absolute right-4 p-3 rounded-full bg-stone-950/60 hover:bg-amber-600 text-white backdrop-blur border border-stone-700/50 transition-all active:scale-95"
-              title="تصویر قبلی"
-            >
-              <ChevronRight className="w-6 h-6" />
-            </button>
-
-            <button
-              onClick={handleNext}
-              className="absolute left-4 p-3 rounded-full bg-stone-950/60 hover:bg-amber-600 text-white backdrop-blur border border-stone-700/50 transition-all active:scale-95"
-              title="تصویر بعدی"
-            >
-              <ChevronLeft className="w-6 h-6" />
-            </button>
-          </>
-        )}
-
-        {/* Image Title Badge */}
-        {currentImage.title && (
-          <div className="absolute bottom-4 inset-x-0 mx-auto w-max px-6 py-2 rounded-full bg-stone-950/80 backdrop-blur text-stone-200 text-xs font-vazir border border-stone-700/40">
-            {currentImage.title}
-          </div>
-        )}
-      </div>
-
-      {/* Thumbnails strip */}
-      {images.length > 1 && (
-        <div 
+      <div className="relative flex flex-1 items-center justify-center p-4 md:p-10" onClick={onClose} role="presentation">
+        <figure
+          className="relative flex max-h-full w-full max-w-5xl items-center justify-center"
           onClick={(e) => e.stopPropagation()}
-          className="flex items-center gap-3 p-2 bg-stone-900/80 backdrop-blur rounded-2xl border border-stone-800 max-w-xl overflow-x-auto"
         >
-          {images.map((img, idx) => (
+          <Picture
+            src={currentImage.url}
+            alt={currentImage.title || 'تصویر گالری'}
+            className="max-h-[68vh] w-auto max-w-full select-none object-contain shadow-[0_40px_120px_-40px_rgba(0,0,0,0.9)]"
+            loading="eager"
+            decoding="async"
+          />
+
+          {images.length > 1 && (
+            <>
+              <button
+                type="button"
+                onClick={prev}
+                aria-label="تصویر قبلی"
+                className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-[#0d0b09]/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:right-4"
+              >
+                <ChevronRight className="h-5 w-5" aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={next}
+                aria-label="تصویر بعدی"
+                className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-[#0d0b09]/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:left-4"
+              >
+                <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </>
+          )}
+        </figure>
+      </div>
+
+      {images.length > 1 && (
+        <div className="flex items-center justify-center gap-2 border-t border-cream/12 px-4 py-4" role="tablist" aria-label="تصاویر کوچک">
+          {images.map((image, index) => (
             <button
-              key={img.id || idx}
-              onClick={() => setCurrentIndex(idx)}
-              className={`relative w-16 h-12 rounded-lg overflow-hidden border-2 transition-all ${
-                currentIndex === idx ? 'border-amber-400 scale-105 shadow-md' : 'border-transparent opacity-50 hover:opacity-100'
+              key={image.id || index}
+              type="button"
+              onClick={() => setCurrentIndex(index)}
+              role="tab"
+              aria-selected={currentIndex === index}
+              aria-label={image.title || `تصویر ${index + 1}`}
+              className={`relative h-12 w-16 overflow-hidden border-2 transition-all sm:h-14 sm:w-20 ${
+                currentIndex === index
+                  ? 'border-gold opacity-100'
+                  : 'border-transparent opacity-40 hover:opacity-80'
               }`}
             >
-              <img src={img.url} alt="" className="w-full h-full object-cover" />
+              <Picture src={image.url} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
             </button>
           ))}
         </div>

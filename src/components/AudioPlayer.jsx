@@ -1,81 +1,94 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Volume2, VolumeX, Music } from 'lucide-react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Music, Volume2, VolumeX } from 'lucide-react';
 
-export default function AudioPlayer({ trackType = 'synth-romantic', trackTitle = 'موسیقی ملایم اختصاصی', accentColor = '#B49A70' }) {
+const NOTE_SETS = {
+  'synth-soothing': [220, 261.63, 293.66, 329.63, 261.63, 220, 196, 220],
+  'synth-classical': [261.63, 329.63, 392.0, 523.25, 392.0, 329.63],
+  'synth-modern': [293.66, 369.99, 440.0, 554.37, 440.0, 369.99],
+  'synth-festive': [329.63, 392.0, 493.88, 587.33, 493.88, 392.0],
+  'synth-happy': [392.0, 493.88, 587.33, 659.25, 587.33, 493.88],
+  'synth-romantic': [261.63, 329.63, 392.0, 493.88, 440.0, 349.23, 392.0, 523.25],
+};
+
+export default function AudioPlayer({
+  trackType = 'synth-romantic',
+  trackTitle = 'موسیقی ملایم اختصاصی',
+  accentColor = 'var(--color-gold)',
+  onDark = false,
+}) {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioCtxRef = useRef(null);
-  const timerRef = useRef(null);
-
-  // Synth notes mapping based on mood
-  const getNotes = () => {
-    switch (trackType) {
-      case 'synth-soothing': // Memorial - slow minor ambient
-        return [220, 261.63, 293.66, 329.63, 261.63, 220, 196, 220];
-      case 'synth-classical': // General - calm classical triad
-        return [261.63, 329.63, 392.00, 523.25, 392.00, 329.63];
-      case 'synth-modern': // Opening - elegant pentatonic
-        return [293.66, 369.99, 440.00, 554.37, 440.00, 369.99];
-      case 'synth-festive': // Festival - bright major
-        return [329.63, 392.00, 493.88, 587.33, 493.88, 392.00];
-      case 'synth-happy': // Birthday - cheerful arpeggio
-        return [392.00, 493.88, 587.33, 659.25, 587.33, 493.88];
-      case 'synth-romantic':
-      default: // Wedding - romantic warm major 7th chord cycle
-        return [261.63, 329.63, 392.00, 493.88, 440.00, 349.23, 392.00, 523.25];
-    }
-  };
-
-  const playSynthNote = (freq, duration = 1.2) => {
-    if (!audioCtxRef.current) return;
+  const [volume, setVolume] = useState(() => {
     try {
-      const ctx = audioCtxRef.current;
-      if (ctx.state === 'suspended') {
-        ctx.resume();
-      }
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-
-      osc.type = trackType === 'synth-soothing' ? 'sine' : 'triangle';
-      osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
-      gain.gain.setValueAtTime(0.01, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.12, ctx.currentTime + 0.2);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-
-      osc.start();
-      osc.stop(ctx.currentTime + duration);
-    } catch (e) {
-      console.warn('Audio playback notice:', e);
+      const saved = window.localStorage.getItem('ponisha_audio_volume');
+      const parsed = saved ? Number(saved) : NaN;
+      return Number.isFinite(parsed) && parsed >= 0 && parsed <= 1 ? parsed : 0.12;
+    } catch {
+      return 0.12;
     }
-  };
+  });
 
-  const startLoop = () => {
+  const audioCtxRef = useRef(null);
+  const gainRef = useRef(null);
+  const analyserRef = useRef(null);
+  const timerRef = useRef(null);
+  const rafRef = useRef(null);
+  const barsRef = useRef(null);
+
+  const ensureContext = () => {
     if (!audioCtxRef.current) {
       const AudioCtx = window.AudioContext || window.webkitAudioContext;
       if (AudioCtx) {
         audioCtxRef.current = new AudioCtx();
+        gainRef.current = audioCtxRef.current.createGain();
+        gainRef.current.gain.value = volume;
+        analyserRef.current = audioCtxRef.current.createAnalyser();
+        analyserRef.current.fftSize = 32;
+        gainRef.current.connect(analyserRef.current);
+        analyserRef.current.connect(audioCtxRef.current.destination);
       }
     }
-    const notes = getNotes();
+    if (audioCtxRef.current?.state === 'suspended') audioCtxRef.current.resume();
+    return audioCtxRef.current;
+  };
+
+  const playNote = useCallback(
+    (freq, duration = 1.3) => {
+      const ctx = audioCtxRef.current;
+      if (!ctx || !gainRef.current) return;
+      try {
+        const osc = ctx.createOscillator();
+        const noteGain = ctx.createGain();
+        osc.type = trackType === 'synth-soothing' ? 'sine' : 'triangle';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        noteGain.gain.setValueAtTime(0.001, ctx.currentTime);
+        noteGain.gain.linearRampToValueAtTime(volume, ctx.currentTime + 0.22);
+        noteGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        osc.connect(noteGain);
+        noteGain.connect(gainRef.current);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch {
+        /* audio is a progressive enhancement */
+      }
+    },
+    [trackType, volume]
+  );
+
+  const start = () => {
+    const ctx = ensureContext();
+    if (!ctx) return;
+    const notes = NOTE_SETS[trackType] || NOTE_SETS['synth-romantic'];
     let step = 0;
-
     if (timerRef.current) clearInterval(timerRef.current);
-    
-    // Play initial note
-    playSynthNote(notes[0]);
-
+    playNote(notes[0]);
     timerRef.current = setInterval(() => {
       step = (step + 1) % notes.length;
-      playSynthNote(notes[step]);
-    }, 700);
-
+      playNote(notes[step]);
+    }, 760);
     setIsPlaying(true);
   };
 
-  const stopLoop = () => {
+  const stop = () => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
       timerRef.current = null;
@@ -83,56 +96,107 @@ export default function AudioPlayer({ trackType = 'synth-romantic', trackTitle =
     setIsPlaying(false);
   };
 
-  const toggleMusic = () => {
-    if (isPlaying) {
-      stopLoop();
-    } else {
-      startLoop();
+  useEffect(() => {
+    try {
+      window.localStorage.setItem('ponisha_audio_volume', String(volume));
+    } catch {
+      // Ignore storage failures; playback must keep working.
     }
-  };
+    if (gainRef.current) gainRef.current.gain.value = volume;
+  }, [volume]);
 
   useEffect(() => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
       if (audioCtxRef.current && audioCtxRef.current.state !== 'closed') {
         try {
           audioCtxRef.current.close();
-        } catch (e) {}
+        } catch {
+          /* noop */
+        }
       }
     };
   }, []);
 
+  useEffect(() => {
+    if (!isPlaying || !analyserRef.current || !barsRef.current) return;
+    const analyser = analyserRef.current;
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    const tick = () => {
+      analyser.getByteFrequencyData(data);
+      const bars = barsRef.current?.querySelectorAll('span');
+      if (bars) {
+        bars.forEach((bar, i) => {
+          const v = data[i % data.length] / 255;
+          bar.style.transform = `scaleY(${Math.max(0.18, v)})`;
+        });
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, [isPlaying]);
+
+  const muted = onDark ? 'text-cream/65' : 'text-ink-subtle';
+  const strong = onDark ? 'text-cream' : 'text-ink';
+  const line = onDark ? 'border-cream/20' : 'border-line';
+
   return (
-    <div className="flex items-center gap-3 bg-stone-900/40 backdrop-blur-md px-4 py-2 rounded-full border border-amber-900/20 text-xs font-vazir text-stone-200 shadow-lg transition-all duration-300 hover:border-amber-500/40">
+    <div
+      className={`flex items-center gap-3 border ${line} px-3 py-2`}
+      role="group"
+      aria-label="پخش موسیقی"
+    >
       <button
-        onClick={toggleMusic}
-        className="p-2 rounded-full transition-transform active:scale-95 flex items-center justify-center"
-        style={{ backgroundColor: isPlaying ? accentColor : '#333', color: isPlaying ? '#25231F' : '#FFF' }}
-        title={isPlaying ? 'قطع موسیقی' : 'پخش موسیقی ملایم'}
-        aria-label="پخش موسیقی"
+        type="button"
+        onClick={() => (isPlaying ? stop() : start())}
+        aria-pressed={isPlaying}
+        aria-label={isPlaying ? 'قطع موسیقی' : 'پخش موسیقی'}
+        title={isPlaying ? 'قطع موسیقی' : 'پخش موسیقی'}
+        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border ${line} transition-colors ${
+          isPlaying ? 'text-cream' : strong
+        }`}
+        style={isPlaying ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
       >
-        {isPlaying ? <Volume2 className="w-4 h-4 animate-bounce" /> : <VolumeX className="w-4 h-4" />}
+        {isPlaying ? <Volume2 className="h-3.5 w-3.5" aria-hidden="true" /> : <VolumeX className="h-3.5 w-3.5" aria-hidden="true" />}
       </button>
 
-      <div className="flex flex-col">
-        <span className="font-medium text-[11px] tracking-wide text-stone-300 flex items-center gap-1.5">
-          <Music className="w-3 h-3 opacity-70" />
+      <div className="min-w-0">
+        <p className={`flex items-center gap-1.5 truncate text-[10px] ${strong}`}>
+          <Music className="h-3 w-3 shrink-0 opacity-60" aria-hidden="true" />
           {trackTitle}
-        </span>
-        <span className="text-[10px] text-stone-400">
-          {isPlaying ? 'در حال پخش آنلاین...' : 'جهت شنیدن صدای کارت کلیک کنید'}
-        </span>
+        </p>
+        <p className={`mt-0.5 text-[9px] ${muted}`} aria-live="polite">
+          {isPlaying ? 'در حال پخش…' : 'برای شنیدن کلیک کنید'}
+        </p>
       </div>
 
-      {/* Animated Visualizer Bars */}
-      {isPlaying && (
-        <div className="flex items-end gap-0.5 h-3.5 mr-2">
-          <span className="w-0.5 bg-amber-400 animate-pulse h-full rounded-full" style={{ animationDelay: '0ms' }} />
-          <span className="w-0.5 bg-amber-300 animate-pulse h-2/3 rounded-full" style={{ animationDelay: '150ms' }} />
-          <span className="w-0.5 bg-amber-400 animate-pulse h-5/6 rounded-full" style={{ animationDelay: '300ms' }} />
-          <span className="w-0.5 bg-amber-200 animate-pulse h-1/2 rounded-full" style={{ animationDelay: '450ms' }} />
-        </div>
-      )}
+      <div ref={barsRef} className={`mr-1 hidden h-4 items-end gap-[2px] sm:flex ${isPlaying ? '' : 'opacity-40'}`} aria-hidden="true">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <span
+            key={i}
+            className="h-full w-[2px] origin-bottom rounded-full transition-transform duration-200"
+            style={{ backgroundColor: accentColor, transform: 'scaleY(0.3)' }}
+          />
+        ))}
+      </div>
+
+      <label className="sr-only" htmlFor="audio-volume">
+        بلندی صدا
+      </label>
+      <input
+        id="audio-volume"
+        type="range"
+        min="0"
+        max="1"
+        step="0.01"
+        value={volume}
+        onChange={(e) => setVolume(Number(e.target.value))}
+        className="audio-range hidden w-14 md:block"
+      />
     </div>
   );
 }

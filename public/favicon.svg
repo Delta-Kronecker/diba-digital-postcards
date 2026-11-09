@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <rect width="64" height="64" fill="#F6F1E9"/>
+  <text x="32" y="38" text-anchor="middle" font-family="Estedad, Vazirmatn, serif" font-weight="500" font-size="26" fill="#25231F" letter-spacing="0.05em">دیبا</text>
+  <line x1="14" y1="46" x2="50" y2="46" stroke="#B49A70" stroke-width="1"/>
+</svg>

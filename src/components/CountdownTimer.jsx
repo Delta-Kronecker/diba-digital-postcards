@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { toPersianDigits } from '../utils/numbers';
 
-export default function CountdownTimer({ targetDate = '2025-09-19T19:00:00', accentColor = '#B49A70', hasGold = true }) {
+function CountdownTimer({ targetDate = '2027-06-18T19:00:00', accentColor = 'var(--color-gold-deep)', hasGold = true }) {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [started, setStarted] = useState(false);
 
   useEffect(() => {
-    const calculateTime = () => {
-      const difference = +new Date(targetDate) - +new Date();
+    const calculate = () => {
+      const difference = +new Date(targetDate) - Date.now();
       if (difference > 0) {
+        setStarted(false);
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
           hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
@@ -14,48 +17,59 @@ export default function CountdownTimer({ targetDate = '2025-09-19T19:00:00', acc
           seconds: Math.floor((difference / 1000) % 60),
         });
       } else {
+        setStarted(true);
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
     };
 
-    calculateTime();
-    const timer = setInterval(calculateTime, 1000);
+    calculate();
+    const timer = setInterval(calculate, 1000);
     return () => clearInterval(timer);
   }, [targetDate]);
 
-  const timeUnits = [
+  const units = [
     { label: 'روز', value: timeLeft.days },
     { label: 'ساعت', value: timeLeft.hours },
     { label: 'دقیقه', value: timeLeft.minutes },
     { label: 'ثانیه', value: timeLeft.seconds },
   ];
 
+  const ariaLabel = started
+    ? 'مراسم برگزار شده است'
+    : `زمان باقی‌مانده تا مراسم: ${timeLeft.days} روز، ${timeLeft.hours} ساعت، ${timeLeft.minutes} دقیقه و ${timeLeft.seconds} ثانیه`;
+
   return (
-    <div className="w-full my-6 flex flex-col items-center">
-      <div className="text-xs uppercase tracking-widest text-stone-500 mb-3 font-vazir">
-        شمارش معکوس تا زمان برگزاری مراسم
+    <div className="my-8 w-full" role="timer" aria-label={ariaLabel}>
+      <div className="mb-3 flex items-center gap-3">
+        <span className="text-[10px] tracking-[0.18em] text-ink-subtle">شمارش معکوس تا مراسم</span>
+        <span className="h-px flex-1 bg-line" aria-hidden="true" />
+        <span className="latin text-[9px] text-ink-subtle">Countdown</span>
       </div>
-      <div className="grid grid-cols-4 gap-3 md:gap-4 max-w-md w-full">
-        {timeUnits.map((unit, index) => (
-          <div 
-            key={index}
-            className="flex flex-col items-center justify-center p-3 rounded-xl bg-stone-900/5 backdrop-blur border border-amber-900/15 shadow-sm transition-transform hover:scale-105"
-            style={{
-              borderColor: hasGold ? 'rgba(180, 154, 112, 0.3)' : 'rgba(104, 117, 103, 0.3)'
-            }}
-          >
-            <span 
-              className="text-2xl md:text-3xl font-bold font-estedad tracking-tight text-stone-800"
-              style={{ color: hasGold ? '#9C8259' : accentColor }}
+
+      {started ? (
+        <p className="border-y border-line py-5 text-center font-display text-sm text-ink-muted">
+          مراسم برگزار شد
+        </p>
+      ) : (
+        <div className="grid grid-cols-4 border-y border-line">
+          {units.map((unit, i) => (
+            <div
+              key={unit.label}
+              className={`px-1 py-5 text-center ${i !== 0 ? 'border-r border-line' : ''}`}
             >
-              {String(unit.value).padStart(2, '۰')}
-            </span>
-            <span className="text-[11px] font-vazir text-stone-500 mt-1">
-              {unit.label}
-            </span>
-          </div>
-        ))}
-      </div>
+              <span
+                className="block font-display text-[1.7rem] font-medium leading-none tabular-nums sm:text-4xl"
+                style={{ color: hasGold ? 'var(--color-gold-deep)' : accentColor }}
+              >
+                {toPersianDigits(String(unit.value).padStart(2, '0'))}
+              </span>
+              <span className="mt-2 block text-[9px] tracking-[0.14em] text-ink-subtle">{unit.label}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
+
+export default React.memo(CountdownTimer);

@@ -2,18 +2,96 @@
 <html lang="fa" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>دیبا - کارت‌پستال‌های دیجیتال</title>
-    <!-- Google Fonts: Vazirmatn -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
-    <!-- Estedad Font CDN -->
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v5.6.0/dist/font-face.css" rel="stylesheet">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' data: https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: blob:; connect-src 'self'; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://delta-kronecker.github.io/diba-digital-postcards/" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('theme');
+          var isDark = saved ? saved === 'dark' : false;
+          if (isDark) document.documentElement.classList.add('dark');
+          else document.documentElement.classList.add('light');
+        } catch (e) {}
+
+        try {
+          var hash = window.location.hash.replace('#', '');
+          var onHome = !/\/invite\//.test(window.location.pathname) &&
+            (!hash || hash === 'home' || hash === 'gallery' || hash === 'categories');
+          if (onHome) {
+            var preload = document.createElement('link');
+            preload.rel = 'preload';
+            preload.as = 'image';
+            preload.type = 'image/webp';
+            preload.href = '/diba-digital-postcards/images/wedding-cover.webp';
+            preload.setAttribute('fetchpriority', 'high');
+            document.head.appendChild(preload);
+          }
+        } catch (e) {}
+      })();
+    </script>
+    <title>دیبا | آتلیهٔ دعوت دیجیتال</title>
+    <meta
+      name="description"
+      content="دیبا، آتلیهٔ دعوت دیجیتال؛ کارت‌پستال‌ها و دعوت‌نامه‌های فاخر با انیمیشن سه‌بعدی، مهر موم، موسیقی اختصاصی و ثبت حضور آنلاین."
+    />
+    <meta name="theme-color" content="#f1ebe0" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="دیبا" />
+    <meta property="og:locale" content="fa_IR" />
+    <meta property="og:url" content="https://delta-kronecker.github.io/diba-digital-postcards/" />
+    <meta property="og:title" content="دیبا | آتلیهٔ دعوت دیجیتال" />
+    <meta
+      property="og:description"
+      content="دعوتی که به خاطره بدل می‌شود. کارت‌پستال و دعوت‌نامهٔ دیجیتال فاخر، ساخته‌شده با جزئیات."
+    />
+    <meta property="og:image" content="https://delta-kronecker.github.io/diba-digital-postcards/images/wedding-cover.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="دیبا | آتلیهٔ دعوت دیجیتال" />
+    <meta name="twitter:description" content="دعوتی که به خاطره بدل می‌شود. کارت‌پستال و دعوت‌نامهٔ دیجیتال فاخر، ساخته‌شده با جزئیات." />
+    <meta name="twitter:image" content="https://delta-kronecker.github.io/diba-digital-postcards/images/wedding-cover.jpg" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://delta-kronecker.github.io/diba-digital-postcards/#organization",
+            "name": "آتلیهٔ دیبا",
+            "alternateName": "Diba Atelier",
+            "url": "https://delta-kronecker.github.io/diba-digital-postcards/",
+            "logo": "https://delta-kronecker.github.io/diba-digital-postcards/favicon.svg",
+            "description": "آتلیهٔ دعوت دیجیتال؛ کارت‌پستال و دعوت‌نامه‌های فاخر با انیمیشن سه‌بعدی، مهر موم، موسیقی اختصاصی و ثبت حضور آنلاین."
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://delta-kronecker.github.io/diba-digital-postcards/#website",
+            "url": "https://delta-kronecker.github.io/diba-digital-postcards/",
+            "name": "دیبا | آتلیهٔ دعوت دیجیتال",
+            "inLanguage": "fa-IR",
+            "publisher": {
+              "@id": "https://delta-kronecker.github.io/diba-digital-postcards/#organization"
+            }
+          }
+        ]
+      }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/estedad-font@v5.6.0/dist/font-face.css" rel="stylesheet" />
   </head>
-  <body class="bg-gray-50 text-gray-900 font-sans antialiased min-h-screen">
-    <div id="root"></div>
+  <body>
+    <main id="root" tabindex="-1"></main>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

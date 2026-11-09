@@ -1,12 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import HomePage from './pages/HomePage';
-import WeddingViewer from './pages/WeddingViewer';
-import MemorialViewer from './pages/MemorialViewer';
-import CategoryViewer from './pages/CategoryViewer';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
+import ErrorBoundary from './components/ErrorBoundary';
+const HomePage = lazy(() => import('./pages/HomePage'));
+const WeddingViewer = lazy(() => import('./pages/WeddingViewer'));
+const MemorialViewer = lazy(() => import('./pages/MemorialViewer'));
+const CategoryViewer = lazy(() => import('./pages/CategoryViewer'));
+const CustomizerPage = lazy(() => import('./pages/CustomizerPage'));
+const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
+
+function PageFallback() {
+  return (
+    <div className="flex min-h-screen items-center justify-center" aria-busy="true" aria-live="polite">
+      <span className="h-9 w-9 animate-spin rounded-full border border-line border-t-gold" />
+    </div>
+  );
+}
+
+const TITLES = {
+  home: 'دیبا | آتلیهٔ دعوت دیجیتال',
+  'wedding-amir-sara': 'دعوت‌نامهٔ عروسی امیرحسین و سارا | دیبا',
+  'memorial-haj-reza': 'یادبود حاج رضا تهرانی | دیبا',
+  'general-gallery-opening': 'گشایش گالری آرک | دیبا',
+  'opening-tech-hub': 'افتتاحیهٔ هاب فناوری آفتاب | دیبا',
+  'festival-nowruz-1404': 'نوروز ۱۴۰۴ | دیبا',
+  'birthday-aria-10': 'تولد آریا | دیبا',
+  customizer: 'استودیو طراحی | دیبا',
+  gallery: 'نمایشگاه نمونه‌ها | دیبا',
+};
 
 export default function App() {
   const [currentRoute, setCurrentRoute] = useState(() => {
-    // Read initial route from URL hash or pathname
     const hash = window.location.hash.replace('#', '');
     if (hash) return hash;
     const path = window.location.pathname;
@@ -23,46 +45,62 @@ export default function App() {
     setCurrentRoute(routeId);
     window.location.hash = routeId;
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.setTimeout(() => {
+      const main = document.getElementById('root');
+      if (main) main.focus({ preventScroll: true });
+    }, 120);
   };
 
   useEffect(() => {
-    // Default to dark theme if not explicitly set in localStorage
-    const saved = localStorage.getItem('theme');
-    const isDark = saved ? saved === 'dark' : true;
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
-    } else {
-      document.documentElement.classList.remove('dark');
-      document.documentElement.classList.add('light');
+    let saved = null;
+    try {
+      saved = window.localStorage.getItem('theme');
+    } catch {
+      saved = null;
     }
+    const isDark = saved === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.classList.toggle('light', !isDark);
   }, []);
 
   useEffect(() => {
-    const handleHashChange = () => {
+    const onHashChange = () => {
       const hash = window.location.hash.replace('#', '');
-      if (hash) {
-        setCurrentRoute(hash);
-      } else {
-        setCurrentRoute('home');
-      }
+      setCurrentRoute(hash || 'home');
     };
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
   }, []);
 
-  // Render view based on route
+  useEffect(() => {
+    document.title = TITLES[currentRoute] || TITLES.home;
+    const description =
+      'دیبا، آتلیهٔ دعوت دیجیتال؛ کارت‌پستال و دعوت‌نامه‌های فاخر با انیمیشن سه‌بعدی، مهر موم، موسیقی اختصاصی و ثبت حضور آنلاین.';
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      document.head.appendChild(meta);
+    }
+    meta.content = description;
+
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement('link');
+      canonical.rel = 'canonical';
+      document.head.appendChild(canonical);
+    }
+    canonical.href = window.location.origin + window.location.pathname + '#' + currentRoute;
+  }, [currentRoute]);
+
   const renderView = () => {
     switch (currentRoute) {
       case 'wedding-amir-sara':
       case 'wedding':
         return <WeddingViewer onNavigate={navigateTo} />;
-
       case 'memorial-haj-reza':
       case 'memorial':
         return <MemorialViewer onNavigate={navigateTo} />;
-
       case 'general-gallery-opening':
       case 'general':
       case 'opening-tech-hub':
@@ -72,19 +110,30 @@ export default function App() {
       case 'birthday-aria-10':
       case 'birthday':
         return <CategoryViewer slug={currentRoute} onNavigate={navigateTo} />;
-
       case 'customizer':
+        return <CustomizerPage currentRoute={currentRoute} onNavigate={navigateTo} />;
       case 'gallery':
       case 'categories':
       case 'home':
-      default:
         return <HomePage currentRoute={currentRoute} onNavigate={navigateTo} />;
+      default:
+        return <NotFoundPage onNavigate={navigateTo} />;
     }
   };
 
   return (
-    <div className="min-h-screen bg-[var(--color-canvas)] text-[var(--color-ink)] dark:bg-[#121212] dark:text-stone-100 transition-colors duration-300">
-      {renderView()}
+    <div className="min-h-screen bg-canvas text-ink transition-colors duration-300">
+      <a
+        href="#main-content"
+        className="fixed -left-[9999px] top-4 z-[80] rounded-sm bg-ink px-4 py-2 text-xs font-medium text-canvas focus:left-4 focus:outline-none"
+      >
+        پرش به محتوای اصلی
+      </a>
+      <ErrorBoundary onReset={() => navigateTo('home')}>
+        <Suspense fallback={<PageFallback />}>
+          <div id="main-content" tabindex="-1">{renderView()}</div>
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }
