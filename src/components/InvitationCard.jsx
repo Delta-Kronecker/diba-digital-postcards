@@ -18,8 +18,9 @@ export default function InvitationCard({
   const isWedding = variant === 'wedding';
 
   const paper = isMemorial ? 'bg-surface' : 'bg-surface';
-  const accentText = isMemorial ? 'text-olive' : 'text-gold-deep';
-  const accentBg = isMemorial ? 'bg-olive text-cream' : 'bg-ink text-canvas';
+  const accentText = isMemorial ? 'text-sage' : 'text-gold-deep';
+  const accentBg = isMemorial ? 'bg-sage text-cream' : 'bg-ink text-canvas';
+  const accentBorder = isMemorial ? 'border-sage/45' : 'border-gold/45';
 
   const names = isWedding
     ? `${data.groomName} و ${data.brideName}`
@@ -30,34 +31,40 @@ export default function InvitationCard({
   return (
     <article
       data-theme={isMemorial ? 'memorial' : undefined}
-      className={`paper-grain relative mx-auto w-full max-w-3xl border border-line ${paper} px-5 py-10 text-center sm:px-10 md:px-16 md:py-16`}
+      className={`paper-sheet relative mx-auto w-full max-w-3xl border border-line ${paper} px-5 py-10 text-center shadow-lift sm:px-10 md:px-16 md:py-16`}
     >
       {/* inner frame */}
       <span aria-hidden="true" className="pointer-events-none absolute inset-3 border border-line" />
+      {/* four corner rules, the way a letterpress plate is keyed to its sheet */}
+      <span aria-hidden="true" className={`pointer-events-none absolute start-6 top-6 h-3 w-3 border-s border-t ${accentBorder}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute end-6 top-6 h-3 w-3 border-e border-t ${accentBorder}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute bottom-6 start-6 h-3 w-3 border-s border-b ${accentBorder}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute bottom-6 end-6 h-3 w-3 border-e border-b ${accentBorder}`} />
       {/* top hairline */}
       <span
         aria-hidden="true"
         className="absolute inset-x-0 top-0 h-[2px]"
         style={{
           background: isMemorial
-            ? 'var(--color-olive)'
+            ? 'var(--color-sage)'
             : 'linear-gradient(90deg, transparent, var(--color-gold) 18%, var(--color-gold-soft) 50%, var(--color-gold) 82%, transparent)',
         }}
       />
 
       <div className="relative">
         <div className="flex items-center justify-between gap-4">
-          <span className={`latin text-[9px] tracking-[0.28em] ${isMemorial ? 'text-olive' : 'text-gold-deep'}`}>
+          <span lang="en" className={`latin text-xs ${isMemorial ? 'text-sage' : 'text-gold-deep'}`}>
             {isMemorial ? 'In loving memory' : isWedding ? 'The wedding of' : 'You are invited'}
           </span>
-          <span className={`text-[10px] tracking-[0.14em] ${accentText}`}>{data.categoryTitle}</span>
+          <span className={`text-xs ${accentText}`}>{data.categoryTitle}</span>
         </div>
 
-        <div className="mx-auto mt-7 flex h-14 w-14 items-center justify-center rounded-full border border-line">
+        <div className="relative mx-auto mt-7 flex h-14 w-14 items-center justify-center rounded-full border border-line bg-canvas/60">
+          <span aria-hidden="true" className={`absolute inset-[3px] rounded-full border ${accentBorder}`} />
           <span className={`font-display text-lg ${accentText}`}>د</span>
         </div>
 
-        <p className="mt-6 text-[10px] tracking-[0.2em] text-ink-subtle">
+        <p className="mt-6 text-xs text-ink-subtle">
           {isMemorial ? data.subtitle : isWedding ? 'به نام عشق' : data.subtitle}
         </p>
 
@@ -65,7 +72,7 @@ export default function InvitationCard({
           {names}
         </h1>
 
-        <p className="mx-auto mt-3 max-w-md text-[11px] leading-[2] text-ink-muted">
+        <p className="mx-auto mt-3 max-w-md text-xs leading-[2] text-ink-muted">
           {isMemorial
             ? `از طرف ${data.family}`
             : isWedding
@@ -83,7 +90,7 @@ export default function InvitationCard({
 
         {data.poem && (
           <blockquote className="mx-auto mt-7 max-w-lg border-y border-line px-6 py-5">
-            <p className="text-[11px] leading-[2.1] text-ink-muted">{data.poem}</p>
+            <p className="text-xs leading-[2.1] text-ink-muted">{data.poem}</p>
           </blockquote>
         )}
 
@@ -93,9 +100,9 @@ export default function InvitationCard({
           hasGold={!isMemorial}
         />
 
-        <div className="grid grid-cols-1 gap-4 text-right sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 text-start sm:grid-cols-2">
           <div className="border border-line bg-canvas/40 p-5">
-            <p className={`flex items-center gap-2 text-[10px] tracking-[0.12em] ${accentText}`}>
+            <p className={`flex items-center gap-2 text-xs ${accentText}`}>
               <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
               زمان مراسم
             </p>
@@ -103,20 +110,20 @@ export default function InvitationCard({
           </div>
 
           <div className="border border-line bg-canvas/40 p-5">
-            <p className={`flex items-center gap-2 text-[10px] tracking-[0.12em] ${accentText}`}>
+            <p className={`flex items-center gap-2 text-xs ${accentText}`}>
               <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
               مکان مراسم
             </p>
             <p className="mt-3 font-display text-sm leading-relaxed text-ink">{data.venue}</p>
-            <p className="mt-1 text-[10px] leading-[1.9] text-ink-muted">{data.address}</p>
+            <p className="mt-1 text-xs leading-[1.9] text-ink-muted">{data.address}</p>
           </div>
         </div>
 
         {audio && (
           <div className="mt-6 flex items-center justify-between gap-4 border border-line px-4 py-3">
-            <div className="text-right">
-              <p className="text-[10px] tracking-[0.12em] text-ink-subtle">موسیقی اختصاصی</p>
-              <p className="mt-0.5 text-[11px] text-ink-muted">{data.audioTrack.title}</p>
+            <div className="text-start">
+              <p className="text-xs text-ink-subtle">موسیقی اختصاصی</p>
+              <p className="mt-0.5 text-xs text-ink-muted">{data.audioTrack.title}</p>
             </div>
             <div className="flex items-center">{audio}</div>
           </div>
@@ -124,11 +131,11 @@ export default function InvitationCard({
 
         <div className="mt-8 border-t border-line pt-6">
           <div className="flex items-center justify-between gap-4">
-            <span className="flex items-center gap-2 text-[10px] tracking-[0.12em] text-ink-subtle">
+            <span className="flex items-center gap-2 text-xs text-ink-subtle">
               <ImageIcon className="h-3.5 w-3.5" aria-hidden="true" />
               {isMemorial ? 'آلبوم یادبود' : 'آلبوم تصاویر'}
             </span>
-            <span className="text-[10px] text-ink-subtle">برای بزرگ‌نمایی انتخاب کنید</span>
+            <span className="text-xs text-ink-subtle">برای بزرگ‌نمایی انتخاب کنید</span>
           </div>
 
           <div className={`mt-4 grid gap-3 ${data.images.length > 2 ? 'grid-cols-3' : 'grid-cols-2'}`}>
@@ -138,7 +145,7 @@ export default function InvitationCard({
                 type="button"
                 onClick={() => onLightbox(index)}
                 className="group relative h-28 overflow-hidden bg-surface-2 sm:h-36"
-                aria-label={`${image.title} — بزرگ‌نمایی`}
+                aria-label={`${image.title}، بزرگ‌نمایی`}
               >
                 <Picture
                   src={image.url}
@@ -147,12 +154,12 @@ export default function InvitationCard({
                   height="300"
                   loading="lazy"
                   decoding="async"
-                  className={`h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 ${
+                  className={`h-full w-full object-cover ${
                     isMemorial ? 'grayscale-[35%] group-hover:grayscale-0' : ''
                   }`}
                 />
-                <span className="absolute inset-0 bg-[#15120e]/25 transition-colors duration-300 group-hover:bg-[#15120e]/10" />
-                <span className="absolute bottom-2 right-2 bg-[#15120e]/45 px-2 py-1 text-[9px] text-cream/90 backdrop-blur-sm">
+                <span className="absolute inset-0 bg-scrim/25 transition-colors duration-base group-hover:bg-scrim/10" />
+                <span className="absolute bottom-2 start-2 bg-scrim/45 px-2 py-1 text-xs text-cream/90 backdrop-blur-sm">
                   {image.title}
                 </span>
               </button>
@@ -176,15 +183,15 @@ export default function InvitationCard({
           <button
             type="button"
             onClick={onCopy}
-            className="link-underline !text-[11px] !text-ink-muted"
+            className="link-underline !text-xs !text-ink-muted"
           >
             <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
             {copied ? 'لینک کپی شد' : 'اشتراک‌گذاری دعوت'}
           </button>
         </div>
 
-        <p className="mt-8 text-[9px] tracking-[0.16em] text-ink-subtle">
-          {isMemorial ? 'با احترام — آتلیهٔ دیبا' : 'طراحی‌شده در آتلیهٔ دیبا'}
+        <p className="mt-8 text-xs text-ink-subtle">
+          {isMemorial ? 'با احترام، آتلیهٔ دیبا' : 'طراحی‌شده در آتلیهٔ دیبا'}
         </p>
       </div>
     </article>

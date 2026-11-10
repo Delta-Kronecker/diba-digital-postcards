@@ -30,7 +30,7 @@ test.describe('Diba Digital Postcards smoke', () => {
   test('customizer page', async ({ page }) => {
     await page.goto(BASE + '#customizer');
     await page.waitForLoadState('domcontentloaded');
-    await expect(page.locator('text=استودیو زنده')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('text=شکل بدهید')).toBeVisible({ timeout: 10000 });
   });
 
   test('404', async ({ page }) => {

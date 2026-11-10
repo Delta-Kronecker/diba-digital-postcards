@@ -34,7 +34,7 @@ export default function Footer({ onNavigate = () => {} }) {
               </span>
               <div>
                 <p className="font-display text-2xl font-semibold leading-none">دیبا</p>
-                <p className="latin mt-1 text-[9px] text-cream/60">Diba Atelier</p>
+                <p lang="en" className="latin mt-1 text-xs text-cream/60">Diba Atelier</p>
               </div>
             </div>
 
@@ -64,14 +64,14 @@ export default function Footer({ onNavigate = () => {} }) {
           </div>
 
           <nav aria-label="مجموعه‌ها" className="md:col-span-3">
-            <h3 className="latin mb-5 text-[10px] text-gold-soft/90">Collections</h3>
+            <h3 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Collections</h3>
             <ul className="space-y-3">
               {COLLECTIONS.map(([id, label]) => (
                 <li key={id}>
                   <button
                     type="button"
                     onClick={() => onNavigate(id)}
-                    className="text-[12px] text-cream/60 transition-colors hover:text-cream"
+                    className="text-xs text-cream/60 transition-colors hover:text-cream"
                   >
                     {label}
                   </button>
@@ -81,14 +81,14 @@ export default function Footer({ onNavigate = () => {} }) {
           </nav>
 
           <nav aria-label="آتلیه" className="md:col-span-2">
-            <h3 className="latin mb-5 text-[10px] text-gold-soft/90">Atelier</h3>
+            <h3 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Atelier</h3>
             <ul className="space-y-3">
               {STUDIO.map(([id, label]) => (
                 <li key={id}>
                   <button
                     type="button"
                     onClick={() => onNavigate(id)}
-                    className="text-[12px] text-cream/60 transition-colors hover:text-cream"
+                    className="text-xs text-cream/60 transition-colors hover:text-cream"
                   >
                     {label}
                   </button>
@@ -98,8 +98,8 @@ export default function Footer({ onNavigate = () => {} }) {
           </nav>
 
           <div className="md:col-span-2">
-            <h3 className="latin mb-5 text-[10px] text-gold-soft/90">Contact</h3>
-            <ul className="space-y-3 text-[11px] text-cream/65">
+            <h3 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Contact</h3>
+            <ul className="space-y-3 text-xs text-cream/65">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold/70" aria-hidden="true" />
                 تهران، فرشته
@@ -120,7 +120,7 @@ export default function Footer({ onNavigate = () => {} }) {
         <div className="grid grid-cols-1 items-end gap-8 py-10 md:grid-cols-12">
           <div className="md:col-span-7">
             <h3 className="font-display text-xl text-cream">از آتلیه باخبر شوید.</h3>
-            <p className="mt-2 text-[11px] text-cream/65">
+            <p className="mt-2 text-xs text-cream/65">
               هر چند هفته، یک مجموعهٔ تازه و یادداشتی دربارهٔ طراحی دعوت.
             </p>
           </div>
@@ -145,7 +145,7 @@ export default function Footer({ onNavigate = () => {} }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ایمیل شما"
-                className="h-11 w-full bg-transparent text-sm text-cream placeholder:text-cream/55 focus:outline-none"
+                className="h-11 w-full bg-transparent text-base text-cream placeholder:text-cream/55 focus:outline-none sm:text-sm"
               />
               <button
                 type="submit"
@@ -155,7 +155,7 @@ export default function Footer({ onNavigate = () => {} }) {
                 <ArrowUpLeft className="h-4 w-4" aria-hidden="true" />
               </button>
             </div>
-            <p className="mt-2 min-h-[1rem] text-[10px] text-gold-soft/90" aria-live="polite">
+            <p className="mt-2 min-h-[1rem] text-xs text-gold-soft/90" aria-live="polite">
               {sent ? 'ثبت شد؛ به‌زودی از آتلیه می‌شنوید.' : ''}
             </p>
           </form>
@@ -163,10 +163,10 @@ export default function Footer({ onNavigate = () => {} }) {
       </div>
 
       <div className="border-t border-cream/12">
-        <div className="shell flex flex-col items-center justify-between gap-3 py-5 text-[10px] text-cream/60 sm:flex-row">
-          <p>© {year} دیبا — تمامی حقوق محفوظ است.</p>
+        <div className="shell flex flex-col items-center justify-between gap-3 py-5 text-xs text-cream/60 sm:flex-row">
+          <p>© {year} دیبا، تمامی حقوق محفوظ است.</p>
           <div className="flex items-center gap-5">
-            <span className="latin tracking-[0.2em]">Made in Tehran</span>
+            <span className="">Made in Tehran</span>
             <span>دسترس‌پذیر و راست‌به‌چپ</span>
           </div>
         </div>

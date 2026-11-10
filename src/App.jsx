@@ -61,6 +61,7 @@ export default function App() {
     const isDark = saved === 'dark';
     document.documentElement.classList.toggle('dark', isDark);
     document.documentElement.classList.toggle('light', !isDark);
+    document.documentElement.dataset.theme = isDark ? 'dark' : 'light';
   }, []);
 
   useEffect(() => {
@@ -122,10 +123,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas text-ink transition-colors duration-300">
+    <div className="min-h-screen bg-canvas text-ink transition-colors duration-base">
       <a
         href="#main-content"
-        className="fixed -left-[9999px] top-4 z-[80] rounded-sm bg-ink px-4 py-2 text-xs font-medium text-canvas focus:left-4 focus:outline-none"
+        className="fixed -left-[9999px] top-4 z-tooltip rounded-sm bg-ink px-4 py-2 text-xs font-medium text-canvas focus:left-4 focus:outline-none"
       >
         پرش به محتوای اصلی
       </a>

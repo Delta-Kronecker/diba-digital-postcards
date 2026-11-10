@@ -86,15 +86,15 @@ export default function PhotoLightbox({
       role="dialog"
       aria-modal="true"
       aria-label="گالری تصاویر"
-      className="fixed inset-0 z-50 flex flex-col bg-[#0d0b09]/96 backdrop-blur-xl"
+      className="fixed inset-0 z-overlay flex flex-col bg-scrim-deep/96 backdrop-blur-xl"
     >
       <div className="flex items-center justify-between gap-4 border-b border-cream/12 px-5 py-4 text-cream md:px-8">
         <div aria-live="polite">
-          <p className="latin text-[9px] text-cream/60">Gallery</p>
+          <p lang="en" className="latin text-xs text-cream/60">Gallery</p>
           <p className="mt-1 font-display text-sm text-cream">{currentImage.title || 'تصویر'}</p>
         </div>
         <div className="flex items-center gap-4">
-          <span className="text-[11px] tabular-nums text-cream/65" dir="ltr">
+          <span className="text-xs tabular-nums text-cream/65" dir="ltr">
             {currentIndex + 1} / {images.length}
           </span>
           <button
@@ -102,7 +102,7 @@ export default function PhotoLightbox({
             type="button"
             onClick={onClose}
             aria-label="بستن گالری"
-            className="flex h-10 w-10 items-center justify-center border border-cream/20 text-cream transition-colors hover:border-cream/50"
+            className="flex min-h-11 min-w-11 items-center justify-center border border-cream/20 text-cream transition-colors hover:border-cream/50"
           >
             <X className="h-5 w-5" aria-hidden="true" />
           </button>
@@ -111,13 +111,13 @@ export default function PhotoLightbox({
 
       <div className="relative flex flex-1 items-center justify-center p-4 md:p-10" onClick={onClose} role="presentation">
         <figure
-          className="relative flex max-h-full w-full max-w-5xl items-center justify-center"
+          className="relative flex h-full max-h-full w-full max-w-5xl items-center justify-center"
           onClick={(e) => e.stopPropagation()}
         >
           <Picture
             src={currentImage.url}
             alt={currentImage.title || 'تصویر گالری'}
-            className="max-h-[68vh] w-auto max-w-full select-none object-contain shadow-[0_40px_120px_-40px_rgba(0,0,0,0.9)]"
+            className="max-h-[68vh] w-auto max-w-full select-none object-contain shadow-photo"
             loading="eager"
             decoding="async"
           />
@@ -128,7 +128,7 @@ export default function PhotoLightbox({
                 type="button"
                 onClick={prev}
                 aria-label="تصویر قبلی"
-                className="absolute right-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-[#0d0b09]/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:right-4"
+                className="absolute start-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-scrim-deep/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:start-4"
               >
                 <ChevronRight className="h-5 w-5" aria-hidden="true" />
               </button>
@@ -136,7 +136,7 @@ export default function PhotoLightbox({
                 type="button"
                 onClick={next}
                 aria-label="تصویر بعدی"
-                className="absolute left-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-[#0d0b09]/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:left-4"
+                className="absolute end-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-scrim-deep/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:end-4"
               >
                 <ChevronLeft className="h-5 w-5" aria-hidden="true" />
               </button>
@@ -155,7 +155,7 @@ export default function PhotoLightbox({
               role="tab"
               aria-selected={currentIndex === index}
               aria-label={image.title || `تصویر ${index + 1}`}
-              className={`relative h-12 w-16 overflow-hidden border-2 transition-all sm:h-14 sm:w-20 ${
+              className={`relative h-12 w-16 overflow-hidden border-2 transition-colors sm:h-14 sm:w-20 ${
                 currentIndex === index
                   ? 'border-gold opacity-100'
                   : 'border-transparent opacity-40 hover:opacity-80'

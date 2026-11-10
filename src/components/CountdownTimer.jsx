@@ -41,9 +41,9 @@ function CountdownTimer({ targetDate = '2027-06-18T19:00:00', accentColor = 'var
   return (
     <div className="my-8 w-full" role="timer" aria-label={ariaLabel}>
       <div className="mb-3 flex items-center gap-3">
-        <span className="text-[10px] tracking-[0.18em] text-ink-subtle">شمارش معکوس تا مراسم</span>
+        <span className="text-xs text-ink-subtle">شمارش معکوس تا مراسم</span>
         <span className="h-px flex-1 bg-line" aria-hidden="true" />
-        <span className="latin text-[9px] text-ink-subtle">Countdown</span>
+        <span lang="en" className="latin text-xs text-ink-subtle">Countdown</span>
       </div>
 
       {started ? (
@@ -55,7 +55,7 @@ function CountdownTimer({ targetDate = '2027-06-18T19:00:00', accentColor = 'var
           {units.map((unit, i) => (
             <div
               key={unit.label}
-              className={`px-1 py-5 text-center ${i !== 0 ? 'border-r border-line' : ''}`}
+              className={`px-1 py-5 text-center ${i !== 0 ? 'border-s border-line' : ''}`}
             >
               <span
                 className="block font-display text-[1.7rem] font-medium leading-none tabular-nums sm:text-4xl"
@@ -63,7 +63,7 @@ function CountdownTimer({ targetDate = '2027-06-18T19:00:00', accentColor = 'var
               >
                 {toPersianDigits(String(unit.value).padStart(2, '0'))}
               </span>
-              <span className="mt-2 block text-[9px] tracking-[0.14em] text-ink-subtle">{unit.label}</span>
+              <span className="mt-2 block text-xs text-ink-subtle">{unit.label}</span>
             </div>
           ))}
         </div>

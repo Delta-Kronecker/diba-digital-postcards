@@ -64,22 +64,22 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
 
   return (
     <>
-      <header className="sticky top-0 z-40 border-b border-line bg-canvas/88 backdrop-blur-xl">
+      <header className="sticky top-0 z-sticky border-b border-line bg-canvas/88 backdrop-blur-xl">
         <div className="shell flex h-[76px] items-center justify-between gap-6">
           <button
             type="button"
             onClick={() => go('home')}
             aria-label="دیبا، صفحه اصلی"
-            className="group flex items-center gap-3 text-right"
+            className="group flex items-center gap-3 text-start"
           >
             <span className="flex h-10 w-10 items-center justify-center border border-gold/50 bg-surface">
-              <span className="font-display text-lg leading-none text-gold">د</span>
+              <span className="font-display text-lg leading-none text-gold-deep">د</span>
             </span>
             <span className="flex flex-col leading-none">
               <span className="font-display text-[1.35rem] font-semibold text-ink transition-colors group-hover:text-gold-deep">
                 دیبا
               </span>
-              <span className="latin mt-1 text-[9px] tracking-[0.32em] text-ink-subtle">
+              <span lang="en" className="latin mt-1 text-xs text-ink-subtle">
                 Diba Atelier
               </span>
             </span>
@@ -94,14 +94,14 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
                   type="button"
                   onClick={() => go(item.id)}
                   aria-current={active ? 'page' : undefined}
-                  className={`relative py-2 font-body text-[13px] transition-colors duration-300 ${
+                  className={`group relative py-2 font-body text-sm transition-colors duration-base ${
                     active ? 'text-ink' : 'text-ink-muted hover:text-ink'
                   }`}
                 >
                   {item.label}
                   <span
-                    className={`absolute bottom-0 right-0 h-px bg-gold transition-all duration-500 ${
-                      active ? 'w-full' : 'w-0'
+                    className={`absolute bottom-0 start-0 h-px origin-right scale-x-0 bg-gold transition-transform duration-slow ${
+                      active ? 'scale-x-100' : 'group-hover:scale-x-100'
                     }`}
                     aria-hidden="true"
                   />
@@ -115,7 +115,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
             <button
               type="button"
               onClick={() => go('customizer')}
-              className="btn btn-ink hidden !px-6 !py-3 text-[12px] sm:inline-flex"
+              className="btn btn-ink hidden !px-6 !py-3 text-xs sm:inline-flex"
             >
               شروع طراحی
               <ArrowUpLeft className="h-4 w-4" aria-hidden="true" />
@@ -127,7 +127,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
               aria-label="گشودن منو"
               aria-expanded={open}
               aria-controls="mobile-menu"
-              className="inline-flex h-10 w-10 items-center justify-center border border-line text-ink transition-colors hover:border-line-strong lg:hidden"
+              className="inline-flex min-h-11 min-w-11 items-center justify-center border border-line text-ink transition-colors hover:border-line-strong lg:hidden"
             >
               <Menu className="h-5 w-5" aria-hidden="true" />
             </button>
@@ -142,7 +142,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
           role="dialog"
           aria-modal="true"
           aria-label="منوی اصلی"
-          className="paper-grain fixed inset-0 z-[60] flex flex-col bg-canvas lg:hidden"
+          className="fixed inset-0 z-modal flex flex-col bg-canvas lg:hidden"
         >
           <div className="shell flex h-[76px] shrink-0 items-center justify-between border-b border-line">
             <span className="font-display text-2xl font-semibold text-ink">دیبا</span>
@@ -155,7 +155,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
                   toggleRef.current?.focus();
                 }}
                 aria-label="بستن منو"
-                className="inline-flex h-10 w-10 items-center justify-center border border-line text-ink"
+                className="inline-flex min-h-11 min-w-11 items-center justify-center border border-line text-ink"
               >
                 <X className="h-5 w-5" aria-hidden="true" />
               </button>
@@ -164,7 +164,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
 
           <nav aria-label="مسیرهای موبایل" className="shell flex-1 overflow-y-auto py-10">
             <ul>
-              {NAV_ITEMS.map((item, i) => {
+              {NAV_ITEMS.map((item) => {
                 const active = currentRoute === item.id;
                 return (
                   <li key={item.id} className="border-b border-line">
@@ -172,22 +172,17 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
                       type="button"
                       onClick={() => go(item.id)}
                       aria-current={active ? 'page' : undefined}
-                      className="group flex w-full items-baseline justify-between py-6 text-right"
+                      className="group flex w-full items-baseline justify-between py-6 text-start"
                     >
-                      <span className="flex items-baseline gap-4">
-                        <span className="latin text-xs text-ink-subtle">
-                          0{i + 1}
-                        </span>
-                        <span
+                      <span
                           className={`font-display text-3xl transition-colors ${
                             active ? 'text-gold-deep' : 'text-ink group-hover:text-gold-deep'
                           }`}
                         >
                           {item.label}
-                        </span>
                       </span>
                       <ArrowUpLeft
-                        className="h-5 w-5 text-ink-subtle transition-transform duration-300 group-hover:-translate-x-1 group-hover:-translate-y-1"
+                        className="h-5 w-5 text-ink-subtle transition-transform duration-base group-hover:-translate-x-1 group-hover:-translate-y-1"
                         aria-hidden="true"
                       />
                     </button>
@@ -202,7 +197,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
                 <ArrowUpLeft className="h-4 w-4" aria-hidden="true" />
               </button>
               <p className="text-center text-xs text-ink-subtle">
-                تهران، خیابان فرشته — شنبه تا پنجشنبه، ۱۰ تا ۱۹
+                تهران، خیابان فرشته، شنبه تا پنجشنبه، ۱۰ تا ۱۹
               </p>
             </div>
           </nav>

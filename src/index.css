@@ -1,3 +1,4 @@
+/* Hallmark v2.0.0 · audit + Floor pass on an existing, locked system (docs/DESIGN_SYSTEM.md governs; no theme dealt) · shape: editorial marketing page · hero: the envelope and the craft, not a stat block · nav: sticky, wordmark + one action · footer: brand mast over link columns · surface: absolute */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -22,7 +23,7 @@
     --color-gold: #9a7a44;
     --color-gold-soft: #c9b08a;
     --color-gold-deep: #74582b;
-    --color-olive: #4c5745;
+    --color-sage: #4c5745;
     --color-rose: #9c6d70;
     --color-ink-band: #191612;
     --color-cream: #f5f0e6;
@@ -36,13 +37,76 @@
     --color-gold-rgb: 154 122 68;
     --color-gold-soft-rgb: 201 176 138;
     --color-gold-deep-rgb: 116 88 43;
-    --color-olive-rgb: 76 87 69;
+    --color-sage-rgb: 76 87 69;
     --color-rose-rgb: 156 109 112;
+    /* status: light steps clear AA on every light surface */
+    --color-danger: #b4462f;
+    --color-success: #3e6b4f;
+    --color-danger-rgb: 180 70 47;
+    --color-success-rgb: 62 107 79;
     --color-ink-band-rgb: 25 22 18;
     --color-cream-rgb: 245 240 230;
+
+    /* --- floors: fixed "material" colours (stationery + scrims keep their value in both themes) --- */
+    --font-display: 'Estedad', 'Vazirmatn', sans-serif;
+    --font-body: 'Vazirmatn', 'Estedad', sans-serif;
+    --font-latin: 'Cormorant Garamond', Georgia, serif;
+
+    /* --- motion: one scale, referenced by the Tailwind theme and by raw CSS --- */
+    --duration-fast: 140ms;
+    --duration-ui: 150ms;
+    --duration-base: 240ms;
+    --duration-slow: 420ms;
+    --duration-slower: 700ms;
+    --duration-cinematic: 1000ms;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-ui-out: cubic-bezier(0.23, 1, 0.32, 1);
+
+    /* --- z scale: one source for the utilities and for raw CSS --- */
+    --z-base: 0;
+    --z-sticky: 40;
+    --z-overlay: 50;
+    --z-modal: 60;
+    --z-toast: 70;
+    --z-tooltip: 80;
+
+    --color-scrim-rgb: 21 18 14;
+    --color-scrim-deep-rgb: 13 11 9;
+    --color-paper-rgb: 247 242 232;
+    --color-paper-line-rgb: 217 205 184;
+    --color-paper-line-2-rgb: 215 203 184;
+    --color-paper-line-3-rgb: 207 193 169;
+    --color-paper-cream-rgb: 251 247 238;
+    --color-paper-ink-rgb: 25 22 18;
+    --color-paper-ink-warm-rgb: 58 42 17;
+    --color-paper-ink-muted-rgb: 92 85 74;
+    --color-paper-ink-subtle-rgb: 138 122 96;
+    --color-paper-gold-rgb: 154 122 68;
+    --color-paper-gold-deep-rgb: 116 88 43;
+    --color-seal-line-rgb: 139 109 63;
+    --color-seal-cream-rgb: 246 236 216;
+    --color-seal-ink-rgb: 59 42 18;
+    --color-frost: #fffdf7;
+    --color-gloss: rgba(255, 255, 255, 0.5);
+    /* An alpha mask only reads opacity, so the hue is free (gate 7b). */
+    --color-mask: #0b0a08;
+    --color-paper-ink: #191612;
+    --color-foil: #c0a06a;
+    --color-paper-shade: #e4d8c4;
+    --color-paper-shade-2: #eadfcc;
+    --color-paper-shade-3: #ddcfb8;
+    --color-seal-a: #e2cda6;
+    --color-seal-b: #c0a06a;
+    --color-seal-c: #8d6c37;
+    --color-seal-d: #6c4f24;
+    --color-seal-sage-a: #9aa894;
+    --color-seal-sage-c: #46504a;
+
+    --shadow-thumb: 0 1px 3px rgba(25, 22, 18, 0.35);
+    --shadow-panel: 0 30px 80px -40px rgba(0, 0, 0, 0.4);
   }
 
-  html.dark {
+  html[data-theme="dark"] {
     color-scheme: dark;
 
     --color-canvas: #131110;
@@ -56,7 +120,7 @@
     --color-gold: #c6a468;
     --color-gold-soft: #d9c29b;
     --color-gold-deep: #a8854c;
-    --color-olive: #8a9880;
+    --color-sage: #8a9880;
     --color-rose: #c08e91;
     --color-ink-band: #0b0a08;
     --color-cream: #f5f0e6;
@@ -70,8 +134,13 @@
     --color-gold-rgb: 198 164 104;
     --color-gold-soft-rgb: 217 194 155;
     --color-gold-deep-rgb: 168 133 76;
-    --color-olive-rgb: 138 152 128;
+    --color-sage-rgb: 138 152 128;
     --color-rose-rgb: 192 142 145;
+    /* status: a lighter step, because the light one reads 3.25:1 on surface */
+    --color-danger: #d9744f;
+    --color-success: #6fa57f;
+    --color-danger-rgb: 217 116 79;
+    --color-success-rgb: 111 165 127;
     --color-ink-band-rgb: 11 10 8;
     --color-cream-rgb: 245 240 230;
   }
@@ -82,25 +151,43 @@
     --color-gold-soft: #8a9785;
     --color-gold-deep: #4c5a4a;
     --color-rose: #7e8a7c;
-    --color-olive: #4c5745;
+    --color-sage: #4c5745;
 
     --color-gold-rgb: 104 117 103;
     --color-gold-soft-rgb: 138 151 133;
     --color-gold-deep-rgb: 76 90 74;
     --color-rose-rgb: 126 138 124;
-    --color-olive-rgb: 76 87 69;
+    --color-sage-rgb: 76 87 69;
   }
 
   * {
     border-color: var(--color-line);
   }
 
+  /* Controls opt out of the double-tap-zoom wait so a tap responds immediately. */
+  button,
+  [role="button"],
+  a[href],
+  summary,
+  label,
+  select {
+    touch-action: manipulation;
+  }
+
   html {
     direction: rtl;
+    overflow-x: clip;
+    /* Browser surfaces are part of the palette, not left at defaults. */
+    caret-color: var(--color-gold-deep);
+    accent-color: var(--color-gold-deep);
+    text-underline-offset: 0.22em;
     background-color: var(--color-canvas);
     color: var(--color-ink);
     font-family: 'Vazirmatn', 'Estedad', system-ui, -apple-system, sans-serif;
     scroll-behavior: smooth;
+    /* Two sticky bars (nav 76px, viewer bar 64px). 96px clears both and is the
+       same offset the gallery preview already uses (lg:top-24). */
+    scroll-padding-block-start: 6rem;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -109,24 +196,36 @@
   body {
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
+    overflow-x: clip;
     background-color: var(--color-canvas);
     color: var(--color-ink);
   }
 
   h1, h2, h3, h4, h5, .font-display {
-    font-family: 'Estedad', 'Vazirmatn', sans-serif;
-    text-wrap: balance;
+    font-family: var(--font-display);
     letter-spacing: 0;
+  }
+
+  /* Balance evens out a heading; it is never applied to a paragraph, even when that
+     paragraph wears the display face (a date, a venue, a caption). */
+  h1, h2, h3, h4, h5 {
+    text-wrap: balance;
   }
 
   p, li, blockquote {
     text-wrap: pretty;
   }
 
+  /* Selected text inverts to the brand’s darkest ink and back, so the pair clears AA in
+     both themes instead of the old 3.95:1 (light) / 2.32:1 (dark). */
   ::selection {
+    background: var(--color-gold-deep);
+    color: var(--color-frost);
+  }
+
+  html[data-theme="dark"] ::selection {
     background: var(--color-gold);
-    color: #fffdf7;
+    color: var(--color-ink-band);
   }
 
   :focus-visible {
@@ -135,7 +234,7 @@
     border-radius: 2px;
   }
 
-  html.dark :focus-visible {
+  html[data-theme="dark"] :focus-visible {
     outline-color: var(--color-gold);
   }
 
@@ -175,57 +274,14 @@
     background: var(--color-line);
   }
 
-  .eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-family: 'Vazirmatn', sans-serif;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    color: var(--color-ink-muted);
-  }
-
-  .eyebrow::before {
-    content: "";
-    display: inline-block;
-    width: 2rem;
-    height: 1px;
-    background: var(--color-gold);
-  }
-
   .latin {
-    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-family: var(--font-latin);
     font-weight: 400;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-
-  /* ---------- Fine paper texture ---------- */
-  .paper-grain {
-    position: relative;
-    isolation: isolate;
-  }
-  .paper-grain::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.5;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
-  }
-  html.dark .paper-grain::before { opacity: 0.35; }
-
-  .hairline-grid {
-    background-image:
-      linear-gradient(to left, var(--color-line) 1px, transparent 1px);
-    background-size: 25% 100%;
   }
 
   /* ---------- Typography ---------- */
   .display-hero {
-    font-family: 'Estedad', 'Vazirmatn', sans-serif;
+    font-family: var(--font-display);
     font-weight: 500;
     font-size: clamp(2.6rem, 6.4vw, 5.75rem);
     line-height: 1.05;
@@ -233,19 +289,11 @@
   }
 
   .display-section {
-    font-family: 'Estedad', 'Vazirmatn', sans-serif;
+    font-family: var(--font-display);
     font-weight: 500;
     font-size: clamp(2rem, 4.2vw, 3.6rem);
     line-height: 1.14;
-    letter-spacing: -0.005em;
-  }
-
-  .text-gold-foil {
-    background: linear-gradient(105deg, var(--color-gold-deep) 0%, var(--color-gold-soft) 42%, var(--color-gold) 74%, var(--color-gold-deep) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
+    letter-spacing: -0.01em;
   }
 
   /* ---------- Buttons ---------- */
@@ -255,16 +303,16 @@
     justify-content: center;
     gap: 0.75rem;
     padding: 1rem 1.75rem;
-    font-family: 'Vazirmatn', sans-serif;
-    font-size: 0.8125rem;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
     font-weight: 500;
     line-height: 1;
     border: 1px solid transparent;
     border-radius: 2px;
-    transition: background-color 240ms cubic-bezier(0.23,1,0.32,1),
-                color 240ms cubic-bezier(0.23,1,0.32,1),
-                border-color 240ms cubic-bezier(0.23,1,0.32,1),
-                transform 240ms cubic-bezier(0.23,1,0.32,1);
+    transition: background-color var(--duration-base) var(--ease-ui-out),
+                color var(--duration-base) var(--ease-ui-out),
+                border-color var(--duration-base) var(--ease-ui-out),
+                transform var(--duration-base) var(--ease-ui-out);
   }
   .btn:active { transform: translateY(1px); }
 
@@ -276,15 +324,8 @@
   .btn-ink:hover {
     background: var(--color-gold-deep);
     border-color: var(--color-gold-deep);
-    color: #fffdf7;
+    color: var(--color-frost);
   }
-
-  .btn-gold {
-    background: var(--color-gold);
-    color: #fffdf7;
-    border-color: var(--color-gold);
-  }
-  .btn-gold:hover { background: var(--color-gold-deep); border-color: var(--color-gold-deep); }
 
   .btn-outline {
     background: transparent;
@@ -298,10 +339,16 @@
 
   .btn-cream {
     background: var(--color-cream);
-    color: #191612;
+    color: var(--color-paper-ink);
     border-color: var(--color-cream);
   }
-  .btn-cream:hover { background: #fffdf7; }
+  .btn-cream:hover { background: var(--color-frost); }
+
+  /* Every control has a disabled state (gate 26b). */
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 
   /* Text link with a drawing underline */
   .link-underline {
@@ -309,7 +356,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 500;
     color: var(--color-ink);
     padding-block: 0.25rem;
@@ -318,19 +365,24 @@
     content: "";
     position: absolute;
     bottom: 0;
-    right: 0;
+    inset-inline-start: 0;
     height: 1px;
     width: 100%;
     background: var(--color-gold);
     transform: scaleX(0.28);
     transform-origin: right;
-    transition: transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform var(--duration-slow) var(--ease-out-expo);
   }
   .link-underline:hover::after { transform: scaleX(1); }
+
+  /* The same link, sitting on an ink field. */
+  .link-underline-cream { color: var(--color-cream); }
+  .link-underline-cream::after { background: var(--color-gold-soft); }
 
   /* ---------- Surfaces ---------- */
   .panel {
     background: var(--color-surface);
+    color: var(--color-ink);
     border: 1px solid var(--color-line);
   }
 
@@ -338,8 +390,7 @@
     background: color-mix(in srgb, var(--color-surface) 92%, transparent);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--color-line);
-    box-shadow: 0 30px 80px -40px rgba(0, 0, 0, 0.4);
+    box-shadow: var(--shadow-panel), inset 0 0 0 1px var(--color-line);
   }
 
   .gold-rule {
@@ -356,13 +407,99 @@
     animation: marquee 38s linear infinite;
     will-change: transform;
   }
+  .marquee-mask:hover .marquee-track,
+  .marquee-mask:focus-within .marquee-track { animation-play-state: paused; }
   .marquee-mask {
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, var(--color-mask) 8%, var(--color-mask) 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, var(--color-mask) 8%, var(--color-mask) 92%, transparent);
+  }
+
+  /* ---------- Card media ---------- */
+  /* The featured cards have always asked for this class; it was never written, so
+     the hover did nothing. The container answers and the picture stays put: the
+     plate lifts off the page and its inner edge warms to the metal tone. */
+  .media-zoom {
+    transition: box-shadow var(--duration-base) var(--ease-ui-out);
+  }
+  .media-zoom:hover,
+  .media-zoom:focus-within {
+    box-shadow: var(--shadow-panel), 0 0 0 1px color-mix(in srgb, var(--color-gold) 55%, transparent);
+  }
+
+  /* ---------- Paper ---------- */
+  /* A sheet reads as paper because its head catches the light and its foot holds a
+     little shade — not because it carries a texture image. */
+  .paper-sheet {
+    background-image: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-frost) 35%, transparent) 0%,
+      transparent 40%,
+      color-mix(in srgb, var(--color-ink-band) 4%, transparent) 100%);
+  }
+  html[data-theme="dark"] .paper-sheet {
+    background-image: linear-gradient(180deg,
+      color-mix(in srgb, var(--color-frost) 5%, transparent) 0%,
+      transparent 40%,
+      color-mix(in srgb, var(--color-ink-band) 30%, transparent) 100%);
   }
 
   /* ---------- Envelope stage ---------- */
-  .perspective-1200 { perspective: 1400px; }
+  /* A pool of light and a floor shadow, so the envelope rests on a surface instead
+     of floating on a flat field the same colour as the paper. */
+  .stage-glow {
+    background: radial-gradient(56% 44% at 50% 44%, color-mix(in srgb, var(--color-gold) 14%, transparent) 0%, transparent 72%);
+  }
+  .stage-floor {
+    background: radial-gradient(50% 50% at 50% 50%, rgb(var(--color-ink-rgb) / 0.30) 0%, rgb(var(--color-ink-rgb) / 0.10) 46%, transparent 74%);
+    filter: blur(10px);
+  }
+
+  /* ---------- Studio table ---------- */
+  /* The live preview is a work surface, not a flat field: a warm paper table lit
+     from above, falling away at the edges. No image, no grain — two gradients. */
+  .studio-table {
+    background-color: var(--color-surface-2);
+    background-image:
+      radial-gradient(130% 85% at 50% -12%, color-mix(in srgb, var(--color-frost) 42%, transparent) 0%, transparent 58%),
+      radial-gradient(95% 62% at 50% 122%, color-mix(in srgb, var(--color-ink-band) 12%, transparent) 0%, transparent 62%);
+  }
+  html[data-theme="dark"] .studio-table {
+    background-image:
+      radial-gradient(130% 85% at 50% -12%, color-mix(in srgb, var(--color-frost) 7%, transparent) 0%, transparent 58%),
+      radial-gradient(95% 62% at 50% 122%, color-mix(in srgb, var(--color-ink-band) 60%, transparent) 0%, transparent 62%);
+  }
+
+  /* ---------- Engaging hairline ---------- */
+  /* A quiet rule that runs out to gold as its card is hovered or focused. */
+  .rule-engage::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    top: -1px;
+    height: 1px;
+    width: 100%;
+    background: var(--color-gold);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+  .group:hover .rule-engage::after,
+  .group:focus-visible .rule-engage::after {
+    transform: scaleX(1);
+  }
+
+  /* ---------- Hero light ---------- */
+  /* The opening plate is lit from the upper right, so the dark field has depth. */
+  .hero-light {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(72% 58% at 76% 26%, color-mix(in srgb, var(--color-gold) 13%, transparent) 0%, transparent 68%),
+      radial-gradient(55% 48% at 8% 92%, color-mix(in srgb, var(--color-gold-deep) 12%, transparent) 0%, transparent 72%);
+  }
+
+  /* ---------- Envelope stage ---------- */
+  .perspective-1400 { perspective: 1400px; }
   .transform-style-3d { transform-style: preserve-3d; }
   .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
 
@@ -388,7 +525,7 @@
     border-radius: 50%;
     background: var(--color-gold);
     border: 2px solid var(--color-surface);
-    box-shadow: 0 1px 3px rgba(25, 22, 18, 0.35);
+    box-shadow: var(--shadow-thumb);
   }
   .audio-range::-moz-range-thumb {
     width: 10px;
@@ -397,36 +534,9 @@
     border-radius: 50%;
     background: var(--color-gold);
   }
-
-  /* ---------- Scroll reveal ---------- */
-  .reveal {
-    opacity: 0;
-    transform: translateY(26px);
-    transition: opacity 900ms cubic-bezier(0.16, 1, 0.3, 1),
-                transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
-    will-change: opacity, transform;
-  }
-  .reveal.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* ---------- Media hover ---------- */
-  .media-zoom img {
-    transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1), filter 900ms ease;
-  }
-  .media-zoom:hover img { transform: scale(1.045); }
-
-  .card-lift {
-    transition: transform 500ms cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 500ms cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .card-lift:hover { transform: translateY(-6px); box-shadow: 0 30px 70px -38px rgba(25, 22, 18, 0.45); }
 }
 
 @layer utilities {
-  .text-balance { text-wrap: balance; }
-  .text-pretty { text-wrap: pretty; }
   .writing-vertical { writing-mode: vertical-rl; }
 }
 
@@ -441,13 +551,19 @@
   .marquee-track { animation: none !important; }
 }
 
+/* One soft pass of light across a plate, played once on load. */
+@keyframes sheen {
+  from { transform: translateX(-140%) skewX(-14deg); }
+  to { transform: translateX(160%) skewX(-14deg); }
+}
+
 /* Light-beam ambience (kept, softened) */
 .light-beam-container {
   position: absolute;
   inset: 0;
   overflow: hidden;
   pointer-events: none;
-  z-index: 0;
+  z-index: var(--z-base);
 }
 .light-beam {
   position: absolute;

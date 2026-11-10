@@ -21,7 +21,7 @@ export default function MarqueeBand() {
             <div key={copy} className="flex shrink-0 items-center">
               {row.map((item, i) => (
                 <span key={`${copy}-${i}`} className="flex items-center">
-                  <span className="whitespace-nowrap px-6 font-body text-[11px] tracking-[0.12em] text-cream/75">
+                  <span className="whitespace-nowrap px-6 font-body text-xs text-cream/75">
                     {item}
                   </span>
                   <span className="h-1 w-1 rotate-45 bg-gold/70" />

@@ -36,7 +36,7 @@ export default function CategoryViewer({ slug = 'general-gallery-opening', onNav
       <ViewerBar onNavigate={onNavigate} onCopy={handleCopyLink} copied={copied} />
 
       {copied && (
-        <div className="fixed left-1/2 top-20 z-50 flex -translate-x-1/2 items-center gap-2 border border-line bg-ink px-5 py-2.5 text-[11px] text-canvas shadow-lift">
+        <div className="fixed left-1/2 top-20 z-toast flex -translate-x-1/2 items-center gap-2 border border-line bg-ink px-5 py-2.5 text-xs text-canvas shadow-lift">
           <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
           لینک دعوت در حافظه کپی شد
         </div>
@@ -44,7 +44,6 @@ export default function CategoryViewer({ slug = 'general-gallery-opening', onNav
 
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-14">
         <div className="mb-4 text-center">
-          <p className="eyebrow justify-center">دعوت‌نامهٔ اختصاصی</p>
           {!isOpen && <h1 className="sr-only">{data.title}</h1>}
         </div>
 

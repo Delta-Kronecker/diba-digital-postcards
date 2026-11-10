@@ -4,9 +4,9 @@ import Ornament from '../components/Ornament';
 
 export default function NotFoundPage({ onNavigate = () => {} }) {
   return (
-    <div className="paper-grain flex min-h-screen flex-col items-center justify-center bg-canvas px-6 text-center">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-canvas px-6 text-center">
       <Ornament className="h-6 w-6 text-gold" />
-      <p className="latin mt-6 text-[10px] tracking-[0.3em] text-ink-subtle">Page not found</p>
+      <p lang="en" className="latin mt-6 text-xs text-ink-subtle">Page not found</p>
       <p className="mt-4 font-display text-[clamp(5rem,18vw,10rem)] font-medium leading-none text-ink">
         ۴۰۴
       </p>

@@ -156,7 +156,7 @@ export default function AudioPlayer({
         aria-pressed={isPlaying}
         aria-label={isPlaying ? 'قطع موسیقی' : 'پخش موسیقی'}
         title={isPlaying ? 'قطع موسیقی' : 'پخش موسیقی'}
-        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border ${line} transition-colors ${
+        className={`flex min-h-11 min-w-11 shrink-0 items-center justify-center rounded-full border sm:min-h-8 sm:min-w-8 ${line} transition-colors ${
           isPlaying ? 'text-cream' : strong
         }`}
         style={isPlaying ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
@@ -164,21 +164,21 @@ export default function AudioPlayer({
         {isPlaying ? <Volume2 className="h-3.5 w-3.5" aria-hidden="true" /> : <VolumeX className="h-3.5 w-3.5" aria-hidden="true" />}
       </button>
 
-      <div className="min-w-0">
-        <p className={`flex items-center gap-1.5 truncate text-[10px] ${strong}`}>
+      <div className="min-w-0 flex-1">
+        <p className={`flex min-w-0 items-center gap-1.5 text-xs ${strong}`}>
           <Music className="h-3 w-3 shrink-0 opacity-60" aria-hidden="true" />
-          {trackTitle}
+          <span className="truncate">{trackTitle}</span>
         </p>
-        <p className={`mt-0.5 text-[9px] ${muted}`} aria-live="polite">
+        <p className={`mt-0.5 text-xs ${muted}`} aria-live="polite">
           {isPlaying ? 'در حال پخش…' : 'برای شنیدن کلیک کنید'}
         </p>
       </div>
 
-      <div ref={barsRef} className={`mr-1 hidden h-4 items-end gap-[2px] sm:flex ${isPlaying ? '' : 'opacity-40'}`} aria-hidden="true">
+      <div ref={barsRef} className={`ms-1 hidden h-4 items-end gap-[2px] sm:flex ${isPlaying ? '' : 'opacity-40'}`} aria-hidden="true">
         {[0, 1, 2, 3, 4].map((i) => (
           <span
             key={i}
-            className="h-full w-[2px] origin-bottom rounded-full transition-transform duration-200"
+            className="h-full w-[2px] origin-bottom rounded-full transition-transform duration-fast"
             style={{ backgroundColor: accentColor, transform: 'scaleY(0.3)' }}
           />
         ))}
