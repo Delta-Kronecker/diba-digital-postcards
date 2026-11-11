@@ -150,7 +150,7 @@ utilities move at the same speed.
   --duration-fast: 140ms;
   --duration-ui: 150ms;
   --duration-base: 240ms;
-  --duration-slow: 420ms;
+  --duration-slow: 300ms;
   --duration-slower: 700ms;
   --duration-cinematic: 1000ms;
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -158,9 +158,10 @@ utilities move at the same speed.
 }
 ```
 
-`fast` and `base` answer an input, `slow` moves a state, `slower` brings something
-on screen, and `cinematic` is spent once per page — on the envelope opening. There
-is no step above it and no per-component duration.
+`fast` and `base` answer an input, `slow` moves a state (hairlines, indicators,
+scrims — the interaction ceiling is 300 ms), `slower` brings something on screen,
+and `cinematic` is spent once per page — on the envelope opening. There is no step
+above it and no per-component duration.
 
 ## Z-index
 

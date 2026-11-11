@@ -13,10 +13,10 @@ const ITEMS = [
     title: 'امیرحسین و سارا',
     description: 'پاکت مهر موم، آلبوم خاطرات، شمارش معکوس و ثبت حضور مهمانان.',
     image: `${BASE}images/wedding-cover.jpg`,
-    alt: 'دعوت‌نامهٔ عروسی با گل‌آرایی و پاکت مهر موم',
+    alt: 'دعوتنامهٔ عروسی با گلآرایی و پاکت مهر موم',
     note: 'مجموعهٔ ویژه',
-    lead: true,
-    imageHeight: 'h-[380px] sm:h-[480px] lg:h-[600px]',
+    span: 'md:col-span-7',
+    imageHeight: 'h-[340px] sm:h-[440px] lg:h-[520px]',
   },
   {
     id: 'memorial-haj-reza',
@@ -25,7 +25,7 @@ const ITEMS = [
     title: 'حاج رضا تهرانی',
     description: 'وقار، آرامش و آشکارسازی ملایم؛ بدون هیچ نشانهٔ طلایی.',
     image: `${BASE}images/memorial-cover.jpg`,
-    alt: 'دعوت‌نامهٔ یادبود با فضایی آرام و سبز زیتونی',
+    alt: 'دعوتنامهٔ یادبود با فضایی آرام و سبز زیتونی',
     note: 'زیرو گلد',
     memorial: true,
     span: 'md:col-span-5',
@@ -38,29 +38,29 @@ const ITEMS = [
     title: 'گشایش گالری آرک',
     description: 'قاب مینیمال، آلبوم آثار و دعوت رسمی افتتاحیه.',
     image: `${BASE}images/general-cover.jpg`,
-    alt: 'دعوت‌نامهٔ نمایشگاه هنری با طراحی مینیمال',
-    span: 'md:col-span-7',
-    imageHeight: 'h-[340px] sm:h-[440px] lg:h-[520px]',
+    alt: 'دعوتنامهٔ نمایشگاه هنری با طراحی مینیمال',
+    span: 'md:col-span-4',
+    imageHeight: 'h-[300px] sm:h-[360px] lg:h-[400px]',
   },
   {
     id: 'opening-tech-hub',
     index: '۰۴',
     category: 'افتتاحیهٔ تجاری',
     title: 'هاب فناوری آفتاب',
-    description: 'رویداد شرکتی با نقشهٔ مسیر و ثبت‌نام مدعوین.',
+    description: 'رویداد شرکتی با نقشهٔ مسیر و ثبتنام مدعوین.',
     image: `${BASE}images/opening-cover.jpg`,
-    alt: 'دعوت‌نامهٔ افتتاحیهٔ تجاری با فضای رسمی',
+    alt: 'دعوتنامهٔ افتتاحیهٔ تجاری با فضای رسمی',
     span: 'md:col-span-4',
     imageHeight: 'h-[300px] sm:h-[360px] lg:h-[400px]',
   },
   {
     id: 'festival-nowruz-1404',
     index: '۰۵',
-    category: 'جشن‌ها و مناسبت‌ها',
+    category: 'جشنها و مناسبتها',
     title: 'نوروز ۱۴۰۴',
-    description: 'نقش‌های ایرانی، رنگ گرم و تبریک گروهی.',
+    description: 'نقشهای ایرانی، رنگ گرم و تبریک گروهی.',
     image: `${BASE}images/festival-cover.jpg`,
-    alt: 'کارت‌پستال نوروزی با نقش‌های ایرانی',
+    alt: 'کارتپستال نوروزی با نقشهای ایرانی',
     span: 'md:col-span-4',
     imageHeight: 'h-[300px] sm:h-[360px] lg:h-[400px]',
   },
@@ -68,13 +68,14 @@ const ITEMS = [
     id: 'birthday-aria-10',
     index: '۰۶',
     category: 'تولد و جشن اختصاصی',
-    title: 'تولد ده‌سالگی آریا',
+    title: 'تولد دهسالگی آریا',
     description: 'دعوت شاد با تایمر، آلبوم خاطرات و دفتر آرزوها.',
     image: `${BASE}images/birthday-cover.jpg`,
-    alt: 'دعوت‌نامهٔ تولد با تم جشن و رنگ‌های شاد',
+    alt: 'دعوتنامهٔ تولد با تم جشن و رنگهای شاد',
     note: 'سفارشی',
-    span: 'md:col-span-4',
-    imageHeight: 'h-[300px] sm:h-[360px] lg:h-[400px]',
+    span: 'md:col-span-12',
+    imageHeight: 'h-[280px] sm:h-[340px]',
+    wide: true,
   },
 ];
 
@@ -82,13 +83,13 @@ function CardArrow({ memorial }) {
   return (
     <span
       aria-hidden="true"
-      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-base ${
+      className={`flex size-11 shrink-0 items-center justify-center rounded-full border transition-colors duration-base ${
         memorial
-          ? 'border-sage/40 text-sage group-hover:bg-sage group-hover:text-cream'
-          : 'border-line-strong text-ink-muted group-hover:border-gold group-hover:bg-gold group-hover:text-cream'
+          ? 'border-sage/40 text-sage group-hover:bg-sage-solid group-hover:text-cream'
+          : 'border-line-strong text-ink-muted group-hover:border-gold group-hover:bg-gold-solid group-hover:text-cream'
       }`}
     >
-      <ArrowUpLeft className="h-4 w-4 transition-transform duration-base ease-out-expo group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
+      <ArrowUpLeft className="size-4 transition-transform duration-base ease-out-expo group-hover:-translate-x-0.5 group-hover:-translate-y-0.5" />
     </span>
   );
 }
@@ -110,61 +111,48 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
         </div>
         <div className="lg:col-span-4 lg:justify-self-end">
           <button type="button" onClick={() => onNavigate('gallery')} className="link-underline">
-            <Sparkles className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
-            مشاهدهٔ همهٔ نمونه‌ها
+            <Sparkles className="size-3.5 text-gold" aria-hidden="true" />
+            مشاهدهٔ همهٔ نمونهها
           </button>
         </div>
       </div>
 
       <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-12">
         {ITEMS.map((item, i) => {
-          if (item.lead) {
+          if (item.wide) {
             return (
               <div key={item.id} className="md:col-span-12">
                 <button
                   type="button"
                   onClick={() => onNavigate(item.id)}
-                  className="media-zoom group relative block w-full overflow-hidden border border-line bg-surface-2 text-start"
+                  className="group grid w-full grid-cols-1 items-center gap-8 border-y border-line py-8 text-start md:grid-cols-12 md:gap-12 md:py-10"
                 >
-                  <Picture
-                    src={item.image}
-                    alt={item.alt}
-                    width="1600"
-                    height="900"
-                    loading="lazy"
-                    decoding="async"
-                    className={`w-full object-cover ${item.imageHeight}`}
-                  />
-                  <span
-                    aria-hidden="true"
-                    className="absolute inset-0 bg-gradient-to-t from-scrim/90 via-scrim/60 to-scrim/15"
-                  />
-
-                  <span className="absolute start-4 top-4 border border-cream/30 bg-scrim/55 px-2.5 py-1 font-body text-xs tabular-nums text-cream/90 backdrop-blur-md">
-                    {item.index} / {toPersianDigits(String(ITEMS.length).padStart(2, '0'))}
-                  </span>
-
-                  <span className="absolute end-4 top-4 border border-gold/40 bg-scrim/55 px-2.5 py-1 text-xs text-gold-soft backdrop-blur-md">
-                    {item.note}
-                  </span>
-
-                  <span className="absolute inset-x-0 bottom-0 flex flex-wrap items-end justify-between gap-6 p-6 text-cream sm:p-8 md:p-10">
-                    <span className="max-w-xl">
-                      <span className="block text-xs text-cream/90">{item.category}</span>
-                      <span className="mt-2 block font-display text-3xl font-medium leading-tight sm:text-4xl md:text-5xl">
-                        {item.title}
+                  <div className="media-zoom relative bg-surface-2 md:col-span-7">
+                    <Picture
+                      src={item.image}
+                      alt={item.alt}
+                      width="960"
+                      height="540"
+                      loading="lazy"
+                      decoding="async"
+                      className="h-[280px] w-full object-cover sm:h-[340px]"
+                    />
+                  </div>
+                  <div className="md:col-span-5">
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-xs tabular-nums text-ink-subtle">{item.index} / {toPersianDigits(String(ITEMS.length).padStart(2, '0'))}</span>
+                      <span className="rounded-full border border-gold/40 px-3 py-1 text-xs text-gold-deep">
+                        {item.note}
                       </span>
-                      <span className="mt-3 block max-w-md text-xs leading-[2] text-cream/85">
-                        {item.description}
-                      </span>
-                    </span>
-                    <span className="inline-flex shrink-0 items-center gap-3 text-xs font-medium text-cream">
+                    </div>
+                    <p className="mt-6 text-xs text-ink-subtle">{item.category}</p>
+                    <h3 className="mt-2 font-display text-3xl font-medium text-ink md:text-4xl">{item.title}</h3>
+                    <p className="mt-3 max-w-sm text-xs leading-[2] text-ink-muted">{item.description}</p>
+                    <span className="mt-8 inline-flex items-center gap-3 text-xs font-medium text-ink">
                       مشاهدهٔ کارت
-                      <span className="flex h-11 w-11 items-center justify-center rounded-full border border-cream/40 backdrop-blur-sm transition-transform duration-base ease-out-expo group-hover:-translate-x-0.5 group-hover:-translate-y-0.5">
-                        <ArrowUpLeft className="h-4 w-4" />
-                      </span>
+                      <CardArrow />
                     </span>
-                  </span>
+                  </div>
                 </button>
               </div>
             );
@@ -177,7 +165,7 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
                 onClick={() => onNavigate(item.id)}
                 className="group block w-full text-start"
               >
-                <div className={`media-zoom relative overflow-hidden bg-surface-2 ${item.imageHeight}`}>
+                <div className={`media-zoom relative bg-surface-2 ${item.imageHeight}`}>
                   <Picture
                     src={item.image}
                     alt={item.alt}

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE = 'http://localhost:4173/diba-digital-postcards/';
+const BASE = 'http://127.0.0.1:4173/diba-digital-postcards/';
 
 for (const width of [375, 768, 1280]) {
   test(`home responsive ${width}`, async ({ page }) => {

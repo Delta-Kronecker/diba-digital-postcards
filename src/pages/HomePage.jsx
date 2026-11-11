@@ -12,12 +12,12 @@ import Footer from '../components/Footer';
 
 export default function HomePage({ currentRoute = 'home', onNavigate = () => {} }) {
   return (
-    <div className="min-h-screen bg-canvas font-body text-ink">
+    <div className="min-h-dvh bg-canvas font-body text-ink">
       {/* Thin atelier strip */}
       <div className="border-b border-ink/10 bg-ink-band text-cream/70">
         <div className="shell flex h-9 items-center justify-between gap-4 text-xs">
           <span className="hidden items-center gap-2 sm:flex">
-            <span className="h-1 w-1 rounded-full bg-gold" aria-hidden="true" />
+            <span className="size-1 rounded-full bg-gold" aria-hidden="true" />
             پذیرش سفارش تیر و مرداد ۱۴۰۶
           </span>
           <span lang="en" className="latin">Digital invitations, made by hand</span>

@@ -7,7 +7,8 @@ export default function ThreeDEnvelope({
   onOpen = () => {},
   sealText = 'A & S',
   category = 'wedding',
-  accentColor = '#9a7a44',
+  accentColor = 'var(--color-gold)',
+  onDark = false,
   hasGold = true,
   envelopeColor = '#efe6d7',
   title = 'دعوت‌نامهٔ اختصاصی',
@@ -34,13 +35,6 @@ export default function ThreeDEnvelope({
     }, delay);
   };
 
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleOpen();
-    }
-  };
-
   const isMemorial = category === 'memorial';
   const ariaLabel = isMemorial ? 'گشودن پاکت یادبود' : 'گشودن پاکت دعوت';
 
@@ -62,23 +56,20 @@ export default function ThreeDEnvelope({
 
       {!isOpen ? (
         <div className="relative z-10 w-full max-w-[520px]">
-          <div
-            role="button"
-            tabIndex={0}
-            aria-label={ariaLabel}
-            aria-pressed={isOpen}
-            onClick={handleOpen}
-            onKeyDown={handleKeyDown}
-            className="group relative mx-auto block w-full cursor-pointer outline-offset-8"
-          >
+          {/* The stage *is* the control, but the drawn envelope is a picture of
+              the invitation: it is decoration, and the control is the transparent
+              button laid over it. So the control's accessible name is the action
+              ("گشودن پاکت دعوت") instead of a reading of the whole preview, and
+              WCAG 2.5.3 holds without an aria-label fighting visible text. */}
+          <div className="group relative mx-auto block w-full">
             {/* the envelope rests on the surface: it casts a soft shadow */}
             <span
               aria-hidden="true"
               className="stage-floor pointer-events-none absolute inset-x-8 bottom-1 h-9"
             />
-            <div className="perspective-1400">
+            <div className="perspective-1400" aria-hidden="true">
               <div
-                className="relative h-[310px] w-full border border-paper-line-3 shadow-envelope transition-transform duration-slower ease-out-expo group-hover:-translate-y-1 sm:h-[340px]"
+                className="relative h-[310px] w-full border border-paper-line-3 shadow-envelope transition-transform duration-slow ease-out-expo group-hover:-translate-y-1 sm:h-[340px]"
                 style={{
                   backgroundColor: envelopeColor,
                   /* the sheet's head catches the light, its foot holds a shade */
@@ -167,8 +158,8 @@ export default function ThreeDEnvelope({
                 {/* wax seal */}
                 <div className="absolute inset-0 z-40 flex flex-col items-center justify-center pt-10">
                   <div
-                    className={`relative flex h-[86px] w-[86px] items-center justify-center rounded-full shadow-seal transition-transform duration-slower ease-out-expo ${
-                      isOpening ? 'scale-150 opacity-0' : 'group-hover:scale-105'
+                    className={`relative flex h-[86px] w-[86px] items-center justify-center rounded-full shadow-seal transition-transform ease-out-expo ${
+                      isOpening ? 'duration-slower scale-150 opacity-0' : 'duration-slow group-hover:scale-105'
                     }`}
                     style={{
                       background: sealBackground,
@@ -206,7 +197,7 @@ export default function ThreeDEnvelope({
                       <>در حال گشودن پاکت…</>
                     ) : (
                       <>
-                        <Lock className="h-3 w-3" aria-hidden="true" />
+                        <Lock className="size-3" aria-hidden="true" />
                         لمس کنید تا پاکت گشوده شود
                       </>
                     )}
@@ -219,7 +210,7 @@ export default function ThreeDEnvelope({
                     <span
                       key={cls}
                       aria-hidden="true"
-                      className={`pointer-events-none absolute z-40 h-3 w-3 ${cls}`}
+                      className={`pointer-events-none absolute z-40 size-3 ${cls}`}
                       style={{ borderColor: hasGold ? 'rgba(165,144,108,0.45)' : 'rgba(76,87,69,0.35)' }}
                     />
                   )
@@ -227,9 +218,15 @@ export default function ThreeDEnvelope({
               </div>
             </div>
 
-            <p className="mt-6 text-center text-xs text-cream/70">
+            <p className={`mt-6 text-center text-xs ${onDark ? 'text-cream/70' : 'text-ink-subtle'}`}>
               {isMemorial ? 'با آرامش و احترام' : 'دعوت‌نامهٔ دیجیتال، دیبا'}
             </p>
+            <button
+              type="button"
+              onClick={handleOpen}
+              aria-label={ariaLabel}
+              className="absolute inset-0 cursor-pointer outline-offset-8"
+            />
           </div>
         </div>
       ) : (

@@ -19,7 +19,7 @@ export default function InvitationCard({
 
   const paper = isMemorial ? 'bg-surface' : 'bg-surface';
   const accentText = isMemorial ? 'text-sage' : 'text-gold-deep';
-  const accentBg = isMemorial ? 'bg-sage text-cream' : 'bg-ink text-canvas';
+  const accentBg = isMemorial ? 'bg-sage-solid text-cream' : 'bg-ink text-canvas';
   const accentBorder = isMemorial ? 'border-sage/45' : 'border-gold/45';
 
   const names = isWedding
@@ -36,10 +36,10 @@ export default function InvitationCard({
       {/* inner frame */}
       <span aria-hidden="true" className="pointer-events-none absolute inset-3 border border-line" />
       {/* four corner rules, the way a letterpress plate is keyed to its sheet */}
-      <span aria-hidden="true" className={`pointer-events-none absolute start-6 top-6 h-3 w-3 border-s border-t ${accentBorder}`} />
-      <span aria-hidden="true" className={`pointer-events-none absolute end-6 top-6 h-3 w-3 border-e border-t ${accentBorder}`} />
-      <span aria-hidden="true" className={`pointer-events-none absolute bottom-6 start-6 h-3 w-3 border-s border-b ${accentBorder}`} />
-      <span aria-hidden="true" className={`pointer-events-none absolute bottom-6 end-6 h-3 w-3 border-e border-b ${accentBorder}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute start-6 top-6 size-3 border-s border-t ${accentBorder}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute end-6 top-6 size-3 border-e border-t ${accentBorder}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute bottom-6 start-6 size-3 border-s border-b ${accentBorder}`} />
+      <span aria-hidden="true" className={`pointer-events-none absolute bottom-6 end-6 size-3 border-e border-b ${accentBorder}`} />
       {/* top hairline */}
       <span
         aria-hidden="true"
@@ -59,7 +59,7 @@ export default function InvitationCard({
           <span className={`text-xs ${accentText}`}>{data.categoryTitle}</span>
         </div>
 
-        <div className="relative mx-auto mt-7 flex h-14 w-14 items-center justify-center rounded-full border border-line bg-canvas/60">
+        <div className="relative mx-auto mt-7 flex size-14 items-center justify-center rounded-full border border-line bg-canvas/60">
           <span aria-hidden="true" className={`absolute inset-[3px] rounded-full border ${accentBorder}`} />
           <span className={`font-display text-lg ${accentText}`}>د</span>
         </div>
@@ -84,7 +84,7 @@ export default function InvitationCard({
 
         <div className="mx-auto mt-7 flex max-w-xs items-center justify-center gap-4 text-gold/70" aria-hidden="true">
           <span className="h-px w-14 bg-line" />
-          <Ornament className="h-3.5 w-3.5" />
+          <Ornament className="size-3.5" />
           <span className="h-px w-14 bg-line" />
         </div>
 
@@ -96,14 +96,14 @@ export default function InvitationCard({
 
         <CountdownTimer
           targetDate={data.targetDate}
-          accentColor={isMemorial ? '#687567' : 'var(--color-gold-deep)'}
+          accentColor={isMemorial ? 'var(--color-gold)' : 'var(--color-gold-deep)'}
           hasGold={!isMemorial}
         />
 
         <div className="grid grid-cols-1 gap-4 text-start sm:grid-cols-2">
           <div className="border border-line bg-canvas/40 p-5">
             <p className={`flex items-center gap-2 text-xs ${accentText}`}>
-              <Calendar className="h-3.5 w-3.5" aria-hidden="true" />
+              <Calendar className="size-3.5" aria-hidden="true" />
               زمان مراسم
             </p>
             <p className="mt-3 font-display text-sm leading-relaxed text-ink">{data.datePersian}</p>
@@ -111,7 +111,7 @@ export default function InvitationCard({
 
           <div className="border border-line bg-canvas/40 p-5">
             <p className={`flex items-center gap-2 text-xs ${accentText}`}>
-              <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
+              <MapPin className="size-3.5" aria-hidden="true" />
               مکان مراسم
             </p>
             <p className="mt-3 font-display text-sm leading-relaxed text-ink">{data.venue}</p>
@@ -132,7 +132,7 @@ export default function InvitationCard({
         <div className="mt-8 border-t border-line pt-6">
           <div className="flex items-center justify-between gap-4">
             <span className="flex items-center gap-2 text-xs text-ink-subtle">
-              <ImageIcon className="h-3.5 w-3.5" aria-hidden="true" />
+              <ImageIcon className="size-3.5" aria-hidden="true" />
               {isMemorial ? 'آلبوم یادبود' : 'آلبوم تصاویر'}
             </span>
             <span className="text-xs text-ink-subtle">برای بزرگ‌نمایی انتخاب کنید</span>
@@ -149,7 +149,7 @@ export default function InvitationCard({
               >
                 <Picture
                   src={image.url}
-                  alt={image.title}
+                  alt=""
                   width="400"
                   height="300"
                   loading="lazy"
@@ -169,13 +169,13 @@ export default function InvitationCard({
 
         <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
           <button type="button" onClick={onRsvp} className={`btn ${accentBg} w-full sm:w-auto`}>
-            <Send className="h-4 w-4" aria-hidden="true" />
+            <Send className="size-4" aria-hidden="true" />
             {isMemorial ? 'تأیید حضور در مراسم' : 'اعلام حضور و ثبت پیام'}
           </button>
 
           {isMemorial && (
             <button type="button" onClick={onCondolence} className="btn btn-outline w-full sm:w-auto">
-              <MessageSquare className="h-4 w-4" aria-hidden="true" />
+              <MessageSquare className="size-4" aria-hidden="true" />
               ارسال پیام تسلیت
             </button>
           )}
@@ -185,7 +185,7 @@ export default function InvitationCard({
             onClick={onCopy}
             className="link-underline !text-xs !text-ink-muted"
           >
-            <Share2 className="h-3.5 w-3.5" aria-hidden="true" />
+            <Share2 className="size-3.5" aria-hidden="true" />
             {copied ? 'لینک کپی شد' : 'اشتراک‌گذاری دعوت'}
           </button>
         </div>

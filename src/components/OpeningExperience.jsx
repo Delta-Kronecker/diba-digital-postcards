@@ -68,7 +68,7 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
               className="btn btn-cream mt-9"
             >
               تجربهٔ کامل کارت عروسی
-              <ArrowUpLeft className="h-4 w-4" aria-hidden="true" />
+              <ArrowUpLeft className="size-4" aria-hidden="true" />
             </button>
           </div>
 
@@ -80,14 +80,14 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
                   <span
                     key={pos}
                     aria-hidden="true"
-                    className={`absolute h-3 w-3 border border-gold/70 ${pos}`}
+                    className={`absolute size-3 border border-gold/70 ${pos}`}
                   />
                 )
               )}
 
               <div className="mb-5 flex flex-wrap items-center justify-between gap-3 border-b border-cream/12 pb-4">
-                <span className="flex items-center gap-2 text-xs text-cream/65">
-                  <span className="h-1.5 w-1.5 rounded-full bg-gold" />
+                <span className="flex items-center gap-2 text-xs text-cream/80">
+                  <span className="size-1.5 rounded-full bg-gold" />
                   پیش‌نمایش زندهٔ پاکت
                 </span>
                 <AudioPlayer
@@ -103,7 +103,8 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
                 onOpen={() => setIsOpen(true)}
                 sealText="د"
                 title="دعوت‌نامهٔ اختصاصی دیبا"
-                accentColor="#b08b52"
+                accentColor="var(--color-gold)"
+                onDark
                 hasGold
                 showBeams={false}
               >
@@ -121,7 +122,7 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
                     onClick={() => setIsOpen(false)}
                     className="mt-7 inline-flex items-center gap-2 border-b border-paper-gold pb-1 text-xs text-paper-gold-deep"
                   >
-                    <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                    <Check className="size-3.5" aria-hidden="true" />
                     بستن دوبارهٔ پاکت
                   </button>
                 </div>

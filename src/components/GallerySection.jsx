@@ -59,7 +59,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
       </div>
 
       <div className="flex items-center gap-3 border-b border-line py-3">
-        <SlidersHorizontal className="h-3.5 w-3.5 shrink-0 text-ink-subtle" aria-hidden="true" />
+        <SlidersHorizontal className="size-3.5 shrink-0 text-ink-subtle" aria-hidden="true" />
         <div
           role="toolbar"
           aria-label="فیلتر دسته‌بندی نمونه‌ها"
@@ -117,7 +117,6 @@ export default function GallerySection({ onNavigate = () => {} }) {
                     onMouseEnter={() => setActive(index)}
                     onFocus={() => setActive(index)}
                     onClick={() => onNavigate(card.slug)}
-                    aria-label={`مشاهدهٔ ${card.title}`}
                     className={`group relative flex w-full items-center gap-4 border-t border-line py-5 text-start transition-colors duration-base sm:gap-6 sm:py-6 ${
                       isCurrent ? 'bg-gold/[0.045]' : 'hover:bg-surface/60'
                     }`}
@@ -160,19 +159,19 @@ export default function GallerySection({ onNavigate = () => {} }) {
 
                     <span
                       aria-hidden="true"
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border transition-colors duration-base ${
+                      className={`flex size-10 shrink-0 items-center justify-center rounded-full border transition-colors duration-base ${
                         isCurrent ? 'translate-x-0 opacity-100' : 'translate-x-2 opacity-0 sm:group-hover:translate-x-0 sm:group-hover:opacity-100'
                       } ${
                         isCurrent
                           ? memorialCard
-                            ? 'border-sage bg-sage text-cream'
-                            : 'border-gold bg-gold text-cream'
+                            ? 'border-sage bg-sage-solid text-cream'
+                            : 'border-gold bg-gold-solid text-cream'
                           : memorialCard
                             ? 'border-sage/40 text-sage'
                             : 'border-line-strong text-ink-muted group-hover:border-gold group-hover:text-gold'
                       }`}
                     >
-                      <ArrowUpLeft className="h-4 w-4" />
+                      <ArrowUpLeft className="size-4" />
                     </span>
                   </button>
                 );
@@ -201,7 +200,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
                     decoding="async"
                     className="h-full w-full animate-fade-in object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-scrim/65 via-scrim/10 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-scrim/80 via-scrim/25 to-transparent" />
 
                   <span className="absolute start-4 top-4 border border-cream/30 bg-scrim/35 px-2.5 py-1 text-xs tabular-nums text-cream/90 backdrop-blur-sm">
                     {toPersianDigits(String(active + 1).padStart(2, '0'))} / {toPersianDigits(String(cards.length).padStart(2, '0'))}
@@ -214,11 +213,11 @@ export default function GallerySection({ onNavigate = () => {} }) {
                   )}
 
                   <figcaption className="absolute inset-x-0 bottom-0 p-5 text-cream">
-                    <span lang="en" className="latin block text-xs text-cream/65">Selected work</span>
+                    <span lang="en" className="latin block text-xs text-cream/80">Selected work</span>
                     <span className="mt-1.5 block font-display text-xl leading-snug">
                       {activeCard.title}
                     </span>
-                    <span className="mt-1 block text-xs text-cream/70">
+                    <span className="mt-1 block text-xs text-cream/85">
                       {CATEGORY_LABEL[activeCard.category] || activeCard.categoryTitle}
                     </span>
                   </figcaption>
@@ -229,10 +228,10 @@ export default function GallerySection({ onNavigate = () => {} }) {
                   <button
                     type="button"
                     onClick={() => onNavigate(activeCard.slug)}
-                    className="inline-flex items-center gap-1.5 border-b border-line-strong pb-0.5 text-ink transition-colors hover:border-gold hover:text-gold-deep"
+                    className="-mt-1.5 inline-flex items-center gap-1.5 border-b border-line-strong pt-1.5 pb-0.5 text-ink transition-colors hover:border-gold hover:text-gold-deep"
                   >
                     مشاهدهٔ کارت
-                    <ArrowUpLeft className="h-3 w-3" aria-hidden="true" />
+                    <ArrowUpLeft className="size-3" aria-hidden="true" />
                   </button>
                 </div>
               </figure>

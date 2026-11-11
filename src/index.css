@@ -56,7 +56,7 @@
     --duration-fast: 140ms;
     --duration-ui: 150ms;
     --duration-base: 240ms;
-    --duration-slow: 420ms;
+    --duration-slow: 300ms;
     --duration-slower: 700ms;
     --duration-cinematic: 1000ms;
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -101,6 +101,25 @@
     --color-seal-d: #6c4f24;
     --color-seal-sage-a: #9aa894;
     --color-seal-sage-c: #46504a;
+
+    /* Fixed accent *fills*. A solid accent chip carries cream text, so it keeps
+       one value (the light "deep" step) in both appearances — 6:1+ for the pair.
+       The appearance-aware --color-gold / --color-sage stay for ink + accents. */
+    --color-gold-solid-rgb: 116 88 43;
+    --color-sage-solid-rgb: 76 87 69;
+
+    /* Memorial in the dark appearance. The scope below only re-points the roles;
+       the values stay here so every colour literal lives in the token block. */
+    --color-memorial-dark-gold: #9dae94;
+    --color-memorial-dark-gold-soft: #c5d0bc;
+    --color-memorial-dark-gold-deep: #8a9880;
+    --color-memorial-dark-rose: #9fae9a;
+    --color-memorial-dark-sage: #8a9880;
+    --color-memorial-dark-gold-rgb: 157 174 148;
+    --color-memorial-dark-gold-soft-rgb: 197 208 188;
+    --color-memorial-dark-gold-deep-rgb: 138 152 128;
+    --color-memorial-dark-rose-rgb: 159 174 154;
+    --color-memorial-dark-sage-rgb: 138 152 128;
 
     --shadow-thumb: 0 1px 3px rgba(25, 22, 18, 0.35);
     --shadow-panel: 0 30px 80px -40px rgba(0, 0, 0, 0.4);
@@ -160,11 +179,31 @@
     --color-sage-rgb: 76 87 69;
   }
 
+  /* Memorial in the dark appearance. The scope above only carries the light
+     steps, so on a dark surface its green family fell to 2.3:1 (12px text).
+     Each appearance gets its own value, lifted the same way the dark theme
+     lifts gold. Still zero gold — the greens stay greens. */
+  html[data-theme="dark"] [data-theme="memorial"] {
+    --color-gold: var(--color-memorial-dark-gold);
+    --color-gold-soft: var(--color-memorial-dark-gold-soft);
+    --color-gold-deep: var(--color-memorial-dark-gold-deep);
+    --color-rose: var(--color-memorial-dark-rose);
+    --color-sage: var(--color-memorial-dark-sage);
+
+    --color-gold-rgb: var(--color-memorial-dark-gold-rgb);
+    --color-gold-soft-rgb: var(--color-memorial-dark-gold-soft-rgb);
+    --color-gold-deep-rgb: var(--color-memorial-dark-gold-deep-rgb);
+    --color-rose-rgb: var(--color-memorial-dark-rose-rgb);
+    --color-sage-rgb: var(--color-memorial-dark-sage-rgb);
+  }
+
   * {
     border-color: var(--color-line);
   }
 
-  /* Controls opt out of the double-tap-zoom wait so a tap responds immediately. */
+  /* Controls opt out of the double-tap-zoom wait so a tap responds immediately.
+     Text that is a *control* also refuses selection and the long-press callout,
+     the way a native button does; text that is *content* keeps both. */
   button,
   [role="button"],
   a[href],
@@ -172,11 +211,43 @@
   label,
   select {
     touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+  }
+
+  /* With no hover there is nothing to answer a press, so the press answers
+     itself. Opacity only, so no recipe's own transform is overridden, and never
+     on the filled buttons, whose 0.96 press scale is already their feedback. */
+  @media (hover: none) {
+    :is(button, [role="button"], a[href], summary, label, select):not(.btn):not([aria-disabled="true"]):active {
+      opacity: 0.72;
+    }
+  }
+
+  /* iOS Safari zooms into any field under 16px and never zooms back out. Phone
+     widths already sit at 1rem; this holds the floor wherever the pointer is
+     coarse, instead of switching zoom off (which is the accessibility failure).
+     It has to outrank the `sm:text-sm` the forms carry from the type scale. */
+  @media (pointer: coarse) {
+    input,
+    textarea,
+    select {
+      font-size: 1rem !important;
+    }
   }
 
   html {
     direction: rtl;
-    overflow-x: clip;
+    /* Deliberately no `overflow` on the root: a root whose overflow is not
+       `visible` stops the body's value from propagating to the viewport, which
+       silently defeated every scroll lock (the mobile menu and both modals).
+       `body` carries the horizontal clip instead — it still reaches the
+       viewport, so the page cannot scroll sideways.
+       The tap flash is the browser telling the user this is a website, and
+       landscape must not inflate the type. */
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
     /* Browser surfaces are part of the palette, not left at defaults. */
     caret-color: var(--color-gold-deep);
     accent-color: var(--color-gold-deep);
@@ -259,13 +330,18 @@
     width: 100%;
     max-width: 84rem;
     margin-inline: auto;
-    padding-inline: 1.5rem;
+    /* The gutter, but never less than the cutout: in landscape a notched phone
+       eats into the left/right edges and centred copy would slide under it.
+       `env()` is 0 everywhere else, so this is invisible until it is needed. */
+    --shell-gutter: 1.5rem;
+    padding-left: max(var(--shell-gutter), env(safe-area-inset-left));
+    padding-right: max(var(--shell-gutter), env(safe-area-inset-right));
   }
   @media (min-width: 768px) {
-    .shell { padding-inline: 2.5rem; }
+    .shell { --shell-gutter: 2.5rem; }
   }
   @media (min-width: 1280px) {
-    .shell { padding-inline: 3.5rem; }
+    .shell { --shell-gutter: 3.5rem; }
   }
 
   .rule {
@@ -312,19 +388,13 @@
     transition: background-color var(--duration-base) var(--ease-ui-out),
                 color var(--duration-base) var(--ease-ui-out),
                 border-color var(--duration-base) var(--ease-ui-out),
-                transform var(--duration-base) var(--ease-ui-out);
+                scale var(--duration-ui) var(--ease-ui-out);
   }
-  .btn:active { transform: translateY(1px); }
 
   .btn-ink {
     background: var(--color-ink);
     color: var(--color-canvas);
     border-color: var(--color-ink);
-  }
-  .btn-ink:hover {
-    background: var(--color-gold-deep);
-    border-color: var(--color-gold-deep);
-    color: var(--color-frost);
   }
 
   .btn-outline {
@@ -332,17 +402,41 @@
     color: var(--color-ink);
     border-color: var(--color-line-strong);
   }
-  .btn-outline:hover {
-    border-color: var(--color-ink);
-    background: color-mix(in srgb, var(--color-ink) 5%, transparent);
-  }
 
   .btn-cream {
     background: var(--color-cream);
     color: var(--color-paper-ink);
     border-color: var(--color-cream);
   }
-  .btn-cream:hover { background: var(--color-frost); }
+
+  /* Press feedback: scale to 0.96 over 150ms ease-out — never on a disabled
+     control, and only when motion is welcome. The colour/border change above
+     stays as the static cue, so motion is not the only feedback channel. */
+  @media (prefers-reduced-motion: no-preference) {
+    .btn:not(:disabled):active { scale: 0.96; }
+  }
+
+  /* Where the press scale is unavailable — motion is not welcome — the press
+     answers with opacity instead. A control with no feedback at all reads as
+     lagging, and the scale is the only other cue a filled button has. */
+  @media (prefers-reduced-motion: reduce) {
+    .btn:not([aria-disabled="true"]):active { opacity: 0.8; }
+  }
+
+  /* Hover styles only on pointer devices that actually hover, so a tap on
+     touch never latches a stuck state. */
+  @media (hover: hover) and (pointer: fine) {
+    .btn-ink:hover {
+      background: var(--color-gold-deep);
+      border-color: var(--color-gold-deep);
+      color: var(--color-frost);
+    }
+    .btn-outline:hover {
+      border-color: var(--color-ink);
+      background: color-mix(in srgb, var(--color-ink) 5%, transparent);
+    }
+    .btn-cream:hover { background: var(--color-frost); }
+  }
 
   /* Every control has a disabled state (gate 26b). */
   .btn:disabled {
@@ -373,7 +467,9 @@
     transform-origin: right;
     transition: transform var(--duration-slow) var(--ease-out-expo);
   }
-  .link-underline:hover::after { transform: scaleX(1); }
+  @media (hover: hover) and (pointer: fine) {
+    .link-underline:hover::after { transform: scaleX(1); }
+  }
 
   /* The same link, sitting on an ink field. */
   .link-underline-cream { color: var(--color-cream); }
@@ -384,13 +480,6 @@
     background: var(--color-surface);
     color: var(--color-ink);
     border: 1px solid var(--color-line);
-  }
-
-  .glass-panel {
-    background: color-mix(in srgb, var(--color-surface) 92%, transparent);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    box-shadow: var(--shadow-panel), inset 0 0 0 1px var(--color-line);
   }
 
   .gold-rule {
@@ -407,8 +496,10 @@
     animation: marquee 38s linear infinite;
     will-change: transform;
   }
-  .marquee-mask:hover .marquee-track,
   .marquee-mask:focus-within .marquee-track { animation-play-state: paused; }
+  @media (hover: hover) and (pointer: fine) {
+    .marquee-mask:hover .marquee-track { animation-play-state: paused; }
+  }
   .marquee-mask {
     mask-image: linear-gradient(90deg, transparent, var(--color-mask) 8%, var(--color-mask) 92%, transparent);
     -webkit-mask-image: linear-gradient(90deg, transparent, var(--color-mask) 8%, var(--color-mask) 92%, transparent);
@@ -417,13 +508,29 @@
   /* ---------- Card media ---------- */
   /* The featured cards have always asked for this class; it was never written, so
      the hover did nothing. The container answers and the picture stays put: the
-     plate lifts off the page and its inner edge warms to the metal tone. */
+     plate lifts off the page and its inner edge warms to the metal tone.
+     The shadow is painted once on a layer of its own and only its opacity moves,
+     because blending 80px of shadow on the element itself repaints the whole card
+     every frame while an opacity fade stays on the compositor. */
   .media-zoom {
-    transition: box-shadow var(--duration-base) var(--ease-ui-out);
+    position: relative;
   }
-  .media-zoom:hover,
-  .media-zoom:focus-within {
+  .media-zoom::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
     box-shadow: var(--shadow-panel), 0 0 0 1px color-mix(in srgb, var(--color-gold) 55%, transparent);
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-ui-out);
+  }
+  .media-zoom:focus-within::after {
+    opacity: 1;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .media-zoom:hover::after {
+      opacity: 1;
+    }
   }
 
   /* ---------- Paper ---------- */
@@ -482,9 +589,13 @@
     transform-origin: right;
     transition: transform var(--duration-slow) var(--ease-out-expo);
   }
-  .group:hover .rule-engage::after,
   .group:focus-visible .rule-engage::after {
     transform: scaleX(1);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .rule-engage::after {
+      transform: scaleX(1);
+    }
   }
 
   /* ---------- Hero light ---------- */
@@ -534,19 +645,45 @@
     border-radius: 50%;
     background: var(--color-gold);
   }
+  /* A 10px thumb is a mouse affordance. Where the pointer is a finger — a tablet
+     wide enough to show the slider — it is a 10px target. */
+  @media (pointer: coarse) {
+    .audio-range::-webkit-slider-thumb { width: 18px; height: 18px; }
+    .audio-range::-moz-range-thumb { width: 18px; height: 18px; }
+  }
 }
 
 @layer utilities {
   .writing-vertical { writing-mode: vertical-rl; }
+
+  /* Fixed and sticky chrome clears the notch and the home indicator. The
+     viewport already opts in (`viewport-fit=cover` in index.html). */
+  .safe-t { padding-top: env(safe-area-inset-top); }
+  .safe-b { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-y {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-x {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  /* A full-screen overlay keeps its 1rem gutter and adds the notch clearance. */
+  .safe-overlay {
+    padding: max(1rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right))
+      max(1rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+  }
 }
 
-/* Reduced motion: kill decorative movement everywhere */
+/* Reduced motion: fewer and gentler, not zero. Movement, scale and blur are
+   removed; the opacity/colour cues that aid comprehension stay as a short fade. */
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
+    transition-property: opacity, color, background-color, border-color, box-shadow !important;
+    transition-duration: var(--duration-ui) !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
   }
   .marquee-track { animation: none !important; }
 }

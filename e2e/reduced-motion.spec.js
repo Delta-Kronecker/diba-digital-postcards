@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE = 'http://localhost:4173/diba-digital-postcards/';
+const BASE = 'http://127.0.0.1:4173/diba-digital-postcards/';
 
 test('reduced motion removes transforms', async ({ browser }) => {
   const context = await browser.newContext({ reducedMotion: 'reduce' });

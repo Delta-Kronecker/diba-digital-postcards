@@ -7,7 +7,10 @@
       content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; media-src 'self' blob: data:; object-src 'none'; base-uri 'self'; form-action 'self'"
     />
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content"
+    />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://delta-kronecker.github.io/diba-digital-postcards/" />
     <script>
@@ -22,6 +25,9 @@
             document.documentElement.classList.add('light');
             document.documentElement.dataset.theme = 'light';
           }
+          var themeColor = isDark ? '#131110' : '#f1ebe0';
+          var metas = document.querySelectorAll('meta[name="theme-color"]');
+          for (var m = 0; m < metas.length; m++) metas[m].setAttribute('content', themeColor);
         } catch (e) {}
 
         try {
@@ -45,7 +51,11 @@
       name="description"
       content="دیبا، آتلیهٔ دعوت دیجیتال؛ کارت‌پستال‌ها و دعوت‌نامه‌های فاخر با انیمیشن سه‌بعدی، مهر موم، موسیقی اختصاصی و ثبت حضور آنلاین."
     />
-    <meta name="theme-color" content="#f1ebe0" />
+    <!-- One per scheme: the status bar takes the colour at the top of the page
+         (the page canvas), and the bootstrap below settles it to the theme the
+         visitor actually stored, which is not necessarily the OS one. -->
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f1ebe0" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#131110" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="دیبا" />
     <meta property="og:locale" content="fa_IR" />
@@ -94,7 +104,7 @@
     />
   </head>
   <body>
-    <main id="root" tabindex="-1"></main>
+    <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>

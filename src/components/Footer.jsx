@@ -24,12 +24,12 @@ export default function Footer({ onNavigate = () => {} }) {
   const year = toPersianDigits(new Date().getFullYear() + 621);
 
   return (
-    <footer className="bg-ink-band text-cream">
+    <footer className="bg-ink-band text-cream safe-b">
       <div className="shell pt-16 md:pt-20">
         <div className="grid grid-cols-1 gap-12 border-b border-cream/12 pb-14 md:grid-cols-12">
           <div className="md:col-span-5">
             <div className="flex items-center gap-3">
-              <span className="flex h-11 w-11 items-center justify-center border border-gold/50">
+              <span className="flex size-11 items-center justify-center border border-gold/50">
                 <span className="font-display text-lg text-gold">د</span>
               </span>
               <div>
@@ -48,30 +48,30 @@ export default function Footer({ onNavigate = () => {} }) {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-9 w-9 items-center justify-center border border-cream/15 text-cream/60 transition-colors hover:border-gold hover:text-gold"
+                className="relative flex size-9 items-center justify-center border border-cream/15 text-cream/60 transition-colors after:absolute after:-inset-1 after:content-[''] hover:border-gold hover:text-gold"
                 aria-label="اینستاگرام دیبا"
               >
-                <Instagram className="h-4 w-4" aria-hidden="true" />
+                <Instagram className="size-4" aria-hidden="true" />
               </a>
               <a
                 href="mailto:hello@diba.studio"
-                className="flex h-9 w-9 items-center justify-center border border-cream/15 text-cream/60 transition-colors hover:border-gold hover:text-gold"
+                className="relative flex size-9 items-center justify-center border border-cream/15 text-cream/60 transition-colors after:absolute after:-inset-1 after:content-[''] hover:border-gold hover:text-gold"
                 aria-label="ایمیل دیبا"
               >
-                <Mail className="h-4 w-4" aria-hidden="true" />
+                <Mail className="size-4" aria-hidden="true" />
               </a>
             </div>
           </div>
 
           <nav aria-label="مجموعه‌ها" className="md:col-span-3">
-            <h3 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Collections</h3>
+            <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Collections</h2>
             <ul className="space-y-3">
               {COLLECTIONS.map(([id, label]) => (
                 <li key={id}>
                   <button
                     type="button"
                     onClick={() => onNavigate(id)}
-                    className="text-xs text-cream/60 transition-colors hover:text-cream"
+                    className="block w-full py-1.5 -my-1.5 text-start text-xs text-cream/60 transition-colors hover:text-cream"
                   >
                     {label}
                   </button>
@@ -81,14 +81,14 @@ export default function Footer({ onNavigate = () => {} }) {
           </nav>
 
           <nav aria-label="آتلیه" className="md:col-span-2">
-            <h3 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Atelier</h3>
+            <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Atelier</h2>
             <ul className="space-y-3">
               {STUDIO.map(([id, label]) => (
                 <li key={id}>
                   <button
                     type="button"
                     onClick={() => onNavigate(id)}
-                    className="text-xs text-cream/60 transition-colors hover:text-cream"
+                    className="block w-full py-1.5 -my-1.5 text-start text-xs text-cream/60 transition-colors hover:text-cream"
                   >
                     {label}
                   </button>
@@ -98,18 +98,18 @@ export default function Footer({ onNavigate = () => {} }) {
           </nav>
 
           <div className="md:col-span-2">
-            <h3 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Contact</h3>
+            <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Contact</h2>
             <ul className="space-y-3 text-xs text-cream/65">
               <li className="flex items-start gap-2">
-                <MapPin className="mt-0.5 h-3.5 w-3.5 shrink-0 text-gold/70" aria-hidden="true" />
+                <MapPin className="mt-0.5 size-3.5 shrink-0 text-gold/70" aria-hidden="true" />
                 تهران، فرشته
               </li>
               <li className="flex items-center gap-2" dir="ltr">
-                <Phone className="h-3.5 w-3.5 shrink-0 text-gold/70" aria-hidden="true" />
+                <Phone className="size-3.5 shrink-0 text-gold/70" aria-hidden="true" />
                 +98 21 2200 0000
               </li>
               <li>
-                <a href="mailto:hello@diba.studio" className="hover:text-cream">
+                <a href="mailto:hello@diba.studio" className="inline-block -my-1.5 py-1.5 hover:text-cream">
                   hello@diba.studio
                 </a>
               </li>
@@ -119,7 +119,7 @@ export default function Footer({ onNavigate = () => {} }) {
 
         <div className="grid grid-cols-1 items-end gap-8 py-10 md:grid-cols-12">
           <div className="md:col-span-7">
-            <h3 className="font-display text-xl text-cream">از آتلیه باخبر شوید.</h3>
+            <h2 className="font-display text-xl text-cream">از آتلیه باخبر شوید.</h2>
             <p className="mt-2 text-xs text-cream/65">
               هر چند هفته، یک مجموعهٔ تازه و یادداشتی دربارهٔ طراحی دعوت.
             </p>
@@ -145,14 +145,17 @@ export default function Footer({ onNavigate = () => {} }) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="ایمیل شما"
+                inputMode="email"
+                autoComplete="email"
+                enterKeyHint="send"
                 className="h-11 w-full bg-transparent text-base text-cream placeholder:text-cream/55 focus:outline-none sm:text-sm"
               />
               <button
                 type="submit"
                 aria-label="عضویت در خبرنامه"
-                className="flex h-10 w-10 shrink-0 items-center justify-center text-gold transition-transform hover:-translate-x-1"
+                className="flex size-11 shrink-0 items-center justify-center text-gold transition-transform hover:-translate-x-1"
               >
-                <ArrowUpLeft className="h-4 w-4" aria-hidden="true" />
+                <ArrowUpLeft className="size-4" aria-hidden="true" />
               </button>
             </div>
             <p className="mt-2 min-h-[1rem] text-xs text-gold-soft/90" aria-live="polite">

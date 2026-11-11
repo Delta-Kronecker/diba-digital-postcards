@@ -17,7 +17,7 @@ export default class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="flex min-h-[50vh] flex-col items-center justify-center p-8 text-center" role="alert">
+        <div className="flex min-h-[50svh] flex-col items-center justify-center p-8 text-center" role="alert">
           <h2 className="font-display text-2xl font-medium text-ink">خطایی در نمایش این بخش رخ داده است.</h2>
           <p className="mt-2 text-sm text-ink-muted">لطفاً صفحه را دوباره بارگذاری کنید یا به صفحه اصلی بازگردید.</p>
           <button

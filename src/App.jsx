@@ -9,8 +9,8 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
 function PageFallback() {
   return (
-    <div className="flex min-h-screen items-center justify-center" aria-busy="true" aria-live="polite">
-      <span className="h-9 w-9 animate-spin rounded-full border border-line border-t-gold" />
+    <div className="flex min-h-svh items-center justify-center" aria-busy="true" aria-live="polite">
+      <span className="size-9 animate-spin rounded-full border border-line border-t-gold" />
     </div>
   );
 }
@@ -46,7 +46,7 @@ export default function App() {
     window.location.hash = routeId;
     window.scrollTo({ top: 0, behavior: 'smooth' });
     window.setTimeout(() => {
-      const main = document.getElementById('root');
+      const main = document.getElementById('main-content');
       if (main) main.focus({ preventScroll: true });
     }, 120);
   };
@@ -123,16 +123,18 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-canvas text-ink transition-colors duration-base">
+    <div className="min-h-dvh bg-canvas text-ink transition-colors duration-base">
       <a
         href="#main-content"
-        className="fixed -left-[9999px] top-4 z-tooltip rounded-sm bg-ink px-4 py-2 text-xs font-medium text-canvas focus:left-4 focus:outline-none"
+        className="fixed start-4 -top-16 z-tooltip border border-line-strong bg-ink px-4 py-2.5 text-xs font-medium text-canvas shadow-lift transition-[top] duration-fast focus:top-4 focus:outline-none focus:ring-2 focus:ring-line-strong"
       >
         پرش به محتوای اصلی
       </a>
       <ErrorBoundary onReset={() => navigateTo('home')}>
         <Suspense fallback={<PageFallback />}>
-          <div id="main-content" tabindex="-1">{renderView()}</div>
+          <main id="main-content" tabIndex={-1} className="outline-none">
+            {renderView()}
+          </main>
         </Suspense>
       </ErrorBoundary>
     </div>

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE = 'http://localhost:4173/diba-digital-postcards/';
+const BASE = 'http://127.0.0.1:4173/diba-digital-postcards/';
 
 test.describe('Diba Digital Postcards smoke', () => {
   test('home loads', async ({ page }) => {

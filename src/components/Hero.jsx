@@ -21,7 +21,7 @@ export default function Hero({ onNavigate = () => {} }) {
       <div className="shell relative grid grid-cols-1 items-center gap-16 py-20 lg:grid-cols-12 lg:gap-12 lg:py-28">
         <div className="lg:col-span-6 lg:pe-8">
           <p className="flex animate-reveal-up items-center gap-3 text-xs text-cream/60">
-            <span className="h-1 w-1 rounded-full bg-gold" aria-hidden="true" />
+            <span className="size-1 rounded-full bg-gold" aria-hidden="true" />
             آتلیهٔ دعوت دیجیتال · تهران
             <span aria-hidden="true" className="h-px w-10 bg-gold/50" />
             <span lang="en" className="latin text-cream/65">Est. 2015</span>
@@ -44,14 +44,14 @@ export default function Hero({ onNavigate = () => {} }) {
               className="btn btn-cream"
             >
               گشودن یک دعوتنامه
-              <ArrowUpLeft className="h-4 w-4" aria-hidden="true" />
+              <ArrowUpLeft className="size-4" aria-hidden="true" />
             </button>
             <button
               type="button"
               onClick={() => onNavigate('gallery')}
-              className="link-underline link-underline-cream"
+              className="link-underline link-underline-cream before:absolute before:inset-x-0 before:-inset-y-2 before:content-['']"
             >
-              <Play className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+              <Play className="size-3.5 text-gold" aria-hidden="true" />
               تماشای گالری نمونهها
             </button>
           </div>
@@ -99,13 +99,13 @@ export default function Hero({ onNavigate = () => {} }) {
               />
               <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-7 text-cream">
                 <span>
-                  <span lang="en" className="latin block text-xs text-cream/70">
+                  <span lang="en" className="latin block text-xs text-cream/90">
                     The wedding collection
                   </span>
                   <span className="mt-1 block font-display text-xl">عروسی امیر و سارا</span>
                 </span>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-cream/40 backdrop-blur-sm">
-                  <ArrowUpLeft className="h-4 w-4" aria-hidden="true" />
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-full border border-cream/40 backdrop-blur-sm">
+                  <ArrowUpLeft className="size-4" aria-hidden="true" />
                 </span>
               </figcaption>
             </figure>
@@ -115,8 +115,8 @@ export default function Hero({ onNavigate = () => {} }) {
               aria-hidden="true"
               className="absolute -left-6 top-12 animate-float-soft motion-reduce:animate-none"
             >
-              <div className="flex h-24 w-24 rotate-[-8deg] items-center justify-center rounded-full border border-seal-line/50 bg-[radial-gradient(circle_at_34%_30%,var(--color-seal-a),var(--color-foil)_55%,var(--color-seal-d))] shadow-seal-lg">
-                <span className="flex h-16 w-16 items-center justify-center rounded-full border border-seal-cream/40 font-display text-2xl text-seal-ink">
+              <div className="flex size-24 rotate-[-8deg] items-center justify-center rounded-full border border-seal-line/50 bg-[radial-gradient(circle_at_34%_30%,var(--color-seal-a),var(--color-foil)_55%,var(--color-seal-d))] shadow-seal-lg">
+                <span className="flex size-16 items-center justify-center rounded-full border border-seal-cream/40 font-display text-2xl text-seal-ink">
                   د
                 </span>
               </div>

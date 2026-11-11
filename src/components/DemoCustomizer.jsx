@@ -80,12 +80,12 @@ const SELECT_FIELD =
 function ColorSwatch({ color, selected }) {
   return (
     <span
-      className="flex h-6 w-6 items-center justify-center rounded-full border border-black/10"
+      className="flex size-6 items-center justify-center rounded-full border border-black/10"
       style={{ backgroundColor: color.hex }}
       aria-hidden="true"
     >
       {selected && (
-        <Check className={`h-3 w-3 ${color.dark ? 'text-cream' : 'text-seal-ink'}`} strokeWidth={3} />
+        <Check className={`size-3 ${color.dark ? 'text-cream' : 'text-seal-ink'}`} strokeWidth={3} />
       )}
     </span>
   );
@@ -158,16 +158,16 @@ export default function DemoCustomizer() {
         <div className="border border-line bg-surface p-6 sm:p-8 lg:col-span-5">
           <div className="flex items-center justify-between border-b border-line pb-4">
             <span className="flex items-center gap-2 text-xs text-ink-muted">
-              <Sliders className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+              <Sliders className="size-3.5 text-gold" aria-hidden="true" />
               تنظیمات کارت
             </span>
             <button
               type="button"
               onClick={reset}
               title="بازنشانی"
-              className="flex h-8 w-8 items-center justify-center border border-line text-ink-muted transition-colors hover:border-line-strong hover:text-ink"
+              className="relative flex size-8 items-center justify-center border border-line text-ink-muted transition-colors after:absolute after:-inset-1.5 after:content-[''] hover:border-line-strong hover:text-ink"
             >
-              <RefreshCw className="h-3.5 w-3.5" aria-hidden="true" />
+              <RefreshCw className="size-3.5" aria-hidden="true" />
               <span className="sr-only">بازنشانی تنظیمات</span>
             </button>
           </div>
@@ -178,7 +178,7 @@ export default function DemoCustomizer() {
           <div className="mt-6 space-y-7">
             <fieldset>
               <legend className="mb-3 flex items-center gap-2 text-xs text-ink-muted">
-                <Palette className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                <Palette className="size-3.5 text-gold" aria-hidden="true" />
                 رنگ پاکت
               </legend>
               <div className="grid grid-cols-4 gap-2">
@@ -203,7 +203,7 @@ export default function DemoCustomizer() {
 
             <fieldset>
               <legend className="mb-3 flex items-center gap-2 text-xs text-ink-muted">
-                <Sparkles className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                <Sparkles className="size-3.5 text-gold" aria-hidden="true" />
                 رنگ متالیک
               </legend>
               <div className="grid grid-cols-4 gap-2">
@@ -228,7 +228,7 @@ export default function DemoCustomizer() {
 
             <div>
               <label htmlFor="seal-text" className="mb-3 flex items-center gap-2 text-xs text-ink-muted">
-                <Type className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                <Type className="size-3.5 text-gold" aria-hidden="true" />
                 متن مهر موم
               </label>
               <div className="mb-2 flex flex-wrap gap-1.5">
@@ -252,6 +252,8 @@ export default function DemoCustomizer() {
                 value={sealText}
                 onChange={(e) => setSealText(e.target.value)}
                 maxLength={8}
+                autoComplete="off"
+                enterKeyHint="done"
                 className={FIELD}
                 placeholder="متن دلخواه…"
               />
@@ -259,7 +261,7 @@ export default function DemoCustomizer() {
 
             <div>
               <label htmlFor="names-text" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
-                <Type className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                <Type className="size-3.5 text-gold" aria-hidden="true" />
                 نام‌های روی کارت
               </label>
               <input
@@ -268,13 +270,15 @@ export default function DemoCustomizer() {
                 value={namesText}
                 onChange={(e) => setNamesText(e.target.value)}
                 maxLength={32}
+                autoComplete="off"
+                enterKeyHint="done"
                 className={FIELD}
               />
             </div>
 
             <div>
               <label htmlFor="audio-track" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
-                <Music className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                <Music className="size-3.5 text-gold" aria-hidden="true" />
                 موسیقی
               </label>
               <div className="relative">
@@ -291,7 +295,7 @@ export default function DemoCustomizer() {
                   ))}
                 </select>
                 <ChevronDown
-                  className="pointer-events-none absolute end-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink-subtle"
+                  className="pointer-events-none absolute end-3 top-1/2 size-4 -translate-y-1/2 text-ink-subtle"
                   aria-hidden="true"
                 />
               </div>
@@ -302,7 +306,7 @@ export default function DemoCustomizer() {
               onClick={() => setIsCardOpen((v) => !v)}
               className="btn btn-ink w-full"
             >
-              <Eye className="h-4 w-4" aria-hidden="true" />
+              <Eye className="size-4" aria-hidden="true" />
               {isCardOpen ? 'بستن پاکت' : 'پیش‌نمایش گشودن کارت'}
             </button>
           </div>
@@ -312,7 +316,7 @@ export default function DemoCustomizer() {
         <div className="studio-table relative flex flex-col overflow-hidden border border-line lg:col-span-7">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line bg-surface/60 px-5 py-4">
             <span className="flex items-center gap-2 text-xs text-ink-muted">
-              <span className="h-1.5 w-1.5 rounded-full bg-gold" aria-hidden="true" />
+              <span className="size-1.5 rounded-full bg-gold" aria-hidden="true" />
               پیش‌نمایش زنده
             </span>
             <AudioPlayer trackType={audioTrack} trackTitle="پیش‌نمایش موسیقی" accentColor={foilColor} />
@@ -335,7 +339,7 @@ export default function DemoCustomizer() {
             >
               <div className="border border-paper-line bg-paper p-8 text-center text-paper-ink sm:p-12">
                 <span lang="en" className="latin text-xs text-paper-ink-muted">Your custom invitation</span>
-                <h2 className="mt-4 font-display text-3xl font-medium" style={{ color: foilColor }}>
+                <h2 className="mt-4 font-display text-3xl font-medium" style={{ color: `color-mix(in srgb, ${foilColor} 82%, var(--color-paper-ink))` }}>
                   {namesText}
                 </h2>
                 <p className="mx-auto mt-3 max-w-sm text-xs leading-[2] text-paper-ink-muted">
@@ -370,7 +374,7 @@ export default function DemoCustomizer() {
                 <dt className="flex items-center gap-2 text-xs text-ink-subtle">
                   {spec.dot && (
                     <span
-                      className="h-2.5 w-2.5 shrink-0 rounded-full border border-black/10"
+                      className="size-2.5 shrink-0 rounded-full border border-black/10"
                       style={{ backgroundColor: spec.dot }}
                       aria-hidden="true"
                     />

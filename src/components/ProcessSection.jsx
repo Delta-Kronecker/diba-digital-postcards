@@ -42,7 +42,7 @@ export default function ProcessSection() {
           </p>
 
           <div className="mt-12 flex items-center gap-4">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border border-gold/50 font-display text-lg text-gold-deep">
+            <span className="flex size-12 items-center justify-center rounded-full border border-gold/50 font-display text-lg text-gold-deep">
               د
             </span>
             <div>
@@ -67,8 +67,8 @@ export default function ProcessSection() {
                     </h3>
                     <p className="mt-3 max-w-md text-sm leading-[2] text-ink-muted">{step.text}</p>
                   </div>
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-subtle transition-colors duration-base group-hover:border-gold group-hover:text-gold">
-                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-subtle transition-colors duration-base group-hover:border-gold group-hover:text-gold">
+                    <Icon className="size-5" aria-hidden="true" />
                   </span>
                 </div>
               </div>

@@ -5,7 +5,7 @@ import Footer from '../components/Footer';
 
 export default function CustomizerPage({ currentRoute = 'customizer', onNavigate = () => {} }) {
   return (
-    <div className="flex min-h-screen flex-col bg-canvas font-body text-ink">
+    <div className="flex min-h-dvh flex-col bg-canvas font-body text-ink">
       <Navbar currentRoute={currentRoute} onNavigate={onNavigate} />
       <div className="flex-1 py-12 md:py-20">
         <DemoCustomizer />

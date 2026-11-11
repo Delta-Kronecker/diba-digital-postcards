@@ -161,12 +161,12 @@ export default function AudioPlayer({
         }`}
         style={isPlaying ? { backgroundColor: accentColor, borderColor: accentColor } : undefined}
       >
-        {isPlaying ? <Volume2 className="h-3.5 w-3.5" aria-hidden="true" /> : <VolumeX className="h-3.5 w-3.5" aria-hidden="true" />}
+        {isPlaying ? <Volume2 className="size-3.5" aria-hidden="true" /> : <VolumeX className="size-3.5" aria-hidden="true" />}
       </button>
 
       <div className="min-w-0 flex-1">
         <p className={`flex min-w-0 items-center gap-1.5 text-xs ${strong}`}>
-          <Music className="h-3 w-3 shrink-0 opacity-60" aria-hidden="true" />
+          <Music className="size-3 shrink-0 opacity-60" aria-hidden="true" />
           <span className="truncate">{trackTitle}</span>
         </p>
         <p className={`mt-0.5 text-xs ${muted}`} aria-live="polite">

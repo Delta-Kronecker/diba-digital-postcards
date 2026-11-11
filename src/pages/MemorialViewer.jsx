@@ -73,12 +73,12 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
   }, [isCondolenceOpen]);
 
   return (
-    <div data-theme="memorial" className="min-h-screen bg-canvas font-body text-ink">
+    <div data-theme="memorial" className="min-h-dvh bg-canvas font-body text-ink">
       <ViewerBar onNavigate={onNavigate} onCopy={handleCopyLink} copied={copied} />
 
       {copied && (
         <div className="fixed left-1/2 top-20 z-toast flex -translate-x-1/2 items-center gap-2 border border-line bg-ink px-5 py-2.5 text-xs text-canvas shadow-lift">
-          <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+          <CheckCircle2 className="size-3.5" aria-hidden="true" />
           لینک یادبود در حافظه کپی شد
         </div>
       )}
@@ -93,7 +93,7 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
           onOpen={() => setIsOpen(true)}
           sealText="یاد"
           category="memorial"
-          accentColor="#687567"
+          accentColor="var(--color-gold)"
           hasGold={false}
           title="یادبود حاج رضا تهرانی"
           showBeams={false}
@@ -101,7 +101,7 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
           <InvitationCard
             data={data}
             variant="memorial"
-            audio={<AudioPlayer trackType={data.audioTrack.type} trackTitle={data.audioTrack.title} accentColor="#687567" />}
+            audio={<AudioPlayer trackType={data.audioTrack.type} trackTitle={data.audioTrack.title} accentColor="var(--color-gold)" />}
             onRsvp={() => setIsRsvpOpen(true)}
             onCondolence={() => setIsCondolenceOpen(true)}
             onLightbox={openLightboxAt}
@@ -117,12 +117,12 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
         eventSlug={data.slug}
         eventTitle={data.title}
         category={data.category}
-        accentColor="#687567"
+        accentColor="var(--color-gold)"
         hasGold={false}
       />
 
       {isCondolenceOpen && (
-        <div className="fixed inset-0 z-modal flex items-center justify-center overflow-y-auto bg-scrim/70 p-4 backdrop-blur-sm">
+        <div className="fixed inset-0 z-modal flex items-center justify-center overflow-y-auto overscroll-contain bg-scrim/70 safe-overlay backdrop-blur-sm">
           <div
             ref={dialogRef}
             role="dialog"
@@ -135,9 +135,9 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
               type="button"
               onClick={() => setIsCondolenceOpen(false)}
               aria-label="بستن پنجره"
-              className="absolute end-4 top-4 flex h-9 w-9 items-center justify-center border border-line text-ink-muted hover:border-line-strong hover:text-ink"
+              className="absolute end-4 top-4 flex size-9 items-center justify-center border border-line text-ink-muted hover:border-line-strong hover:text-ink"
             >
-              <X className="h-4 w-4" aria-hidden="true" />
+              <X className="size-4" aria-hidden="true" />
             </button>
 
             <div className="text-center">
@@ -152,8 +152,8 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
 
             {sent ? (
               <div className="mt-7 text-center" aria-live="polite">
-                <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-sage/10 text-sage">
-                  <CheckCircle2 className="h-6 w-6" aria-hidden="true" />
+                <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-sage/10 text-sage">
+                  <CheckCircle2 className="size-6" aria-hidden="true" />
                 </span>
                 <h3 className="mt-4 font-display text-lg text-ink">پیام شما ثبت شد</h3>
                 <p className="mx-auto mt-2 max-w-sm text-xs leading-[2] text-ink-muted">
@@ -179,7 +179,7 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
               >
                 <div>
                   <label htmlFor="condolence-name" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
-                    <User className="h-3.5 w-3.5 text-sage" aria-hidden="true" />
+                    <User className="size-3.5 text-sage" aria-hidden="true" />
                     نام و نام خانوادگی
                   </label>
                   <input
@@ -194,7 +194,7 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
                 </div>
                 <div>
                   <label htmlFor="condolence-text" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
-                    <MessageSquare className="h-3.5 w-3.5 text-sage" aria-hidden="true" />
+                    <MessageSquare className="size-3.5 text-sage" aria-hidden="true" />
                     متن تسلیت
                   </label>
                   <textarea
@@ -212,7 +212,7 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
                   className="btn w-full text-cream"
                   style={{ backgroundColor: 'var(--color-gold)', borderColor: 'var(--color-gold)' }}
                 >
-                  <Send className="h-4 w-4" aria-hidden="true" />
+                  <Send className="size-4" aria-hidden="true" />
                   ارسال پیام تسلیت
                 </button>
               </form>

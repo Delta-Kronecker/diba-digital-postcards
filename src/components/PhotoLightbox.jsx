@@ -86,7 +86,7 @@ export default function PhotoLightbox({
       role="dialog"
       aria-modal="true"
       aria-label="گالری تصاویر"
-      className="fixed inset-0 z-overlay flex flex-col bg-scrim-deep/96 backdrop-blur-xl"
+      className="fixed inset-0 z-overlay flex flex-col bg-scrim-deep/96 backdrop-blur-lg safe-y"
     >
       <div className="flex items-center justify-between gap-4 border-b border-cream/12 px-5 py-4 text-cream md:px-8">
         <div aria-live="polite">
@@ -104,7 +104,7 @@ export default function PhotoLightbox({
             aria-label="بستن گالری"
             className="flex min-h-11 min-w-11 items-center justify-center border border-cream/20 text-cream transition-colors hover:border-cream/50"
           >
-            <X className="h-5 w-5" aria-hidden="true" />
+            <X className="size-5" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -117,7 +117,7 @@ export default function PhotoLightbox({
           <Picture
             src={currentImage.url}
             alt={currentImage.title || 'تصویر گالری'}
-            className="max-h-[68vh] w-auto max-w-full select-none object-contain shadow-photo"
+            className="max-h-[68dvh] w-auto max-w-full select-none object-contain shadow-photo"
             loading="eager"
             decoding="async"
           />
@@ -128,17 +128,17 @@ export default function PhotoLightbox({
                 type="button"
                 onClick={prev}
                 aria-label="تصویر قبلی"
-                className="absolute start-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-scrim-deep/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:start-4"
+                className="absolute start-2 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-scrim-deep/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:start-4"
               >
-                <ChevronRight className="h-5 w-5" aria-hidden="true" />
+                <ChevronRight className="size-5" aria-hidden="true" />
               </button>
               <button
                 type="button"
                 onClick={next}
                 aria-label="تصویر بعدی"
-                className="absolute end-2 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-scrim-deep/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:end-4"
+                className="absolute end-2 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center border border-cream/25 bg-scrim-deep/50 text-cream backdrop-blur-md transition-colors hover:border-gold hover:text-gold md:end-4"
               >
-                <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+                <ChevronLeft className="size-5" aria-hidden="true" />
               </button>
             </>
           )}

@@ -30,7 +30,7 @@ export default function Testimonial() {
           </blockquote>
 
           <div className="mt-12 flex items-center gap-4 border-t border-line pt-6">
-            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-gold/40 font-display text-sm text-gold-deep">
+            <span className="flex size-11 items-center justify-center rounded-full border border-gold/40 font-display text-sm text-gold-deep">
               س
             </span>
             <div>
@@ -43,7 +43,7 @@ export default function Testimonial() {
               aria-label="امتیاز پنج از پنج"
             >
               {Array.from({ length: 5 }, (_, i) => (
-                <Star key={i} className="h-3.5 w-3.5 fill-current" aria-hidden="true" />
+                <Star key={i} className="size-3.5 fill-current" aria-hidden="true" />
               ))}
             </span>
           </div>

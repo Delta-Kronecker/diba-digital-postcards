@@ -24,7 +24,7 @@ export default function MarqueeBand() {
                   <span className="whitespace-nowrap px-6 font-body text-xs text-cream/75">
                     {item}
                   </span>
-                  <span className="h-1 w-1 rotate-45 bg-gold/70" />
+                  <span className="size-1 rotate-45 bg-gold/70" />
                 </span>
               ))}
             </div>

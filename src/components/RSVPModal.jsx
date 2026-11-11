@@ -98,7 +98,9 @@ export default function RSVPModal({
     e.preventDefault();
     if (!fullName.trim()) {
       setError('لطفاً نام و نام خانوادگی خود را وارد کنید.');
-      nameRef.current?.focus();
+      window.requestAnimationFrame(() => {
+        nameRef.current?.focus();
+      });
       return;
     }
     if (submitting) return;
@@ -127,7 +129,7 @@ export default function RSVPModal({
     }, 0);
   };
 
-  const accent = isMemorial ? '#687567' : accentColor;
+  const accent = isMemorial ? 'var(--color-gold)' : accentColor;
 
   const accentInk = (() => {
     const match = /^#?([0-9a-f]{6})$/i.exec(String(accent).trim());
@@ -147,13 +149,13 @@ export default function RSVPModal({
   const selectable = (active) =>
     active
       ? isMemorial
-        ? 'border-sage bg-sage text-cream'
+        ? 'border-sage bg-sage-solid text-cream'
         : 'border-ink bg-ink text-canvas'
       : 'border-line bg-canvas/40 text-ink-muted hover:border-line-strong';
 
   return (
     <div
-      className="fixed inset-0 z-modal flex items-center justify-center overflow-y-auto bg-scrim/70 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-modal flex items-center justify-center overflow-y-auto overscroll-contain bg-scrim/70 safe-overlay backdrop-blur-sm"
       role="presentation"
     >
       <div
@@ -176,7 +178,7 @@ export default function RSVPModal({
           aria-label="بستن پنجره"
           className="absolute end-4 top-4 flex min-h-11 min-w-11 items-center justify-center border border-line text-ink-muted transition-colors hover:border-line-strong hover:text-ink"
         >
-          <X className="h-4 w-4" aria-hidden="true" />
+          <X className="size-4" aria-hidden="true" />
         </button>
 
         <div className="text-center">
@@ -193,8 +195,8 @@ export default function RSVPModal({
 
         {submitted ? (
           <div className="mt-8 text-center" aria-live="polite">
-            <span className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full ${isMemorial ? 'bg-sage/10 text-sage' : 'bg-gold/10 text-gold-deep'}`}>
-              <Check className="h-6 w-6" aria-hidden="true" />
+            <span className={`mx-auto flex size-14 items-center justify-center rounded-full ${isMemorial ? 'bg-sage/10 text-sage' : 'bg-gold/10 text-gold-deep'}`}>
+              <Check className="size-6" aria-hidden="true" />
             </span>
             <h3 className="mt-4 font-display text-lg text-ink">پاسخ شما ذخیره شد</h3>
             <p className="mx-auto mt-2 max-w-sm text-xs leading-[2] text-ink-muted">
@@ -240,7 +242,7 @@ export default function RSVPModal({
           <form onSubmit={submit} className="mt-7 space-y-5 text-start" noValidate>
             <div>
               <label htmlFor="rsvp-name" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
-                <User className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                <User className="size-3.5 text-gold" aria-hidden="true" />
                 نام و نام خانوادگی
               </label>
               <input
@@ -267,7 +269,7 @@ export default function RSVPModal({
                   role="alert"
                   className="mt-2 flex items-center gap-2 border border-danger/40 bg-danger/5 px-3 py-2 text-xs text-danger"
                 >
-                  <AlertCircle className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <AlertCircle className="size-3.5 shrink-0" aria-hidden="true" />
                   {error}
                 </p>
               )}
@@ -275,7 +277,7 @@ export default function RSVPModal({
 
             <fieldset>
               <legend className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
-                <Calendar className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                <Calendar className="size-3.5 text-gold" aria-hidden="true" />
                 آیا در مراسم شرکت می‌کنید؟
               </legend>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -291,7 +293,7 @@ export default function RSVPModal({
             {attending === 'yes' && (
               <div>
                 <label htmlFor="rsvp-guests" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
-                  <Users className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                  <Users className="size-3.5 text-gold" aria-hidden="true" />
                   تعداد نفرات همراه
                 </label>
                 <select
@@ -311,7 +313,7 @@ export default function RSVPModal({
 
             <div>
               <label htmlFor="rsvp-notes" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
-                <MessageSquare className="h-3.5 w-3.5 text-gold" aria-hidden="true" />
+                <MessageSquare className="size-3.5 text-gold" aria-hidden="true" />
                 {isMemorial ? 'پیام تسلیت برای خانواده' : 'پیام تبریک یا یادداشت'}
               </label>
               <textarea
@@ -332,9 +334,9 @@ export default function RSVPModal({
               style={{ backgroundColor: accent, borderColor: accent, color: accentInk }}
             >
               {submitting ? (
-                <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
               ) : (
-                <Send className="h-4 w-4" aria-hidden="true" />
+                <Send className="size-4" aria-hidden="true" />
               )}
               {submitting ? 'در حال ثبت…' : 'ثبت نهایی پاسخ'}
             </button>

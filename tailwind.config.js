@@ -7,6 +7,12 @@ const token = (name) => `rgb(var(--color-${name}-rgb) / <alpha-value>)`;
 
 export default {
   darkMode: 'class',
+  // Tailwind 3 emits `hover:` unconditionally, so on touch the state latches
+  // after a tap and reads as stuck. This wraps every hover style (and its
+  // group-/peer- variants) in `@media (hover: hover) and (pointer: fine)`.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -33,8 +39,10 @@ export default {
           DEFAULT: token('gold'),
           soft: token('gold-soft'),
           deep: token('gold-deep'),
+          solid: token('gold-solid'),
         },
         sage: token('sage'),
+        'sage-solid': token('sage-solid'),
         rose: token('rose'),
         cream: token('cream'),
         scrim: token('scrim'),
@@ -137,10 +145,6 @@ export default {
           '0%, 100%': { transform: 'translateY(0) rotate(0deg)' },
           '50%': { transform: 'translateY(-10px) rotate(-0.6deg)' },
         },
-        spinSlow: {
-          '0%': { transform: 'rotate(0deg)' },
-          '100%': { transform: 'rotate(360deg)' },
-        },
         sheen: {
           '0%': { transform: 'translateX(-140%) skewX(-14deg)' },
           '100%': { transform: 'translateX(160%) skewX(-14deg)' },
@@ -148,11 +152,10 @@ export default {
       },
       animation: {
         marquee: 'marquee 38s linear infinite',
-        'reveal-up': 'revealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) both',
-        'fade-in': 'fadeIn 0.6s ease both',
+        'reveal-up': 'revealUp 0.9s var(--ease-out-expo) both',
+        'fade-in': 'fadeIn 0.5s var(--ease-ui-out) both',
         'float-soft': 'floatSoft 8s ease-in-out infinite',
-        'spin-slow': 'spinSlow 26s linear infinite',
-        sheen: 'sheen 1.9s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both',
+        sheen: 'sheen 1.9s var(--ease-out-expo) 0.5s both',
       },
     },
   },

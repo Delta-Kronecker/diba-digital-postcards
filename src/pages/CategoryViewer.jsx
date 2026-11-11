@@ -32,12 +32,12 @@ export default function CategoryViewer({ slug = 'general-gallery-opening', onNav
   };
 
   return (
-    <div className="min-h-screen bg-canvas font-body text-ink">
+    <div className="min-h-dvh bg-canvas font-body text-ink">
       <ViewerBar onNavigate={onNavigate} onCopy={handleCopyLink} copied={copied} />
 
       {copied && (
         <div className="fixed left-1/2 top-20 z-toast flex -translate-x-1/2 items-center gap-2 border border-line bg-ink px-5 py-2.5 text-xs text-canvas shadow-lift">
-          <CheckCircle2 className="h-3.5 w-3.5" aria-hidden="true" />
+          <CheckCircle2 className="size-3.5" aria-hidden="true" />
           لینک دعوت در حافظه کپی شد
         </div>
       )}
