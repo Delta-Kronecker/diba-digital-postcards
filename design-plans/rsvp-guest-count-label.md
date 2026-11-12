@@ -96,3 +96,10 @@ quantity. Do not take this path without an owner decision.
 - None required. Interface copy is not pinned in `docs/DESIGN_SYSTEM.md`; if the owner ever
   decides the quantity is "companions", record that decision next to the RSVP copy rather
   than in the design system.
+
+---
+
+**Status: executed.** The label at `RSVPModal.jsx:298` now reads `تعداد نفرات`, matching the
+confirmation row's heading. Verified in the rendered DOM at the same five mounts
+(`scratchpad/rsvp-fix-verify.mjs`); the accessible name of `#rsvp-guests` follows the label,
+and the five option values are unchanged.

@@ -89,3 +89,10 @@ it removes the one place in the traced surface that bypasses the existing one.
 
 - None. The type scale, the tracking table and the numeral convention already say what this
   change follows; no sentence in `docs/DESIGN_SYSTEM.md` needs to change.
+
+---
+
+**Status: executed.** `toPersianDigits` is imported and applied at `RSVPModal.jsx:217`.
+Verified in the rendered DOM at five mounts — `#wedding` 1280 light, `#wedding` 390, `#wedding`
+1280 dark, `#memorial`, `#birthday` — all reading `تعداد نفرات` / `۲ نفر`
+(`scratchpad/rsvp-fix-verify.mjs`, evidence in `scratchpad/skill23/fixed/`).

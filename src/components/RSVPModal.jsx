@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Check, AlertCircle, Loader2, User, Users, MessageSquare, Send, Calendar } from 'lucide-react';
 import { useScrollLock } from '../hooks/useScrollLock';
+import { toPersianDigits } from '../utils/numbers';
 
 export default function RSVPModal({
   isOpen = false,
@@ -213,7 +214,7 @@ export default function RSVPModal({
               {attending === 'yes' && (
                 <div className="flex justify-between gap-4">
                   <dt className="text-ink-subtle">تعداد نفرات</dt>
-                  <dd className="text-ink">{guestCount} نفر</dd>
+                  <dd className="text-ink">{toPersianDigits(guestCount)} نفر</dd>
                 </div>
               )}
               {notes && (
@@ -294,7 +295,7 @@ export default function RSVPModal({
               <div>
                 <label htmlFor="rsvp-guests" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
                   <Users className="size-3.5 text-gold" aria-hidden="true" />
-                  تعداد نفرات همراه
+                  تعداد نفرات
                 </label>
                 <select
                   id="rsvp-guests"
