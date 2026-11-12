@@ -816,7 +816,12 @@ export default function ThreeDEnvelope({
           className="group relative w-full"
           style={{ aspectRatio: `${W} / ${H}` }}
         >
-          <div aria-hidden="true" className="absolute inset-0">
+          <div
+            aria-hidden="true"
+            /* under reduced motion nothing rotates, so freezing the texture
+               would only pop the grain back in at the end of the beat */
+            className={`absolute inset-0 ${isOpening && !reduced ? 'env-opening' : ''}`}
+          >
             <div className="absolute inset-0" style={{ perspective: '1500px' }}>
               <div
                 className="h-full w-full transition-transform duration-slow ease-out-expo"
@@ -1017,7 +1022,6 @@ export default function ThreeDEnvelope({
                     {/* the bottom fold — the clean front face of the envelope */}
                     <path d={POCKET_PATH} fill={paper} />
                     <path d={POCKET_PATH} fill="url(#envFaceLight)" />
-                    <path d={POCKET_PATH} fill="url(#envShade)" opacity="0.28" />
                     <g clipPath="url(#envFaceClip)">
                       <path d={POCKET_PATH} filter="url(#envTooth)" opacity="0.5" />
                       <path d={POCKET_PATH} filter="url(#envFibreH)" opacity="0.22" />
@@ -1257,7 +1261,6 @@ export default function ThreeDEnvelope({
                         </defs>
                         <path d={FLAP_PATH} fill={paper} />
                         <path d={FLAP_PATH} fill="url(#envFaceLight)" />
-                        <path d={FLAP_PATH} fill="url(#envShade)" opacity="0.22" />
                         <g clipPath="url(#envFlapClip)">
                           <path d={FLAP_PATH} filter="url(#envTooth)" opacity="0.42" />
                           <path d={FLAP_PATH} filter="url(#envFibreV)" opacity="0.18" />
@@ -1306,7 +1309,6 @@ export default function ThreeDEnvelope({
                         </defs>
                         <path d={FLAP_PATH} fill={paper} />
                         <path d={FLAP_PATH} fill="url(#envFlapBack)" />
-                        <path d={FLAP_PATH} fill="url(#envShade)" opacity="0.3" />
                         <g clipPath="url(#envFlapClipBack)">
                           <path d={FLAP_PATH} filter="url(#envTooth)" opacity="0.5" />
                         </g>

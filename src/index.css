@@ -688,6 +688,20 @@
   .marquee-track { animation: none !important; }
 }
 
+/* While the envelope is moving, its paper-texture filters are switched off.
+   An SVG filter inside a 3D-rotating subtree is re-executed for every new
+   raster, and the combined cost of the tooth / fibre / shade layers was the
+   whole of the open animation's frame-time excess (measured, per filter, with
+   scratchpad/env-perf.mjs). Grain is not resolvable while a surface is turning,
+   and the rule stops applying the moment the animation settles, so no settled
+   pixel changes. The wax shadow, the cast shadows and the fold shading stay:
+   those are the depth cues the eye actually tracks through the motion. */
+.env-opening [filter*='envTooth'],
+.env-opening [filter*='envFibre'],
+.env-opening [filter*='envShade'] {
+  filter: none !important;
+}
+
 /* One soft pass of light across a plate, played once on load. */
 @keyframes sheen {
   from { transform: translateX(-140%) skewX(-14deg); }
