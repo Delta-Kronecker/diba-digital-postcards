@@ -101,7 +101,22 @@ export default function GallerySection({ onNavigate = () => {} }) {
       </p>
 
       {!activeCard ? (
-        <p className="py-16 text-center text-sm text-ink-subtle">نمونه‌ای در این دسته یافت نشد.</p>
+        <div className="py-16 text-center">
+          <p className="font-display text-lg text-ink">نمونه‌ای در این دسته‌بندی یافت نشد</p>
+          <p className="mt-2 text-xs text-ink-subtle">
+            برای بازگشت به فهرست کامل، تمامی نمونه‌ها را انتخاب کنید.
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setFilter('all');
+              setActive(0);
+            }}
+            className="btn btn-outline mt-6 !py-2.5 !text-xs"
+          >
+            مشاهدهٔ همهٔ نمونه‌ها
+          </button>
+        </div>
       ) : (
         <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Index list, right column in RTL */}

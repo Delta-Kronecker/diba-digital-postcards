@@ -52,11 +52,10 @@ export default function WeddingViewer({ onNavigate = () => {} }) {
         <ThreeDEnvelope
           isOpen={isOpen}
           onOpen={() => setIsOpen(true)}
+          openLabel="گشودن پاکت دعوت"
           sealText={data.theme.sealText}
-          category={data.category}
-          accentColor={data.theme.accentColor}
-          hasGold={data.theme.hasGold}
-          title="عروسی امیرحسین و سارا"
+          accent={data.theme.accentColor}
+          metal={data.theme.hasGold}
         >
           <InvitationCard
             data={data}

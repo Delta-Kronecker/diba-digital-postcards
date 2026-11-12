@@ -50,11 +50,10 @@ export default function CategoryViewer({ slug = 'general-gallery-opening', onNav
         <ThreeDEnvelope
           isOpen={isOpen}
           onOpen={() => setIsOpen(true)}
+          openLabel="گشودن پاکت"
           sealText={data.theme.sealText}
-          category={data.category}
-          accentColor={data.theme.accentColor}
-          hasGold={data.theme.hasGold}
-          title={data.title}
+          accent={data.theme.accentColor}
+          metal={data.theme.hasGold}
         >
           <InvitationCard
             data={data}

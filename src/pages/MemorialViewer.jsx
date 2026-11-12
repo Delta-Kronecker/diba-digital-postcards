@@ -91,12 +91,11 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
         <ThreeDEnvelope
           isOpen={isOpen}
           onOpen={() => setIsOpen(true)}
+          openLabel="گشودن پاکت یادبود"
           sealText="یاد"
-          category="memorial"
-          accentColor="var(--color-gold)"
-          hasGold={false}
-          title="یادبود حاج رضا تهرانی"
-          showBeams={false}
+          accent="var(--color-sage)"
+          metal={false}
+          motion="gentle"
         >
           <InvitationCard
             data={data}
@@ -170,7 +169,7 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
               </div>
             ) : (
               <form
-                className="mt-6 space-y-5 text-start"
+                className="mt-6 flex flex-col gap-5 text-start"
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (!name.trim() || !message.trim()) return;

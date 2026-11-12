@@ -101,12 +101,11 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
               <ThreeDEnvelope
                 isOpen={isOpen}
                 onOpen={() => setIsOpen(true)}
+                openLabel="گشودن پاکت"
                 sealText="د"
-                title="دعوت‌نامهٔ اختصاصی دیبا"
-                accentColor="var(--color-gold)"
+                accent="var(--color-gold)"
+                metal
                 onDark
-                hasGold
-                showBeams={false}
               >
                 <div className="border border-paper-line bg-paper p-8 text-center text-paper-ink sm:p-10">
                   <span lang="en" className="latin block text-xs text-paper-ink-muted">The card is open</span>

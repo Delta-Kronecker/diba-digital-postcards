@@ -197,7 +197,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
               })}
             </ul>
 
-            <div className="mt-10 space-y-4">
+            <div className="mt-10 flex flex-col gap-4">
               <button type="button" onClick={() => go('customizer')} className="btn btn-ink w-full">
                 شروع طراحی اختصاصی
                 <ArrowUpLeft className="size-4" aria-hidden="true" />

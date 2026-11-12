@@ -175,7 +175,7 @@ export default function DemoCustomizer() {
             تغییرات شما به‌صورت خودکار در همین مرورگر ذخیره می‌شود.
           </p>
 
-          <div className="mt-6 space-y-7">
+          <div className="mt-6 flex flex-col gap-7">
             <fieldset>
               <legend className="mb-3 flex items-center gap-2 text-xs text-ink-muted">
                 <Palette className="size-3.5 text-gold" aria-hidden="true" />
@@ -330,12 +330,11 @@ export default function DemoCustomizer() {
             <ThreeDEnvelope
               isOpen={isCardOpen}
               onOpen={() => setIsCardOpen(true)}
+              openLabel="گشودن پاکت سفارشی"
               sealText={sealText}
-              accentColor={foilColor}
-              hasGold
-              envelopeColor={envelopeBg}
-              title="دعوت‌نامهٔ سفارشی شما"
-              showBeams={false}
+              accent={foilColor}
+              metal
+              paper={envelopeBg}
             >
               <div className="border border-paper-line bg-paper p-8 text-center text-paper-ink sm:p-12">
                 <span lang="en" className="latin text-xs text-paper-ink-muted">Your custom invitation</span>

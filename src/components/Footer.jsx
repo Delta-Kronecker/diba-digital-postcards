@@ -65,7 +65,7 @@ export default function Footer({ onNavigate = () => {} }) {
 
           <nav aria-label="مجموعه‌ها" className="md:col-span-3">
             <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Collections</h2>
-            <ul className="space-y-3">
+            <ul className="flex flex-col gap-3">
               {COLLECTIONS.map(([id, label]) => (
                 <li key={id}>
                   <button
@@ -82,7 +82,7 @@ export default function Footer({ onNavigate = () => {} }) {
 
           <nav aria-label="آتلیه" className="md:col-span-2">
             <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Atelier</h2>
-            <ul className="space-y-3">
+            <ul className="flex flex-col gap-3">
               {STUDIO.map(([id, label]) => (
                 <li key={id}>
                   <button
@@ -99,7 +99,7 @@ export default function Footer({ onNavigate = () => {} }) {
 
           <div className="md:col-span-2">
             <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Contact</h2>
-            <ul className="space-y-3 text-xs text-cream/65">
+            <ul className="flex flex-col gap-3 text-xs text-cream/65">
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 size-3.5 shrink-0 text-gold/70" aria-hidden="true" />
                 تهران، فرشته

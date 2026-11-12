@@ -203,7 +203,7 @@ export default function RSVPModal({
               با تشکر از {fullName} عزیز؛ پاسخ فقط روی همین دستگاه ذخیره می‌شود و برای میزبان ارسال نمی‌شود.
             </p>
 
-            <dl className="mt-6 space-y-2 border-y border-line py-4 text-start text-xs">
+            <dl className="mt-6 flex flex-col gap-2 border-y border-line py-4 text-start text-xs">
               <div className="flex justify-between gap-4">
                 <dt className="text-ink-subtle">وضعیت حضور</dt>
                 <dd className="text-ink">
@@ -239,7 +239,7 @@ export default function RSVPModal({
             </div>
           </div>
         ) : (
-          <form onSubmit={submit} className="mt-7 space-y-5 text-start" noValidate>
+          <form onSubmit={submit} className="mt-7 flex flex-col gap-5 text-start" noValidate>
             <div>
               <label htmlFor="rsvp-name" className="mb-2 flex items-center gap-2 text-xs text-ink-muted">
                 <User className="size-3.5 text-gold" aria-hidden="true" />

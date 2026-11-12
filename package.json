@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npx vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --host 127.0.0.1",
     "check:design": "node scripts/check-design-system.mjs"
   },
   "dependencies": {
