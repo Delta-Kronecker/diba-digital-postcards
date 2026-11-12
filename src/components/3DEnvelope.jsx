@@ -37,8 +37,18 @@ const POCKET_PATH =
   ` L ${W - 1.5} ${H - 3.4} Q ${W - 1.1} ${H} ${W - 4.6} ${H}` +
   ` L 4.6 ${H} Q 1.1 ${H} 1.5 ${H - 3.4}` +
   ` L 10.2 ${POCKET_TOP + 2.6} Q 10.8 ${POCKET_TOP} 12.5 ${POCKET_TOP} Z`;
-const SIDE_L_PATH = 'M 0 0 L 288 182 L 0 182 Z';
-const SIDE_R_PATH = `M ${W} 0 L 292 182 L ${W} 182 Z`;
+/* The side folds stop ON the bottom fold's fold line (152), not past it.
+ * Their diagonal is the same straight line either way — (0,0) to (288,182) put
+ * its 152 mark at x=240.5 — so the mouth, the flap's V and the fold-cast shadow
+ * are untouched. What the old 152..182 tail did was leave a 12.5 x 30 unit wedge
+ * of the side fold exposed under the fold line, between the envelope's edge and
+ * the pocket's tapered edge: flat (the side folds carry no texture filter) and a
+ * clear step brighter than the pocket beside it. At 4x it read as a tab of
+ * lighter paper stuck to each edge. Truncated, that wedge is the interior panel
+ * instead, which is the same textured stock as the pocket, so the margin reads
+ * as one sheet with a crease on it rather than as two. */
+const SIDE_L_PATH = 'M 0 0 L 240.5 152 L 0 152 Z';
+const SIDE_R_PATH = `M ${W} 0 L ${W - 240.5} 152 L ${W} 152 Z`;
 /* one foil rule, following the flap's real cut edge (inset 14 units). There used
  * to be a second at inset 17: 3 units away at the top and 1 unit at the tip, so
  * it visibly pinched onto the first just above the seal. Two parallel gold
@@ -393,7 +403,14 @@ export default function ThreeDEnvelope({
                  The old tooth ran at baseFrequency 0.86 with 3 octaves and a
                  steep alpha cut, which is a coarse sandpaper grain. A premium
                  cotton sheet is much finer than that and its irregularity is
-                 low-amplitude. */}
+                 low-amplitude.
+                 The frequency is 0.9, not higher: the filter is evaluated on the
+                 device-pixel grid, so at 1.35 a noise cell was about 1.3 device
+                 pixels wide and the second octave aliased into dark flecks - on
+                 a phone the sheet read as speckled sand rather than as paper.
+                 0.9 puts a cell at ~2-3 device pixels at every breakpoint, which
+                 resolves instead of aliasing, so the grain is *smoother* and
+                 more even while being, in user units, coarser. */}
             <filter
               id="envTooth"
               x="-3%"
@@ -402,7 +419,7 @@ export default function ThreeDEnvelope({
               height="106%"
               colorInterpolationFilters="sRGB"
             >
-              <feTurbulence type="fractalNoise" baseFrequency="1.35" numOctaves="2" seed="23" result="n" />
+              <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="23" result="n" />
               <feColorMatrix in="n" type="luminanceToAlpha" result="a" />
               <feComponentTransfer in="a" result="cut">
                 <feFuncA type="linear" slope="0.5" intercept="-0.17" />
