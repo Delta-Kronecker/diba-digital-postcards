@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import ThreeDEnvelope from './3DEnvelope';
 import AudioPlayer from './AudioPlayer';
+import SectionMark from './SectionMark';
 
 const ENVELOPE_COLORS = [
   { id: 'ivory', name: 'عاجی', hex: '#EFE6D7', dark: false },
@@ -85,7 +86,10 @@ function ColorSwatch({ color, selected }) {
       aria-hidden="true"
     >
       {selected && (
-        <Check className={`size-3 ${color.dark ? 'text-cream' : 'text-seal-ink'}`} strokeWidth={3} />
+        <Check
+          className={`size-3 [stroke-width:3] ${color.dark ? 'text-cream' : 'text-seal-ink'}`}
+          strokeWidth={3}
+        />
       )}
     </span>
   );
@@ -142,6 +146,7 @@ export default function DemoCustomizer() {
     <section className="shell">
       <div className="grid grid-cols-1 items-end gap-6 border-b border-line pb-8 lg:grid-cols-12">
         <div className="lg:col-span-8">
+          <SectionMark number="۰۷" className="mb-4">استودیو طراحی</SectionMark>
           <h1 className="display-section max-w-2xl text-ink">
             کارت خود را همین‌جا
             <span className="text-ink-muted"> شکل بدهید.</span>
@@ -164,11 +169,11 @@ export default function DemoCustomizer() {
             <button
               type="button"
               onClick={reset}
-              title="بازنشانی"
-              className="relative flex size-8 items-center justify-center border border-line text-ink-muted transition-colors after:absolute after:-inset-1.5 after:content-[''] hover:border-line-strong hover:text-ink"
+              aria-label="بازنشانی تنظیمات"
+              className="relative flex items-center gap-1.5 border border-line px-2.5 py-1.5 text-xs text-ink-muted transition-colors after:absolute after:-inset-2 after:content-[''] hover:border-line-strong hover:text-ink"
             >
-              <RefreshCw className="size-3.5" aria-hidden="true" />
-              <span className="sr-only">بازنشانی تنظیمات</span>
+              <RefreshCw className="size-3.5 shrink-0" aria-hidden="true" />
+              بازنشانی
             </button>
           </div>
           <p className="mt-3 text-xs leading-[1.8] text-ink-subtle" role="status">
@@ -380,7 +385,7 @@ export default function DemoCustomizer() {
                   )}
                   {spec.k}
                 </dt>
-                <dd className="mt-1.5 truncate font-display text-sm text-ink">{spec.v}</dd>
+                <dd className="mt-1.5 truncate font-display text-sm text-ink" title={spec.v}>{spec.v}</dd>
               </div>
             ))}
           </dl>

@@ -11,12 +11,43 @@ const NAV_ITEMS = [
   { id: 'customizer', label: 'استودیو' },
 ];
 
+/**
+ * One mark, two places. The drawer used to repeat "دیبا" as bare text while the
+ * header showed the full lockup, so the same brand appeared at two sizes and
+ * two levels of detail on one screen.
+ */
+function LogoBlock({ onClick }) {
+  return (
+    <button type="button" onClick={onClick} className="group flex items-center gap-3 text-start">
+      <span className="flex size-10 items-center justify-center border border-gold/50 bg-surface" aria-hidden="true">
+        <span className="font-display text-lg leading-none text-gold-deep">د</span>
+      </span>
+      <span className="flex flex-col leading-none">
+        <span className="font-display text-[1.35rem] font-semibold text-ink transition-colors group-hover:text-gold-deep">
+          دیبا
+        </span>
+        <span lang="en" className="latin mt-1 text-xs text-ink-subtle" aria-hidden="true">
+          Diba Atelier
+        </span>
+      </span>
+    </button>
+  );
+}
+
 export default function Navbar({ currentRoute = 'home', onNavigate = () => {} }) {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const drawerRef = useRef(null);
   const toggleRef = useRef(null);
 
   useScrollLock(open);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   const go = (id) => {
     setOpen(false);
@@ -71,25 +102,13 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
 
   return (
     <>
-      <header className="sticky top-0 z-sticky border-b border-line bg-canvas/88 backdrop-blur-lg safe-t">
+      <header
+        className={`sticky top-0 z-sticky border-b border-line bg-canvas/88 backdrop-blur-lg safe-t transition-shadow duration-base ${
+          scrolled ? 'shadow-soft' : ''
+        }`}
+      >
         <div className="shell flex h-[76px] items-center justify-between gap-6">
-          <button
-            type="button"
-            onClick={() => go('home')}
-            className="group flex items-center gap-3 text-start"
-          >
-            <span className="flex size-10 items-center justify-center border border-gold/50 bg-surface" aria-hidden="true">
-              <span className="font-display text-lg leading-none text-gold-deep">د</span>
-            </span>
-            <span className="flex flex-col leading-none">
-              <span className="font-display text-[1.35rem] font-semibold text-ink transition-colors group-hover:text-gold-deep">
-                دیبا
-              </span>
-              <span lang="en" className="latin mt-1 text-xs text-ink-subtle" aria-hidden="true">
-                Diba Atelier
-              </span>
-            </span>
-          </button>
+          <LogoBlock onClick={() => go('home')} />
 
           <nav aria-label="مسیرهای اصلی" className="hidden items-center gap-8 lg:flex">
             {NAV_ITEMS.map((item) => {
@@ -133,7 +152,8 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
               aria-label="گشودن منو"
               aria-expanded={open}
               aria-controls="mobile-menu"
-              className="inline-flex min-h-11 min-w-11 items-center justify-center border border-line text-ink transition-colors hover:border-line-strong lg:hidden"
+              title="منو"
+              className="relative inline-flex size-10 items-center justify-center border border-line text-ink transition-colors after:absolute after:-inset-[3px] after:content-[''] hover:border-line-strong lg:hidden"
             >
               <Menu className="size-5" aria-hidden="true" />
             </button>
@@ -151,7 +171,12 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
           className="fixed inset-0 z-modal flex flex-col bg-canvas lg:hidden safe-y"
         >
           <div className="shell flex h-[76px] shrink-0 items-center justify-between border-b border-line">
-            <span className="font-display text-2xl font-semibold text-ink">دیبا</span>
+            <LogoBlock
+              onClick={() => {
+                setOpen(false);
+                onNavigate('home');
+              }}
+            />
             <div className="flex items-center gap-2">
               <ThemeToggle />
               <button
@@ -161,7 +186,7 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
                   toggleRef.current?.focus({ preventScroll: true });
                 }}
                 aria-label="بستن منو"
-                className="inline-flex min-h-11 min-w-11 items-center justify-center border border-line text-ink"
+                className="relative inline-flex size-10 items-center justify-center border border-line text-ink after:absolute after:-inset-[3px] after:content-['']"
               >
                 <X className="size-5" aria-hidden="true" />
               </button>
@@ -173,7 +198,13 @@ export default function Navbar({ currentRoute = 'home', onNavigate = () => {} })
               {NAV_ITEMS.map((item) => {
                 const active = currentRoute === item.id;
                 return (
-                  <li key={item.id} className="border-b border-line">
+                  <li key={item.id} className="relative border-b border-line">
+                    {active && (
+                      <span
+                        aria-hidden="true"
+                        className="absolute inset-y-0 start-0 w-[2px] bg-gold"
+                      />
+                    )}
                     <button
                       type="button"
                       onClick={() => go(item.id)}

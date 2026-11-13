@@ -44,6 +44,11 @@
     --color-success: #3e6b4f;
     --color-danger-rgb: 180 70 47;
     --color-success-rgb: 62 107 79;
+    /* the ink band is a fixed floor that is dark in *both* themes, so the light
+       `danger` step reads 3.29:1 on it. One value covers the floor at 5.59:1 (light)
+       and 6.18:1 (dark). See docs/DESIGN_SYSTEM.md "Status". */
+    --color-danger-on-ink: #d9744f;
+    --color-danger-on-ink-rgb: 217 116 79;
     --color-ink-band-rgb: 25 22 18;
     --color-cream-rgb: 245 240 230;
 
@@ -69,6 +74,10 @@
     --z-modal: 60;
     --z-toast: 70;
     --z-tooltip: 80;
+
+    /* --- vertical rhythm: the air above and below a band --- */
+    --space-section: 5rem;
+    --space-section-lg: 7rem;
 
     --color-scrim-rgb: 21 18 14;
     --color-scrim-deep-rgb: 13 11 9;
@@ -259,6 +268,11 @@
     /* Two sticky bars (nav 76px, viewer bar 64px). 96px clears both and is the
        same offset the gallery preview already uses (lg:top-24). */
     scroll-padding-block-start: 6rem;
+    /* Firefox has no `::-webkit-scrollbar`, so without this it falls back to the
+       grey OS bar and the palette stops at the window edge. Same colours as the
+       webkit rules below; Firefox does not support the 8px width. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line-strong) var(--color-canvas);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -344,10 +358,16 @@
     .shell { --shell-gutter: 3.5rem; }
   }
 
-  .rule {
-    height: 1px;
-    width: 100%;
-    background: var(--color-line);
+  /* ---------- Vertical rhythm ---------- */
+  /* One value for the air above and below a band, replacing five copies of
+     `py-20 md:py-28`. The numbers are unchanged: 5rem, then 7rem from `md`.
+     A band that wants its own step (Testimonial's `lg:py-32`) still says so —
+     the utilities layer is emitted after this one, so it wins. */
+  .section-y {
+    padding-block: var(--space-section);
+  }
+  @media (min-width: 768px) {
+    .section-y { padding-block: var(--space-section-lg); }
   }
 
   .latin {
@@ -475,30 +495,43 @@
   .link-underline-cream { color: var(--color-cream); }
   .link-underline-cream::after { background: var(--color-gold-soft); }
 
-  /* ---------- Surfaces ---------- */
-  .panel {
-    background: var(--color-surface);
-    color: var(--color-ink);
-    border: 1px solid var(--color-line);
-  }
-
-  .gold-rule {
-    height: 1px;
-    width: 100%;
-    background: linear-gradient(90deg, transparent, var(--color-gold) 20%, var(--color-gold) 80%, transparent);
-    opacity: 0.65;
+  /* ---------- Photo badges ---------- */
+  /* One recipe for the small tag that sits on a photograph. It lived at three
+     different opacities and two blurs — 35%, 45% and 60% — so the same kind of
+     label read as three different weights depending on which component drew it.
+     At 80% the darkest scrim text clears 4.5:1 even over a pure-white photo,
+     which is the worst case any of these photos can present. */
+  .badge-scrim {
+    background-color: rgb(var(--color-scrim-rgb) / 0.8);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
   }
 
   /* ---------- Marquee ---------- */
+  /* The frames live here, beside the one rule that plays them. They used to live
+     in tailwind.config.js, which only emits `@keyframes` for a generated
+     `animate-*` utility — and `animate-marquee` was never used, so the band had
+     never actually travelled: a 38s animation naming frames the build never
+     shipped. */
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
   .marquee-track {
     display: flex;
     width: max-content;
     animation: marquee 38s linear infinite;
     will-change: transform;
   }
-  .marquee-mask:focus-within .marquee-track { animation-play-state: paused; }
+  /* The counter-row travels the other way, and slower, so the two rows read as
+     one surface with depth rather than as a locked pair. */
+  .marquee-track-reverse {
+    animation-direction: reverse;
+    animation-duration: 54s;
+  }
+  .marquee-band:focus-within .marquee-track { animation-play-state: paused; }
   @media (hover: hover) and (pointer: fine) {
-    .marquee-mask:hover .marquee-track { animation-play-state: paused; }
+    .marquee-band:hover .marquee-track { animation-play-state: paused; }
   }
   .marquee-mask {
     mask-image: linear-gradient(90deg, transparent, var(--color-mask) 8%, var(--color-mask) 92%, transparent);
@@ -549,17 +582,6 @@
       color-mix(in srgb, var(--color-ink-band) 30%, transparent) 100%);
   }
 
-  /* ---------- Envelope stage ---------- */
-  /* A pool of light and a floor shadow, so the envelope rests on a surface instead
-     of floating on a flat field the same colour as the paper. */
-  .stage-glow {
-    background: radial-gradient(56% 44% at 50% 44%, color-mix(in srgb, var(--color-gold) 14%, transparent) 0%, transparent 72%);
-  }
-  .stage-floor {
-    background: radial-gradient(50% 50% at 50% 50%, rgb(var(--color-ink-rgb) / 0.30) 0%, rgb(var(--color-ink-rgb) / 0.10) 46%, transparent 74%);
-    filter: blur(10px);
-  }
-
   /* ---------- Studio table ---------- */
   /* The live preview is a work surface, not a flat field: a warm paper table lit
      from above, falling away at the edges. No image, no grain — two gradients. */
@@ -576,7 +598,15 @@
   }
 
   /* ---------- Engaging hairline ---------- */
-  /* A quiet rule that runs out to gold as its card is hovered or focused. */
+  /* A quiet rule that runs out to gold as its card is hovered or focused.
+     `position: relative` is what ties the rule to its own row: without it the
+     absolutely-positioned line had no containing block inside the card, so it
+     resolved against the initial containing block instead — a full-viewport
+     hairline pinned to the top of the document, and the cue the class exists
+     for never appeared under the card it belonged to. */
+  .rule-engage {
+    position: relative;
+  }
   .rule-engage::after {
     content: "";
     position: absolute;
@@ -588,6 +618,12 @@
     transform: scaleX(0);
     transform-origin: right;
     transition: transform var(--duration-slow) var(--ease-out-expo);
+  }
+  /* `transform-origin` has no logical form, so the start edge has to be named
+     twice: right in RTL, left in LTR. Both hairlines share the pair. */
+  :dir(ltr) .rule-engage::after,
+  :dir(ltr) .link-underline::after {
+    transform-origin: left;
   }
   .group:focus-visible .rule-engage::after {
     transform: scaleX(1);
@@ -607,6 +643,20 @@
     background:
       radial-gradient(72% 58% at 76% 26%, color-mix(in srgb, var(--color-gold) 13%, transparent) 0%, transparent 68%),
       radial-gradient(55% 48% at 8% 92%, color-mix(in srgb, var(--color-gold-deep) 12%, transparent) 0%, transparent 72%);
+  }
+
+  /* One pool of light makes a dark field shallow — it brightens a corner and
+     leaves the rest dead level. This pulls the four corners gently back down so
+     the band reads as a lit place with edges, not a rectangle of fill. It uses
+     the band's own colour, so it is invisible in the middle and does not band:
+     the blend is a 48% dead-zone out to a 55% corner darkening. */
+  .band-vignette {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(130% 120% at 50% 42%,
+      transparent 48%,
+      color-mix(in srgb, var(--color-ink-band) 55%, transparent) 100%);
   }
 
   /* ---------- Envelope stage ---------- */
@@ -651,6 +701,19 @@
     .audio-range::-webkit-slider-thumb { width: 18px; height: 18px; }
     .audio-range::-moz-range-thumb { width: 18px; height: 18px; }
   }
+
+  /* The gallery's filter chips are 25px of text, which is a mouse target. On a
+     finger they answer at the same 44px the footer's `after` boxes and the
+     viewer bar already reach, without moving the visible label: the extra area
+     is an invisible pseudo-element, so nothing on screen shifts. */
+  @media (pointer: coarse) {
+    .chip-target::before {
+      content: "";
+      position: absolute;
+      inset-block: -9.5px;
+      inset-inline: -6px;
+    }
+  }
 }
 
 @layer utilities {
@@ -688,18 +751,34 @@
   .marquee-track { animation: none !important; }
 }
 
-/* While the envelope is moving, its paper-texture filters are switched off.
+/* While the envelope is moving, its paper-texture layers are hidden.
    An SVG filter inside a 3D-rotating subtree is re-executed for every new
    raster, and the combined cost of the tooth / fibre / shade layers was the
    whole of the open animation's frame-time excess (measured, per filter, with
    scratchpad/env-perf.mjs). Grain is not resolvable while a surface is turning,
    and the rule stops applying the moment the animation settles, so no settled
    pixel changes. The wax shadow, the cast shadows and the fold shading stay:
-   those are the depth cues the eye actually tracks through the motion. */
+   those are the depth cues the eye actually tracks through the motion.
+
+   This must hide the layer, not merely drop its filter. The texture filters
+   generate their own turbulence and never read SourceGraphic, so the overlays
+   they decorate were written with no `fill` — correct while the filter hides
+   them, but default-black the instant it is removed. `display: none` also skips
+   the filter outright, which is the cheaper path the rule was after anyway. */
 .env-opening [filter*='envTooth'],
 .env-opening [filter*='envFibre'],
 .env-opening [filter*='envShade'] {
-  filter: none !important;
+  display: none !important;
+}
+
+/* Lucide ships every icon at stroke-width 2; the atelier's line is finer.
+   This cannot live in `@layer base`: Tailwind drops any class selector there,
+   because lucide-react adds the class at runtime so it is never in the content
+   scan. `:where()` holds the rule at zero specificity, so the one deliberate
+   exception — the ColorSwatch check, which re-asserts 3 in the utility layer —
+   still wins. */
+:where(.lucide) {
+  stroke-width: 1.75;
 }
 
 /* One soft pass of light across a plate, played once on load. */

@@ -57,13 +57,24 @@ export default function ThemeToggle({ className = '' }) {
       aria-pressed={isDark}
       aria-label={isDark ? 'تغییر به حالت روشن' : 'تغییر به حالت تاریک'}
       title={isDark ? 'تغییر به حالت روشن' : 'تغییر به حالت تاریک'}
-      className={`relative inline-flex min-h-11 min-w-11 items-center justify-center border border-line text-ink-muted transition-colors duration-base hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 ${className}`}
+      className={`relative inline-flex size-10 items-center justify-center border border-line text-ink-muted transition-colors duration-base after:absolute after:-inset-[3px] after:content-[''] hover:border-line-strong hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gold focus-visible:ring-offset-2 ${className}`}
     >
-      {isDark ? (
-        <Sun className="size-4" aria-hidden="true" />
-      ) : (
-        <Moon className="size-4" aria-hidden="true" />
-      )}
+      {/* One control, two glyphs, stacked. The swap used to replace the icon node
+          outright, so the button's contents blinked; both stay mounted and only
+          their opacity moves — a crossfade with no layout, and the opacity tier
+          the reduced-motion policy keeps. */}
+      <span className="relative size-4" aria-hidden="true">
+        <Sun
+          className={`absolute inset-0 size-4 transition-opacity duration-base ${
+            isDark ? 'opacity-100' : 'opacity-0'
+          }`}
+        />
+        <Moon
+          className={`absolute inset-0 size-4 transition-opacity duration-base ${
+            isDark ? 'opacity-0' : 'opacity-100'
+          }`}
+        />
+      </span>
     </button>
   );
 }

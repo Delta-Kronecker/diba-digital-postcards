@@ -66,6 +66,7 @@ export default {
           ink: token('seal-ink'),
         },
         danger: token('danger'),
+        'danger-on-ink': token('danger-on-ink'),
         success: token('success'),
       },
       fontFamily: {
@@ -129,10 +130,6 @@ export default {
         tooltip: 'var(--z-tooltip)',
       },
       keyframes: {
-        marquee: {
-          '0%': { transform: 'translateX(0)' },
-          '100%': { transform: 'translateX(-50%)' },
-        },
         revealUp: {
           '0%': { opacity: '0', transform: 'translateY(24px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
@@ -151,7 +148,6 @@ export default {
         },
       },
       animation: {
-        marquee: 'marquee 38s linear infinite',
         'reveal-up': 'revealUp 0.9s var(--ease-out-expo) both',
         'fade-in': 'fadeIn 0.5s var(--ease-ui-out) both',
         'float-soft': 'floatSoft 8s ease-in-out infinite',

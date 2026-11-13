@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpLeft, Mail, Phone } from 'lucide-react';
 import Ornament from './Ornament';
 import Picture from './Picture';
+import SectionMark from './SectionMark';
 
 export default function FinalCTA({ onNavigate = () => {} }) {
   const base = import.meta.env.BASE_URL;
@@ -17,21 +18,23 @@ export default function FinalCTA({ onNavigate = () => {} }) {
         height="900"
         loading="lazy"
         decoding="async"
-        className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover opacity-30"
+        className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover opacity-45"
       />
+      {/* item 69 — the photo used to sit at 30 % under an 80–85 % ink wash, so the
+          band read as a flat fill. The wash now opens at the top (55 %) so the
+          flowers stay legible there, stays heavy where the copy sits (88 %), and
+          closes fully at the seam with the footer. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-ink-band/80 via-ink-band/85 to-ink-band"
+        className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-ink-band/55 via-ink-band/88 to-ink-band"
       />
+      {/* the same corner fall as the hero, so both dark bands share one surface */}
+      <span aria-hidden="true" className="band-vignette -z-10" />
 
       <div className="shell relative z-10">
         <div className="mx-auto max-w-4xl text-center">
           <Ornament className="mx-auto mb-8 size-6 text-gold" />
-          <p className="flex items-center justify-center gap-3 text-xs text-cream/65">
-            <span className="tabular-nums text-gold-soft">۰۶</span>
-            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
-            <span lang="en" className="latin">Begin your invitation</span>
-          </p>
+          <SectionMark number="۰۶" tone="dark" align="center"><span lang="en" className="latin">Begin your invitation</span></SectionMark>
           <h2 className="display-section mt-5 text-cream">
             دعوتِ بعدیِ شما،
             <span className="block text-gold-soft">یک اثر هنری باشد.</span>
@@ -55,16 +58,16 @@ export default function FinalCTA({ onNavigate = () => {} }) {
             </button>
           </div>
 
-          <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-4 border-t border-cream/15 pt-8 text-xs text-cream/65 sm:grid-cols-3">
-            <a href="mailto:hello@diba.studio" className="inline-flex items-center justify-center gap-2 -my-2 py-2 hover:text-cream">
+          <div className="mx-auto mt-16 flex max-w-2xl flex-wrap items-center justify-center gap-x-10 border-t border-cream/15 pt-8 text-xs text-cream/65">
+            <a href="mailto:hello@diba.studio" className="inline-flex min-h-11 items-center justify-center gap-2 hover:text-cream">
               <Mail className="size-3.5 text-gold" aria-hidden="true" />
               hello@diba.studio
             </a>
-            <a href="tel:+982122000000" className="inline-flex items-center justify-center gap-2 -my-2 py-2 hover:text-cream" dir="ltr">
+            <a href="tel:+982122000000" className="inline-flex min-h-11 items-center justify-center gap-2 hover:text-cream" dir="ltr">
               <Phone className="size-3.5 text-gold" aria-hidden="true" />
               +98 21 2200 0000
             </a>
-            <span className="inline-flex items-center justify-center gap-2">
+            <span className="inline-flex min-h-11 items-center justify-center gap-2">
               تهران، خیابان فرشته
             </span>
           </div>

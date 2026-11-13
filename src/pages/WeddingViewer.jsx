@@ -43,10 +43,20 @@ export default function WeddingViewer({ onNavigate = () => {} }) {
       )}
 
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-14">
-        <div className="mb-4 text-center">
+        {/* The stage is the whole page and its only title is `sr-only`, so a
+            visitor landed on a bare envelope with nothing naming it. The kicker
+            is a paragraph, never a heading: there is still exactly one `h1` —
+            this sr-only one while the stage is closed, handed to the card's own
+            `h1` once the envelope opens. */}
+        <div className="mb-6 text-center">
           {!isOpen && (
             <h1 className="sr-only">دعوت‌نامهٔ عروسی امیرحسین و سارا</h1>
           )}
+          <p className="flex items-center justify-center gap-3 text-xs text-ink-subtle">
+            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
+            <span>{data.categoryTitle}</span>
+            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
+          </p>
         </div>
 
         <ThreeDEnvelope

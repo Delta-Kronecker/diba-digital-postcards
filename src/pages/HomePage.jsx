@@ -16,11 +16,13 @@ export default function HomePage({ currentRoute = 'home', onNavigate = () => {} 
       {/* Thin atelier strip */}
       <div className="border-b border-ink/10 bg-ink-band text-cream/70">
         <div className="shell flex h-9 items-center justify-between gap-4 text-xs">
-          <span className="hidden items-center gap-2 sm:flex">
+          {/* On a Persian page the phone must not open on an English-only strip:
+              the orders line is the one that has to survive the narrowest width. */}
+          <span className="flex items-center gap-2">
             <span className="size-1 rounded-full bg-gold" aria-hidden="true" />
             پذیرش سفارش تیر و مرداد ۱۴۰۶
           </span>
-          <span lang="en" className="latin">Digital invitations, made by hand</span>
+          <span lang="en" className="latin hidden sm:block">Digital invitations, made by hand</span>
           <span className="hidden sm:block">ارسال به سراسر ایران</span>
         </div>
       </div>

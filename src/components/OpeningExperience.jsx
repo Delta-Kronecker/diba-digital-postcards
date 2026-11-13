@@ -1,3 +1,4 @@
+import SectionMark from './SectionMark';
 import React, { useState } from 'react';
 import { ArrowUpLeft, Check } from 'lucide-react';
 import ThreeDEnvelope from './3DEnvelope';
@@ -25,7 +26,7 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <section className="relative overflow-hidden bg-ink-band py-20 text-cream md:py-28">
+    <section className="relative overflow-hidden bg-ink-band section-y text-cream">
       <div className="light-beam-container opacity-60" aria-hidden="true">
         <div className="light-beam" />
         <div className="light-beam-2" />
@@ -34,11 +35,7 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
       <div className="shell relative z-10">
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
-            <p className="flex items-center gap-3 text-xs text-cream/60">
-              <span className="tabular-nums text-gold-soft">۰۲</span>
-              <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
-              تجربهٔ گشودن پاکت
-            </p>
+            <SectionMark number="۰۲" tone="dark">تجربهٔ گشودن پاکت</SectionMark>
             <h2 className="display-section mt-6 text-cream">
               تجربه‌ای که با
               <span className="text-gold-soft"> یک لمس </span>
@@ -73,9 +70,13 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
           </div>
 
           <div className="lg:col-span-7">
-            <div className="relative border border-cream/15 bg-cream/[0.03] p-5 sm:p-8">
+            {/* The fill was `bg-cream/[0.03]` — a 3 % wash over an ink band it is
+                nearly the same colour as, so only the hairline read. One step up
+                (6 %) makes the panel a surface on its own, at 1280 in both
+                themes, with the border kept and no new colour literal. */}
+            <div className="relative border border-cream/15 bg-cream/[0.06] p-5 sm:p-8">
               {/* corner ticks */}
-              {['-right-px -top-px', '-left-px -top-px', '-right-px -bottom-px', '-left-px -bottom-px'].map(
+              {['-start-px -top-px', '-end-px -top-px', '-start-px -bottom-px', '-end-px -bottom-px'].map(
                 (pos) => (
                   <span
                     key={pos}

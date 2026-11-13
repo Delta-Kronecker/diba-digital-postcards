@@ -1,3 +1,4 @@
+import SectionMark from './SectionMark';
 import React from 'react';
 import { Star } from 'lucide-react';
 import Picture from './Picture';
@@ -9,21 +10,22 @@ export default function Testimonial() {
     <section className="relative border-y border-line bg-surface lg:overflow-hidden">
       <div className="shell grid grid-cols-1 lg:grid-cols-12 lg:items-stretch lg:gap-0">
         {/* the quote sits in the readable column, aligned to the page shell */}
-        <div className="order-2 py-20 md:py-28 lg:order-none lg:col-span-7 lg:py-32 lg:pe-16 xl:pe-24">
-          <p className="mb-8 flex items-center gap-3 text-xs text-ink-subtle">
-            <span className="tabular-nums text-gold-deep">۰۵</span>
-            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
-            روایت مهمان
-          </p>
+        <div className="order-2 section-y lg:order-none lg:col-span-7 lg:py-32 lg:pe-16 xl:pe-24">
+          <SectionMark number="۰۵" className="mb-8">روایت مهمان</SectionMark>
 
           <blockquote className="relative">
             <span
               aria-hidden="true"
-              className="absolute -right-2 -top-14 select-none font-latin text-[9rem] leading-none text-gold/20"
+              className="absolute -start-2 -top-14 select-none font-latin text-[9rem] leading-none text-gold/20"
             >
               “
             </span>
-            <p className="display-section !text-[clamp(1.75rem,3.6vw,3rem)] !leading-[1.55] text-ink">
+            {/* item 66 — the size is a fluid run whose floor and ceiling are pinned
+                steps (3xl → 5xl); the leading is pinned to the 3xl step's 1.4 for the
+                multi-line quote, so the line-height never swings with the viewport.
+                `text-balance` is deliberately not added: index.css keeps paragraphs
+                (`p`, `li`, `blockquote`) on `pretty` by documented decision. */}
+            <p className="display-section !text-[clamp(1.875rem,3.6vw,3rem)] !leading-[1.4] text-ink">
               وقتی پاکت را باز کردم، احساس کردم یک نامهٔ واقعی به دستم رسیده؛
               نه یک لینک.
             </p>
@@ -37,8 +39,11 @@ export default function Testimonial() {
               <p className="font-display text-sm text-ink">سارا طباطبایی</p>
               <p className="mt-1 text-xs text-ink-subtle">مهمان دعوتنامهٔ عروسی، خرداد ۱۴۰۵</p>
             </div>
+            {/* item 68 — the rating is the strongest single proof point, so it is not
+                phones that should go without it. It is `flex` everywhere; the block
+                above wraps before the stars do (measured at 390). */}
             <span
-              className="ms-auto hidden items-center gap-1 text-gold-deep sm:flex"
+              className="ms-auto flex items-center gap-1 text-gold-deep"
               role="img"
               aria-label="امتیاز پنج از پنج"
             >

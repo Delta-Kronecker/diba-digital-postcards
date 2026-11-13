@@ -155,8 +155,12 @@ export default function RSVPModal({
       : 'border-line bg-canvas/40 text-ink-muted hover:border-line-strong';
 
   return (
+    /* `my-auto` on the dialog centres it while it fits and resolves to 0 when it
+       does not, so a form taller than the viewport starts at the scroll origin
+       instead of having its own top (and close button) pushed out of reach —
+       which is what `items-center` on the scroller did at 200% zoom. */
     <div
-      className="fixed inset-0 z-modal flex items-center justify-center overflow-y-auto overscroll-contain bg-scrim/70 safe-overlay backdrop-blur-sm"
+      className="fixed inset-0 z-modal flex justify-center overflow-y-auto overscroll-contain bg-scrim/70 safe-overlay backdrop-blur-sm"
       role="presentation"
     >
       <div
@@ -165,7 +169,7 @@ export default function RSVPModal({
         aria-modal="true"
         aria-labelledby="rsvp-title"
         data-theme={isMemorial ? 'memorial' : undefined}
-        className="relative my-8 w-full max-w-lg border border-line bg-surface p-6 sm:p-9"
+        className="relative my-auto w-full max-w-lg border border-line bg-surface p-6 sm:p-9"
       >
         <span
           aria-hidden="true"

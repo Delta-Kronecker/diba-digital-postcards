@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ArrowUpLeft, SlidersHorizontal } from 'lucide-react';
 import { INVITATIONS_DATA } from '../data/invitations';
 import { toPersianDigits } from '../utils/numbers';
 import Picture from './Picture';
+import SectionMark from './SectionMark';
 
 const FILTERS = [
   { id: 'all', label: 'همه' },
@@ -37,15 +38,29 @@ export default function GallerySection({ onNavigate = () => {} }) {
 
   const isMemorial = activeCard?.category === 'memorial';
 
+  /* item 56 — the preview used to remount on `key={activeCard.slug}` and fade in
+     from nothing, so for the length of the fade the frame showed the bare surface
+     (a flash). Keep the outgoing card mounted underneath instead: the stack holds
+     at most the last two cards and only `frontSlug` is at full opacity, so the two
+     always cross-fade and no frame is ever empty. The flip lands on the next frame
+     so the incoming layer can actually transition OUT of opacity 0. */
+  const [stack, setStack] = useState(() => (activeCard ? [activeCard] : []));
+  const [frontSlug, setFrontSlug] = useState(activeCard?.slug);
+
+  useEffect(() => {
+    if (!activeCard) return undefined;
+    setStack((prev) =>
+      prev.some((card) => card.slug === activeCard.slug) ? prev : [...prev, activeCard].slice(-2),
+    );
+    const id = requestAnimationFrame(() => setFrontSlug(activeCard.slug));
+    return () => cancelAnimationFrame(id);
+  }, [activeCard]);
+
   return (
-    <section id="gallery" className="shell py-20 md:py-28">
+    <section id="gallery" className="shell section-y">
       <div className="grid grid-cols-1 items-end gap-6 border-b border-line pb-8 lg:grid-cols-12">
         <div className="lg:col-span-8">
-          <p className="mb-4 flex items-center gap-3 text-xs text-ink-subtle">
-            <span className="tabular-nums text-gold-deep">۰۴</span>
-            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
-            گالری نمونهها
-          </p>
+          <SectionMark number="۰۴" className="mb-4">گالری نمونهها</SectionMark>
           <h2 className="display-section max-w-2xl text-ink">
             نمونه‌ها را ورق بزنید،
             <span className="text-ink-muted"> حس هر مناسبت را ببینید.</span>
@@ -76,7 +91,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
                   setActive(0);
                 }}
                 aria-pressed={isActive}
-                className={`group relative shrink-0 whitespace-nowrap pb-1 font-body text-xs transition-colors ${
+                className={`chip-target group relative shrink-0 whitespace-nowrap pb-1 font-body text-xs transition-colors ${
                   isActive ? 'text-ink' : 'text-ink-subtle hover:text-ink'
                 }`}
               >
@@ -133,7 +148,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
                     onFocus={() => setActive(index)}
                     onClick={() => onNavigate(card.slug)}
                     className={`group relative flex w-full items-center gap-4 border-t border-line py-5 text-start transition-colors duration-base sm:gap-6 sm:py-6 ${
-                      isCurrent ? 'bg-gold/[0.045]' : 'hover:bg-surface/60'
+                      isCurrent ? 'bg-gold/[0.09]' : 'hover:bg-surface/60'
                     }`}
                   >
                     <span
@@ -144,7 +159,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
                     />
 
                     <span
-                      className={`w-8 shrink-0 ps-3 text-xs tabular-nums transition-colors ${
+                      className={`w-8 shrink-0 ps-1 text-xs tabular-nums transition-colors ${
                         isCurrent ? (memorialCard ? 'text-sage' : 'text-gold-deep') : 'text-ink-subtle'
                       }`}
                     >
@@ -194,8 +209,12 @@ export default function GallerySection({ onNavigate = () => {} }) {
             </div>
           </div>
 
-          {/* Live preview, left column in RTL */}
-          <div className="lg:col-span-5">
+          {/* Live preview, left column in RTL.
+              It follows `onMouseEnter`/`onFocus`, and a finger produces neither,
+              so below `lg` it is a 302px still of card ۰۱ that never answers the
+              row being tapped — and the tap navigates away before it could.
+              The list stands alone as the index until the pointer can drive it. */}
+          <div className="hidden lg:col-span-5 lg:block">
             <div className="lg:sticky lg:top-24">
               <figure className="relative border border-line bg-surface p-3">
                 <span
@@ -205,24 +224,36 @@ export default function GallerySection({ onNavigate = () => {} }) {
                   }`}
                 />
                 <div className="relative h-[240px] overflow-hidden bg-surface-2 sm:h-[320px] lg:h-[420px]">
-                  <Picture
-                    key={activeCard.slug}
-                    src={activeCard.coverImage}
-                    alt={activeCard.title}
-                    width="720"
-                    height="900"
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full animate-fade-in object-cover"
-                  />
+                  {stack.map((card) => {
+                    const isFront = card.slug === frontSlug;
+                    return (
+                      <Picture
+                        key={card.slug}
+                        src={card.coverImage}
+                        /* only the front layer carries the name; the outgoing one is
+                           kept for the cross-fade and stays out of the a11y tree */
+                        alt={isFront ? card.title : ''}
+                        width="720"
+                        height="900"
+                        loading="lazy"
+                        decoding="async"
+                        /* item 64 — the card a visitor meets first is the one worth
+                           requesting early; every later preview stays `auto` */
+                        fetchPriority={card.slug === cards[0]?.slug ? 'high' : undefined}
+                        className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-slow ${
+                          isFront ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    );
+                  })}
                   <div className="absolute inset-0 bg-gradient-to-t from-scrim/80 via-scrim/25 to-transparent" />
 
-                  <span className="absolute start-4 top-4 border border-cream/30 bg-scrim/35 px-2.5 py-1 text-xs tabular-nums text-cream/90 backdrop-blur-sm">
+                  <span className="badge-scrim absolute start-4 top-4 border border-cream/30 px-2.5 py-1 text-xs tabular-nums text-cream/90">
                     {toPersianDigits(String(active + 1).padStart(2, '0'))} / {toPersianDigits(String(cards.length).padStart(2, '0'))}
                   </span>
 
                   {isMemorial && (
-                    <span className="absolute end-4 top-4 border border-sage/50 bg-sage/25 px-2.5 py-1 text-xs text-cream backdrop-blur-sm">
+                    <span className="badge-scrim absolute end-4 top-4 border border-sage/50 px-2.5 py-1 text-xs text-cream">
                       بدون طلا
                     </span>
                   )}

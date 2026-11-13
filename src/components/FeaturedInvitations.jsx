@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpLeft, Sparkles } from 'lucide-react';
 import Picture from './Picture';
 import { toPersianDigits } from '../utils/numbers';
+import SectionMark from './SectionMark';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -96,14 +97,10 @@ function CardArrow({ memorial }) {
 
 export default function FeaturedInvitations({ onNavigate = () => {} }) {
   return (
-    <section id="collection" className="shell py-20 md:py-28">
+    <section id="collection" className="shell section-y">
       <div className="grid grid-cols-1 items-end gap-6 border-b border-line pb-8 lg:grid-cols-12">
         <div className="lg:col-span-8">
-          <p className="mb-4 flex items-center gap-3 text-xs text-ink-subtle">
-            <span className="tabular-nums text-gold-deep">۰۱</span>
-            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
-            مجموعهٔ منتخب
-          </p>
+          <SectionMark number="۰۱" className="mb-4">مجموعهٔ منتخب</SectionMark>
           <h2 className="display-section max-w-2xl text-ink">
             برای هر مناسبت،
             <span className="text-ink-muted"> یک زبانِ بصری تازه.</span>
@@ -148,10 +145,15 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
                     <p className="mt-6 text-xs text-ink-subtle">{item.category}</p>
                     <h3 className="mt-2 font-display text-3xl font-medium text-ink md:text-4xl">{item.title}</h3>
                     <p className="mt-3 max-w-sm text-xs leading-[2] text-ink-muted">{item.description}</p>
-                    <span className="mt-8 inline-flex items-center gap-3 text-xs font-medium text-ink">
-                      مشاهدهٔ کارت
+                    {/* The small cards close on an engaging hairline; the wide
+                        plate used to close on a bare sentence, so the two grids
+                        answered a hover differently. */}
+                    <div className="rule-engage mt-8 flex items-center justify-between gap-4 border-t border-line pt-4">
+                      <span className="inline-flex items-center gap-3 text-xs font-medium text-ink">
+                        مشاهدهٔ کارت
+                      </span>
                       <CardArrow />
-                    </span>
+                    </div>
                   </div>
                 </button>
               </div>
@@ -177,16 +179,16 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-scrim/35 via-transparent to-transparent opacity-70 transition-opacity duration-slow group-hover:opacity-90" />
 
-                  <span className="absolute start-4 top-4 border border-cream/30 bg-scrim/60 px-2.5 py-1 font-body text-xs text-cream/90 backdrop-blur-md">
+                  <span className="badge-scrim absolute start-4 top-4 border border-cream/30 px-2.5 py-1 font-body text-xs text-cream/90">
                     {item.index}
                   </span>
 
                   {item.note && (
                     <span
-                      className={`absolute end-4 top-4 border px-2.5 py-1 text-xs backdrop-blur-md ${
+                      className={`badge-scrim absolute end-4 top-4 border px-2.5 py-1 text-xs ${
                         item.memorial
-                          ? 'border-sage/40 bg-scrim/60 text-cream'
-                          : 'border-gold/40 bg-scrim/60 text-gold-soft'
+                          ? 'border-sage/40 text-cream'
+                          : 'border-gold/40 text-gold-soft'
                       }`}
                     >
                       {item.note}

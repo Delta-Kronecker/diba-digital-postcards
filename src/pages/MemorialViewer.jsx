@@ -84,8 +84,15 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
       )}
 
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-14">
-        <div className="mb-4 text-center">
+        {/* Same naming gap as the wedding stage; the hairlines resolve through the
+            memorial scope, so the mark stays green — zero gold, by construction. */}
+        <div className="mb-6 text-center">
           {!isOpen && <h1 className="sr-only">مراسم یادبود زنده‌یاد حاج رضا تهرانی</h1>}
+          <p className="flex items-center justify-center gap-3 text-xs text-ink-subtle">
+            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
+            <span>{data.categoryTitle}</span>
+            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
+          </p>
         </div>
 
         <ThreeDEnvelope
@@ -121,13 +128,13 @@ export default function MemorialViewer({ onNavigate = () => {} }) {
       />
 
       {isCondolenceOpen && (
-        <div className="fixed inset-0 z-modal flex items-center justify-center overflow-y-auto overscroll-contain bg-scrim/70 safe-overlay backdrop-blur-sm">
+        <div className="fixed inset-0 z-modal flex justify-center overflow-y-auto overscroll-contain bg-scrim/70 safe-overlay backdrop-blur-sm">
           <div
             ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-labelledby="condolence-title"
-            className="relative my-8 w-full max-w-lg border border-line bg-surface p-6 sm:p-8"
+            className="relative my-auto w-full max-w-lg border border-line bg-surface p-6 sm:p-8"
           >
             <span aria-hidden="true" className="absolute inset-x-0 top-0 h-[2px] bg-sage" />
             <button

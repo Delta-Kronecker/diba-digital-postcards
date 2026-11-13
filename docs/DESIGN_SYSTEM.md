@@ -35,6 +35,7 @@ warm cast.
   --color-cream: #f5f0e6;
   --color-danger: #b4462f;
   --color-success: #3e6b4f;
+  --color-danger-on-ink: #d9744f;
 }
 
 html[data-theme="dark"] {
@@ -81,6 +82,11 @@ theme, because a rust that reads 5.1:1 on warm paper reads 3.3:1 on the dark
 surface. Body-size text in a status colour must clear 4.5:1 against the surface it
 sits on; measuring that is `better-colors`, and the requirement is
 `better-accessibility`.
+
+The ink band is the one surface that is dark in **both** themes, so the themed
+steps do not cover it: the light `danger` step reads 3.29:1 there. `danger-on-ink`
+is a single value for that floor — 5.59:1 on the light band, 6.18:1 on the dark one
+— and is only for status text on an ink surface.
 
 ### Materials
 
@@ -189,6 +195,23 @@ Six steps, one custom property each, so the utilities and the raw CSS agree.
 
 Layers inside the envelope stage (the flaps, the creases, the seal) order paint
 inside a single 3D context and are not part of this scale.
+
+## Spacing
+
+Vertical rhythm is two values, not a per-section decision. A band takes
+`.section-y`, which reads them, so a section's air can only change in one place.
+
+```css
+:root {
+  --space-section: 5rem;
+  --space-section-lg: 7rem;
+}
+```
+
+`5rem` is the band's air on a phone and `7rem` from `768px` up. A band that needs
+its own step states it in the utility layer (`lg:py-32`), which is emitted after
+the component layer and therefore wins. Horizontal gutters are the shell's, not
+this scale's: `.shell` owns the page gutter and the notch inset.
 
 ## Radii and shadows
 

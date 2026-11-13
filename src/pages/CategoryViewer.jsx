@@ -43,8 +43,16 @@ export default function CategoryViewer({ slug = 'general-gallery-opening', onNav
       )}
 
       <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 md:py-14">
-        <div className="mb-4 text-center">
+        {/* Same naming gap as the other two stages: a title only a screen reader
+            could hear. The kicker names the collection on screen and stays a
+            paragraph, so the `h1` count does not change. */}
+        <div className="mb-6 text-center">
           {!isOpen && <h1 className="sr-only">{data.title}</h1>}
+          <p className="flex items-center justify-center gap-3 text-xs text-ink-subtle">
+            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
+            <span>{data.categoryTitle}</span>
+            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
+          </p>
         </div>
 
         <ThreeDEnvelope

@@ -9,11 +9,17 @@ export default function Hero({ onNavigate = () => {} }) {
     <section className="relative overflow-hidden bg-ink-band text-cream">
       {/* a single pool of light, so the dark field has depth instead of flatness */}
       <div aria-hidden="true" className="hero-light" />
+      {/* and a soft fall at the corners, so the field has edges */}
+      <div aria-hidden="true" className="band-vignette" />
 
-      {/* faint oversized wordmark */}
+      {/* faint oversized wordmark. It used to run at 16rem from the physical
+          left — behind the photograph at 1280/1366/1440 (30,246 / 25,078 /
+          20,163 px² of overlap). At 9rem it sits entirely in the empty band
+          under the plate at every one of those widths, and `-end-10` puts it on
+          the figure's side in either direction. */}
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -left-10 bottom-0 hidden select-none font-latin text-[16rem] leading-none text-cream/[0.05] xl:block"
+        className="pointer-events-none absolute -end-10 bottom-0 hidden select-none font-latin text-[9rem] leading-none text-cream/[0.05] xl:block"
       >
         Diba
       </span>
@@ -56,7 +62,7 @@ export default function Hero({ onNavigate = () => {} }) {
             </button>
           </div>
 
-          <dl className="mt-16 grid max-w-xl animate-reveal-up grid-cols-3 border-y border-cream/15 [animation-delay:320ms]">
+          <dl className="mt-12 grid max-w-xl animate-reveal-up grid-cols-3 border-y border-cream/15 [animation-delay:320ms] sm:mt-16">
             {[
               ['۶', 'دستهٔ تخصصی'],
               ['۱۳', 'تصویر آتلیه'],
@@ -66,7 +72,7 @@ export default function Hero({ onNavigate = () => {} }) {
                 key={label}
                 className={`py-5 ${i !== 0 ? 'border-s border-cream/15 ps-6' : 'pe-6'}`}
               >
-                <dt className="font-display text-2xl font-medium text-gold-soft md:text-3xl">
+                <dt className="font-display text-2xl font-medium text-cream md:text-3xl">
                   {value}
                 </dt>
                 <dd className="mt-1 text-xs text-cream/60">{label}</dd>
@@ -80,16 +86,16 @@ export default function Hero({ onNavigate = () => {} }) {
             {/* offset keyline */}
             <span
               aria-hidden="true"
-              className="absolute -right-4 -top-4 bottom-10 left-10 border border-gold/35"
+              className="absolute -start-4 -top-4 bottom-10 end-10 border border-gold/35"
             />
-            <figure className="arch relative overflow-hidden border border-cream/15 bg-surface-2 shadow-lift">
+            <figure className="arch relative aspect-[4/5] overflow-hidden border border-cream/15 bg-surface-2 shadow-lift">
               <Picture
                 src={`${base}images/wedding-cover.jpg`}
                 alt="جزئیات گلآرایی و دعوتنامهٔ عروسی دیبا"
                 width="520"
-                height="660"
+                height="650"
                 fetchPriority="high"
-                className="h-[460px] w-full object-cover sm:h-[560px] lg:h-[640px]"
+                className="h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-scrim/70 via-scrim/5 to-transparent" />
               {/* a single soft pass of light across the plate, once, on load */}
@@ -113,7 +119,7 @@ export default function Hero({ onNavigate = () => {} }) {
             {/* wax seal */}
             <div
               aria-hidden="true"
-              className="absolute -left-6 top-12 animate-float-soft motion-reduce:animate-none"
+              className="absolute -end-6 top-12 animate-float-soft motion-reduce:animate-none"
             >
               <div className="flex size-24 rotate-[-8deg] items-center justify-center rounded-full border border-seal-line/50 bg-[radial-gradient(circle_at_34%_30%,var(--color-seal-a),var(--color-foil)_55%,var(--color-seal-d))] shadow-seal-lg">
                 <span className="flex size-16 items-center justify-center rounded-full border border-seal-cream/40 font-display text-2xl text-seal-ink">

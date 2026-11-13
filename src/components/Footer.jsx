@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { ArrowUpLeft, Instagram, Mail, MapPin, Phone } from 'lucide-react';
+import React, { useRef, useState } from 'react';
+import { ArrowUpLeft, AlertCircle, Check, Instagram, Mail, MapPin, Phone } from 'lucide-react';
 import { toPersianDigits } from '../utils/numbers';
 
 const COLLECTIONS = [
@@ -21,15 +21,17 @@ const STUDIO = [
 export default function Footer({ onNavigate = () => {} }) {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
+  const [error, setError] = useState('');
+  const inputRef = useRef(null);
   const year = toPersianDigits(new Date().getFullYear() + 621);
 
   return (
-    <footer className="bg-ink-band text-cream safe-b">
+    <footer className="border-t border-gold/20 bg-ink-band text-cream safe-b">
       <div className="shell pt-16 md:pt-20">
-        <div className="grid grid-cols-1 gap-12 border-b border-cream/12 pb-14 md:grid-cols-12">
-          <div className="md:col-span-5">
+        <div className="grid grid-cols-1 gap-12 border-b border-cream/12 pb-14 md:grid-cols-3 lg:grid-cols-12">
+          <div className="md:col-span-3 lg:col-span-5">
             <div className="flex items-center gap-3">
-              <span className="flex size-11 items-center justify-center border border-gold/50">
+              <span className="flex size-10 items-center justify-center border border-gold/50">
                 <span className="font-display text-lg text-gold">د</span>
               </span>
               <div>
@@ -48,14 +50,14 @@ export default function Footer({ onNavigate = () => {} }) {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative flex size-9 items-center justify-center border border-cream/15 text-cream/60 transition-colors after:absolute after:-inset-1 after:content-[''] hover:border-gold hover:text-gold"
+                className="relative flex size-10 items-center justify-center border border-cream/15 text-cream/60 transition-colors after:absolute after:-inset-[3px] after:content-[''] hover:border-gold hover:text-gold"
                 aria-label="اینستاگرام دیبا"
               >
                 <Instagram className="size-4" aria-hidden="true" />
               </a>
               <a
                 href="mailto:hello@diba.studio"
-                className="relative flex size-9 items-center justify-center border border-cream/15 text-cream/60 transition-colors after:absolute after:-inset-1 after:content-[''] hover:border-gold hover:text-gold"
+                className="relative flex size-10 items-center justify-center border border-cream/15 text-cream/60 transition-colors after:absolute after:-inset-[3px] after:content-[''] hover:border-gold hover:text-gold"
                 aria-label="ایمیل دیبا"
               >
                 <Mail className="size-4" aria-hidden="true" />
@@ -63,7 +65,7 @@ export default function Footer({ onNavigate = () => {} }) {
             </div>
           </div>
 
-          <nav aria-label="مجموعه‌ها" className="md:col-span-3">
+          <nav aria-label="مجموعه‌ها" className="md:col-span-1 lg:col-span-3">
             <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Collections</h2>
             <ul className="flex flex-col gap-3">
               {COLLECTIONS.map(([id, label]) => (
@@ -80,7 +82,7 @@ export default function Footer({ onNavigate = () => {} }) {
             </ul>
           </nav>
 
-          <nav aria-label="آتلیه" className="md:col-span-2">
+          <nav aria-label="آتلیه" className="md:col-span-1 lg:col-span-2">
             <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Atelier</h2>
             <ul className="flex flex-col gap-3">
               {STUDIO.map(([id, label]) => (
@@ -97,7 +99,7 @@ export default function Footer({ onNavigate = () => {} }) {
             </ul>
           </nav>
 
-          <div className="md:col-span-2">
+          <div className="md:col-span-1 lg:col-span-2">
             <h2 lang="en" className="latin mb-5 text-xs text-gold-soft/90">Contact</h2>
             <ul className="flex flex-col gap-3 text-xs text-cream/65">
               <li className="flex items-start gap-2">
@@ -127,9 +129,23 @@ export default function Footer({ onNavigate = () => {} }) {
 
           <form
             className="md:col-span-5"
+            noValidate
             onSubmit={(e) => {
               e.preventDefault();
-              if (!email.trim()) return;
+              const value = email.trim();
+              if (!value) {
+                setError('ایمیل را بنویسید.');
+                setSent(false);
+                inputRef.current?.focus();
+                return;
+              }
+              if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+                setError('نشانی ایمیل معتبر نیست.');
+                setSent(false);
+                inputRef.current?.focus();
+                return;
+              }
+              setError('');
               setSent(true);
               setEmail('');
             }}
@@ -139,15 +155,18 @@ export default function Footer({ onNavigate = () => {} }) {
             </label>
             <div className="flex items-center border-b border-cream/25 focus-within:border-gold">
               <input
+                ref={inputRef}
                 id="footer-email"
                 type="email"
                 required
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); if (error) setError(''); }}
                 placeholder="ایمیل شما"
                 inputMode="email"
                 autoComplete="email"
                 enterKeyHint="send"
+                aria-invalid={error ? 'true' : undefined}
+                aria-describedby="footer-email-status"
                 className="h-11 w-full bg-transparent text-base text-cream placeholder:text-cream/55 focus:outline-none sm:text-sm"
               />
               <button
@@ -158,8 +177,27 @@ export default function Footer({ onNavigate = () => {} }) {
                 <ArrowUpLeft className="size-4" aria-hidden="true" />
               </button>
             </div>
-            <p className="mt-2 min-h-[1rem] text-xs text-gold-soft/90" aria-live="polite">
+            {/* item 74/75 — one live region for both outcomes: the error uses the
+                `danger-on-ink` step (the light `danger` step reads only 3.29:1 on the
+                ink floor), the success carries the same Check glyph as the RSVP
+                confirmation, and both glyphs are `aria-hidden` so the text stays the
+                accessible message. */}
+            <p
+              id="footer-email-status"
+              className={`mt-2 flex min-h-[1.25rem] items-center gap-1.5 text-xs ${error ? 'text-danger-on-ink' : 'text-gold-soft/90'}`}
+              aria-live="polite"
+            >
+              {error ? (
+                <>
+                  <AlertCircle className="size-3.5 shrink-0" aria-hidden="true" />
+                  {error}
+                </>
+              ) : (
+                <>
+                  {sent && <Check className="size-3.5 shrink-0" aria-hidden="true" />}
               {sent ? 'ثبت شد؛ به‌زودی از آتلیه می‌شنوید.' : ''}
+                </>
+              )}
             </p>
           </form>
         </div>
@@ -169,8 +207,13 @@ export default function Footer({ onNavigate = () => {} }) {
         <div className="shell flex flex-col items-center justify-between gap-3 py-5 text-xs text-cream/60 sm:flex-row">
           <p>© {year} دیبا، تمامی حقوق محفوظ است.</p>
           <div className="flex items-center gap-5">
-            <span className="">Made in Tehran</span>
-            <span>دسترس‌پذیر و راست‌به‌چپ</span>
+            <span>Made in Tehran</span>
+            {/* item 77 — the old line claimed "accessible and RTL" as a bare assertion.
+                RTL is checkable from the document (`dir="rtl"`) and stays; the
+                accessibility claim was an overclaim (axe finds ~30–50 % of WCAG
+                failures, so "0 violations" is not a conformance statement), so it was
+                dropped rather than asserted. */}
+            <span>راستبه‌چپ</span>
           </div>
         </div>
       </div>

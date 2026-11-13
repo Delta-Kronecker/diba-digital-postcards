@@ -1,5 +1,6 @@
 import React from 'react';
 import { PenLine, Sparkles, Send } from 'lucide-react';
+import SectionMark from './SectionMark';
 
 const STEPS = [
   {
@@ -24,14 +25,10 @@ const STEPS = [
 
 export default function ProcessSection() {
   return (
-    <section className="border-y border-line bg-surface">
-      <div className="shell grid grid-cols-1 gap-14 py-20 md:py-28 lg:grid-cols-12 lg:gap-16">
+    <section className="paper-sheet border-y border-line bg-surface">
+      <div className="shell grid grid-cols-1 gap-14 section-y lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
-          <p className="mb-4 flex items-center gap-3 text-xs text-ink-subtle">
-            <span className="tabular-nums text-gold-deep">۰۳</span>
-            <span aria-hidden="true" className="h-px w-8 bg-gold/50" />
-            فرایند سفارش
-          </p>
+          <SectionMark number="۰۳" className="mb-4">فرایند سفارش</SectionMark>
           <h2 className="display-section max-w-sm text-ink">
             سه حرکت،
             <span className="block text-ink-muted">یک اثر ماندگار.</span>
@@ -52,25 +49,33 @@ export default function ProcessSection() {
           </div>
         </div>
 
-        <div className="lg:col-span-7">
-          {STEPS.map((step, i) => {
+        {/* One rule per boundary. The old `last:border-b` sat on a row that was
+            always its parent's only child, so every row matched it and each
+            boundary drew two hairlines on top of each other. */}
+        <div className="lg:col-span-7 divide-y divide-line border-y border-line">
+          {STEPS.map((step) => {
             const Icon = step.icon;
             return (
-              <div key={step.number}>
-                <div className="group grid grid-cols-[auto_1fr_auto] items-start gap-6 border-t border-line py-9 last:border-b">
-                  <span className="font-display text-3xl font-medium leading-none tabular-nums text-gold-deep/75 transition-colors duration-base group-hover:text-gold-deep md:text-4xl">
-                    {step.number}
-                  </span>
-                  <div>
-                    <h3 className="font-display text-2xl font-medium text-ink transition-colors duration-base group-hover:text-gold-deep md:text-3xl">
-                      {step.title}
-                    </h3>
-                    <p className="mt-3 max-w-md text-sm leading-[2] text-ink-muted">{step.text}</p>
-                  </div>
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-subtle transition-colors duration-base group-hover:border-gold group-hover:text-gold">
-                    <Icon className="size-5" aria-hidden="true" />
-                  </span>
+              <div
+                key={step.number}
+                className="group grid grid-cols-[auto_1fr_auto] items-start gap-6 py-9"
+              >
+                {/* `/75` measured 3.58:1 light / 3.46:1 dark. Below the item's
+                    4.5:1 bar, so the alpha is adjusted: `/95` clears it in both
+                    themes while keeping the numeral quieter than the title, and
+                    the hover still intensifies to the full token. */}
+                <span className="font-display text-3xl font-medium leading-none tabular-nums text-gold-deep/95 transition-colors duration-base group-hover:text-gold-deep md:text-4xl">
+                  {step.number}
+                </span>
+                <div>
+                  <h3 className="font-display text-2xl font-medium text-ink transition-colors duration-base group-hover:text-gold-deep md:text-3xl">
+                    {step.title}
+                  </h3>
+                  <p className="mt-3 max-w-md text-sm leading-[2] text-ink-muted">{step.text}</p>
                 </div>
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-subtle transition-colors duration-base group-hover:border-gold group-hover:text-gold">
+                  <Icon className="size-5" aria-hidden="true" />
+                </span>
               </div>
             );
           })}
