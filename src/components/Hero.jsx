@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpLeft, Play } from 'lucide-react';
 import Picture from './Picture';
+import WaxSeal from './WaxSeal';
 
 export default function Hero({ onNavigate = () => {} }) {
   const base = import.meta.env.BASE_URL;
@@ -121,11 +122,10 @@ export default function Hero({ onNavigate = () => {} }) {
               aria-hidden="true"
               className="absolute -end-6 top-12 animate-float-soft motion-reduce:animate-none"
             >
-              <div className="flex size-24 rotate-[-8deg] items-center justify-center rounded-full border border-seal-line/50 bg-[radial-gradient(circle_at_34%_30%,var(--color-seal-a),var(--color-foil)_55%,var(--color-seal-d))] shadow-seal-lg">
-                <span className="flex size-16 items-center justify-center rounded-full border border-seal-cream/40 font-display text-2xl text-seal-ink">
-                  د
-                </span>
-              </div>
+              <WaxSeal
+                className="size-24 rotate-[-8deg] shadow-seal-lg"
+                ringClassName="size-16 text-2xl"
+              />
             </div>
           </div>
         </div>

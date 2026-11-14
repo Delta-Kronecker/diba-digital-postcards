@@ -169,7 +169,7 @@ export default function RSVPModal({
         aria-modal="true"
         aria-labelledby="rsvp-title"
         data-theme={isMemorial ? 'memorial' : undefined}
-        className="relative my-auto w-full max-w-lg border border-line bg-surface p-6 sm:p-9"
+        className="relative my-auto w-full max-w-lg border border-line bg-surface p-6 shadow-lift sm:p-9"
       >
         <span
           aria-hidden="true"

@@ -7,10 +7,24 @@ const CategoryViewer = lazy(() => import('./pages/CategoryViewer'));
 const CustomizerPage = lazy(() => import('./pages/CustomizerPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 
+/* item 95 — the route fallback was a bare spinner on the flat canvas. It is now
+   the same paper every band paints on: the sheet tone, its hairline, and the gold
+   rule that opens a section — a cold navigation resolves into the page instead of
+   flashing a generic loader. Static on purpose: a moving skeleton needs an
+   animation, which the reduced-motion contract would only have to switch off.
+   No live region (the old `aria-live` announced nothing useful) — `aria-busy`
+   marks the region as loading and there is no text to speak. */
 function PageFallback() {
   return (
-    <div className="flex min-h-svh items-center justify-center" aria-busy="true" aria-live="polite">
-      <span className="size-9 animate-spin rounded-full border border-line border-t-gold" />
+    <div className="min-h-svh bg-canvas" aria-busy="true">
+      <div className="shell section-y">
+        <div className="paper-sheet border border-line bg-surface p-8 md:p-12">
+          <div aria-hidden="true" className="h-px w-14 bg-gold" />
+          <div aria-hidden="true" className="mt-6 h-3 w-40 bg-ink/10" />
+          <div aria-hidden="true" className="mt-3 h-3 w-64 max-w-full bg-ink/[0.06]" />
+          <div aria-hidden="true" className="mt-3 h-3 w-52 max-w-full bg-ink/[0.06]" />
+        </div>
+      </div>
     </div>
   );
 }

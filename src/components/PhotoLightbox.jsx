@@ -146,24 +146,37 @@ export default function PhotoLightbox({
       </div>
 
       {images.length > 1 && (
-        <div className="flex items-center justify-center gap-2 border-t border-cream/12 px-4 py-4" role="tablist" aria-label="تصاویر کوچک">
-          {images.map((image, index) => (
-            <button
-              key={image.id || index}
-              type="button"
-              onClick={() => setCurrentIndex(index)}
-              role="tab"
-              aria-selected={currentIndex === index}
-              aria-label={image.title || `تصویر ${index + 1}`}
-              className={`relative h-12 w-16 overflow-hidden border-2 transition-colors sm:h-14 sm:w-20 ${
-                currentIndex === index
-                  ? 'border-gold opacity-100'
-                  : 'border-transparent opacity-40 hover:opacity-80'
-              }`}
+        /* item 100 (mask half) — the border stays on this outer row and the fade
+           lives on `.thumb-rail` inside it, so the mask never touches the rule.
+           The tablist is `w-max min-w-full mx-auto`: it is at least as wide as the
+           rail (so three thumbs stay centred) and grows past it when they cannot
+           fit (so the rail scrolls). */
+        <div className="border-t border-cream/12 px-4 py-4">
+          <div className="thumb-rail">
+            <div
+              className="mx-auto flex w-max min-w-full items-center justify-center gap-2"
+              role="tablist"
+              aria-label="تصاویر کوچک"
             >
-              <Picture src={image.url} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
-            </button>
-          ))}
+              {images.map((image, index) => (
+                <button
+                  key={image.id || index}
+                  type="button"
+                  onClick={() => setCurrentIndex(index)}
+                  role="tab"
+                  aria-selected={currentIndex === index}
+                  aria-label={image.title || `تصویر ${index + 1}`}
+                  className={`relative h-12 w-16 shrink-0 overflow-hidden border-2 transition-colors sm:h-14 sm:w-20 ${
+                    currentIndex === index
+                      ? 'border-gold opacity-100'
+                      : 'border-transparent opacity-40 hover:opacity-80'
+                  }`}
+                >
+                  <Picture src={image.url} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>

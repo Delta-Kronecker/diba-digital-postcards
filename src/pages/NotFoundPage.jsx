@@ -4,7 +4,17 @@ import Ornament from '../components/Ornament';
 
 export default function NotFoundPage({ onNavigate = () => {} }) {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center bg-canvas px-6 text-center">
+    <div className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden bg-canvas px-6 text-center">
+      {/* item 96 — the 404 had no brand surface at all. Same ghost wordmark the hero
+          uses (`Diba`, `-end-10`, 9rem, `font-latin`), resolved to `ink` for this
+          light page, and held to `xl` exactly as the hero holds its own. No asset. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute -end-10 bottom-0 hidden select-none font-latin text-[9rem] leading-none text-ink/[0.045] xl:block"
+      >
+        Diba
+      </span>
+
       <Ornament className="size-6 text-gold" />
       <p lang="en" className="latin mt-6 text-xs text-ink-subtle">Page not found</p>
       <p className="mt-4 font-display text-[clamp(5rem,18vw,10rem)] font-medium leading-none text-ink">

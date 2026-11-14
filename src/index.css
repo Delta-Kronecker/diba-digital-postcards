@@ -538,6 +538,21 @@
     -webkit-mask-image: linear-gradient(90deg, transparent, var(--color-mask) 8%, var(--color-mask) 92%, transparent);
   }
 
+  /* ---------- Thumbnail rail ---------- */
+  /* item 100 (mask half) — the lightbox strip can outgrow its row. When it does it
+     scrolls sideways, and a mask fades both edges so the overflow reads as "there
+     is more" instead of a hard cut. A mask, not an overlay: it never paints over a
+     thumbnail's own border. The scrollbar is hidden because the fade already
+     carries the signal. 2rem is fixed rather than a percentage, so the fade is the
+     same physical width on a phone and on a 1440 screen. */
+  .thumb-rail {
+    overflow-x: auto;
+    scrollbar-width: none;
+    mask-image: linear-gradient(90deg, transparent, var(--color-mask) 2rem, var(--color-mask) calc(100% - 2rem), transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, var(--color-mask) 2rem, var(--color-mask) calc(100% - 2rem), transparent);
+  }
+  .thumb-rail::-webkit-scrollbar { display: none; }
+
   /* ---------- Card media ---------- */
   /* The featured cards have always asked for this class; it was never written, so
      the hover did nothing. The container answers and the picture stays put: the
