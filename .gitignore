@@ -1,10 +1,4 @@
 node_modules/
 dist/
-test-results/
-playwright-report/
-reports/
-.work/
-scratchpad/
-.opencode/
 *.local
 .DS_Store
