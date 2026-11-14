@@ -139,13 +139,19 @@ export default function InvitationCard({
           ))}
         </div>
 
+        {/* A23 gave the player an always-visible volume slider, whose fixed
+            controls (44 px play, 48 px slider) cannot shrink. Both cells here are
+            flex items with `min-width: auto`, so the pair could not fit under the
+            sheet's content box and pushed the page wide on every phone width. Below
+            `sm` the caption steps aside — it only repeats the player's own title —
+            and the player takes the row; from `sm` up both fit and both show. */}
         {audio && (
           <div className="mt-6 flex items-center justify-between gap-4 border border-line px-4 py-3">
-            <div className="text-start">
+            <div className="hidden min-w-0 text-start sm:block">
               <p className="text-xs text-ink-subtle">موسیقی اختصاصی</p>
-              <p className="mt-0.5 text-xs text-ink-muted">{data.audioTrack.title}</p>
+              <p className="mt-0.5 truncate text-xs text-ink-muted">{data.audioTrack.title}</p>
             </div>
-            <div className="flex items-center">{audio}</div>
+            <div className="flex min-w-0 items-center">{audio}</div>
           </div>
         )}
 

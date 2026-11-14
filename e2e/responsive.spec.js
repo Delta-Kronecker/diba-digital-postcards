@@ -13,3 +13,21 @@ for (const width of [375, 768, 1280]) {
     expect(scrollWidth).toBeLessThanOrEqual(width + 1);
   });
 }
+
+/* The viewer's audio strip is the one block a phone width could not fit: its two
+   cells had `min-width: auto`, and the player's play control and gain slider
+   cannot shrink, so the pair pushed the sheet (and the document) 20–65 px past
+   the viewport on every viewer route. `#home` never caught it — the strip only
+   exists once the sheet opens. */
+for (const width of [320, 375]) {
+  test(`wedding viewer fits ${width}`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await page.goto(BASE + '#wedding-amir-sara');
+    await page.waitForLoadState('domcontentloaded');
+    await page.getByRole('button', { name: /گشودن پاکت/ }).first().click();
+    await page.waitForTimeout(1400);
+    await expect(page.locator('#audio-volume')).toBeVisible();
+    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(scrollWidth).toBeLessThanOrEqual(width + 1);
+  });
+}
