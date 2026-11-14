@@ -89,8 +89,8 @@ export default {
         '7xl': ['4.75rem', { lineHeight: '1.05' }],
         '8xl': ['6rem', { lineHeight: '1' }],
       },
-      /* Two steps, the heading band. Every key here is reachable or documented in
-         docs/DESIGN_SYSTEM.md; body and UI text stay at the inherited `normal`. */
+      /* Two steps, the heading band. Every key here is reachable from a heading
+         class; body and UI text stay at the inherited `normal`. */
       letterSpacing: {
         tight: '-0.01em',
         tightest: '-0.02em',

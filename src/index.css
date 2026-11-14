@@ -1,4 +1,4 @@
-/* Hallmark v2.0.0 · audit + Floor pass on an existing, locked system (docs/DESIGN_SYSTEM.md governs; no theme dealt) · shape: editorial marketing page · hero: the envelope and the craft, not a stat block · nav: sticky, wordmark + one action · footer: brand mast over link columns · surface: absolute */
+/* Hallmark v2.0.0 · audit + Floor pass on an existing, locked system (the token block below governs; no theme dealt) · shape: editorial marketing page · hero: the envelope and the craft, not a stat block · nav: sticky, wordmark + one action · footer: brand mast over link columns · surface: absolute */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -46,7 +46,7 @@
     --color-success-rgb: 62 107 79;
     /* the ink band is a fixed floor that is dark in *both* themes, so the light
        `danger` step reads 3.29:1 on it. One value covers the floor at 5.59:1 (light)
-       and 6.18:1 (dark). See docs/DESIGN_SYSTEM.md "Status". */
+       and 6.18:1 (dark). */
     --color-danger-on-ink: #d9744f;
     --color-danger-on-ink-rgb: 217 116 79;
     --color-ink-band-rgb: 25 22 18;
