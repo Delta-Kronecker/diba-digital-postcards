@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Check, AlertCircle, Loader2, User, Users, MessageSquare, Send, Calendar } from 'lucide-react';
 import { useScrollLock } from '../hooks/useScrollLock';
+import { useReducedMotion } from '../hooks/useReducedMotion';
 import { toPersianDigits } from '../utils/numbers';
 
 export default function RSVPModal({
@@ -26,6 +27,24 @@ export default function RSVPModal({
   const isMemorial = category === 'memorial';
 
   useScrollLock(isOpen);
+
+  /* The close is a state, not a re-render: 140ms of exit, and then the node
+     goes. Reduced motion skips the timer entirely, so the dialog leaves on the
+     same click — waiting 140ms to remove something the visitor already asked to
+     dismiss is its own small friction. */
+  const reducedMotion = useReducedMotion();
+  const [isClosing, setClosing] = useState(false);
+
+  const requestClose = () => {
+    if (reducedMotion) { onClose(); return; }
+    setClosing(true);
+  };
+
+  useEffect(() => {
+    if (!isClosing) return undefined;
+    const id = setTimeout(() => { setClosing(false); onClose(); }, 140);
+    return () => clearTimeout(id);
+  }, [isClosing, onClose]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -66,7 +85,7 @@ export default function RSVPModal({
     const onKey = (e) => {
       if (e.key === 'Escape') {
         e.preventDefault();
-        onClose();
+        requestClose();
         return;
       }
       if (e.key !== 'Tab') return;
@@ -160,7 +179,9 @@ export default function RSVPModal({
        instead of having its own top (and close button) pushed out of reach —
        which is what `items-center` on the scroller did at 200% zoom. */
     <div
-      className="fixed inset-0 z-modal flex justify-center overflow-y-auto overscroll-contain bg-scrim/70 safe-overlay backdrop-blur-sm"
+      className={`fixed inset-0 z-modal flex justify-center overflow-y-auto overscroll-contain bg-scrim/70 safe-overlay backdrop-blur-sm motion-safe:animate-fade-in ${
+        isClosing ? 'opacity-0 transition-opacity duration-fast ease-ui-out' : ''
+      }`}
       role="presentation"
     >
       <div
@@ -169,7 +190,9 @@ export default function RSVPModal({
         aria-modal="true"
         aria-labelledby="rsvp-title"
         data-theme={isMemorial ? 'memorial' : undefined}
-        className="relative my-auto w-full max-w-lg border border-line bg-surface p-6 shadow-lift sm:p-9"
+        className={`relative my-auto w-full max-w-lg border border-line bg-surface p-6 shadow-lift sm:p-9 motion-safe:animate-reveal-up ${
+          isClosing ? 'opacity-0 transition-opacity duration-fast ease-ui-out' : ''
+        }`}
       >
         <span
           aria-hidden="true"
@@ -179,7 +202,7 @@ export default function RSVPModal({
 
         <button
           type="button"
-          onClick={onClose}
+          onClick={requestClose}
           aria-label="بستن پنجره"
           className="absolute end-4 top-4 flex min-h-11 min-w-11 items-center justify-center border border-line text-ink-muted transition-colors hover:border-line-strong hover:text-ink"
         >
@@ -235,7 +258,7 @@ export default function RSVPModal({
               </button>
               <button
                 type="button"
-                onClick={onClose}
+                onClick={requestClose}
                 className="btn !py-3 !text-xs"
                 style={{ backgroundColor: accent, borderColor: accent, color: accentInk }}
               >

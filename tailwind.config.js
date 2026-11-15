@@ -146,12 +146,20 @@ export default {
           '0%': { transform: 'translateX(-140%) skewX(-14deg)' },
           '100%': { transform: 'translateX(160%) skewX(-14deg)' },
         },
+        digitRoll: {
+          '0%': { transform: 'translateY(-62%)' },
+          '100%': { transform: 'translateY(0)' },
+        },
       },
       animation: {
         'reveal-up': 'revealUp 0.9s var(--ease-out-expo) both',
         'fade-in': 'fadeIn 0.5s var(--ease-ui-out) both',
         'float-soft': 'floatSoft 8s ease-in-out infinite',
         sheen: 'sheen 1.9s var(--ease-out-expo) 0.5s both',
+        /* The countdown's tick — the one place a changing number is an event.
+           140ms, `translateY` only, so the digit stays legible on every frame
+           and can never be stranded off-screen by the reduced-motion clamp. */
+        'digit-roll': 'digitRoll 140ms var(--ease-ui-out) both',
       },
     },
   },

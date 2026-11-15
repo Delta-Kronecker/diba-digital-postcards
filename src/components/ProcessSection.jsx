@@ -1,7 +1,13 @@
 import React from 'react';
 import { PenLine, Sparkles, Send } from 'lucide-react';
+import Reveal from './Reveal';
 import SectionMark from './SectionMark';
 import WaxSeal from './WaxSeal';
+
+/* The three steps are a sequence, so the stagger is the section's rhythm
+   rather than decoration: 90ms apart, which is slower than the card grid's
+   70ms because each step is a sentence to read, not a tile to scan. */
+const STEP_STAGGER = 0.09;
 
 const STEPS = [
   {
@@ -28,7 +34,7 @@ export default function ProcessSection() {
   return (
     <section className="paper-sheet border-y border-line bg-surface">
       <div className="shell grid grid-cols-1 gap-14 section-y lg:grid-cols-12 lg:gap-16">
-        <div className="lg:col-span-5">
+        <Reveal className="lg:col-span-5">
           <SectionMark number="۰۳" className="mb-4">فرایند سفارش</SectionMark>
           <h2 className="display-section max-w-sm text-ink">
             سه حرکت،
@@ -46,7 +52,7 @@ export default function ProcessSection() {
               <p lang="en" className="latin mt-1 text-xs text-ink-subtle">Tehran, Since 2015</p>
             </div>
           </div>
-        </div>
+        </Reveal>
 
         {/* One rule per boundary. The old `last:border-b` sat on a row that was
             always its parent's only child, so every row matched it and each
@@ -56,8 +62,9 @@ export default function ProcessSection() {
             const Icon = step.icon;
             const isLast = index === STEPS.length - 1;
             return (
-              <div
+              <Reveal
                 key={step.number}
+                delay={index * STEP_STAGGER}
                 className="group grid grid-cols-[auto_1fr_auto] items-start gap-6 py-9"
               >
                 {/* item 49 — "سه حرکت" is a sequence, and nothing joined the three
@@ -88,7 +95,7 @@ export default function ProcessSection() {
                 <span className="flex size-11 shrink-0 items-center justify-center rounded-full border border-line text-ink-subtle transition-colors duration-base group-hover:border-gold group-hover:text-gold">
                   <Icon className="size-5" aria-hidden="true" />
                 </span>
-              </div>
+              </Reveal>
             );
           })}
         </div>

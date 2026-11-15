@@ -581,6 +581,21 @@
     }
   }
 
+  /* ---------- Scroll reveal ---------- */
+  /* The pre-reveal state of <Reveal>. Motion lives on the element only once the
+     observer has said the element has arrived, so this is a resting state, not
+     an animation: it is removed rather than animated away.
+     A `transition-duration` is declared so that under reduced motion — where the
+     block at the foot of this file rewrites every transition to
+     `--duration-ui` — removing the class resolves to a short opacity fade
+     instead of a jump. Under normal motion the class is swapped for
+     `animate-reveal-up` in the same frame, so this transition never runs. */
+  .motion-hidden {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--duration-ui) var(--ease-ui-out);
+  }
+
   /* ---------- Paper ---------- */
   /* A sheet reads as paper because its head catches the light and its foot holds a
      little shade — not because it carries a texture image. */
@@ -762,6 +777,12 @@
     transition-duration: var(--duration-ui) !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
+    /* A stagger is choreography, not content. Clamping the duration alone left
+       every delayed reveal sitting on the keyframe's `opacity: 0` for the
+       length of its delay — up to 320ms for the hero's own stagger — so the
+       content was hidden behind an animation that had been all but removed.
+       With no delay, nothing waits to be shown. */
+    animation-delay: 0ms !important;
   }
   .marquee-track { animation: none !important; }
 }

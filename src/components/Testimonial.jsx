@@ -2,6 +2,7 @@ import SectionMark from './SectionMark';
 import React from 'react';
 import { Star } from 'lucide-react';
 import Picture from './Picture';
+import Reveal from './Reveal';
 import { imageSize } from '../utils/imageSize';
 
 export default function Testimonial() {
@@ -9,7 +10,7 @@ export default function Testimonial() {
 
   return (
     <section className="relative border-y border-line bg-surface lg:overflow-hidden">
-      <div className="shell grid grid-cols-1 lg:grid-cols-12 lg:items-stretch lg:gap-0">
+      <Reveal className="shell grid grid-cols-1 lg:grid-cols-12 lg:items-stretch lg:gap-0">
         {/* the quote sits in the readable column, aligned to the page shell */}
         <div className="order-2 section-y lg:order-none lg:col-span-7 lg:py-32 lg:pe-16 xl:pe-24">
           <SectionMark number="۰۵" className="mb-8">روایت مهمان</SectionMark>
@@ -73,7 +74,7 @@ export default function Testimonial() {
             <span className="mt-1 block font-display text-lg lg:text-xl">تالار اسپیناس پالاس</span>
           </figcaption>
         </figure>
-      </div>
+      </Reveal>
     </section>
   );
 }

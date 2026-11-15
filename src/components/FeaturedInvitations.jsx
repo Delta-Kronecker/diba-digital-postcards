@@ -1,11 +1,16 @@
 import React from 'react';
 import { ArrowUpLeft, Sparkles } from 'lucide-react';
 import Picture from './Picture';
+import Reveal from './Reveal';
 import { imageSize } from '../utils/imageSize';
 import { toPersianDigits } from '../utils/numbers';
 import SectionMark from './SectionMark';
 
 const BASE = import.meta.env.BASE_URL;
+
+/** The stagger: 70ms apart, and only for the first four cards. */
+const STAGGER_STEP = 0.07;
+const STAGGER_CAP = 4;
 
 /**
  * `sizes` for a card in this section, derived from the grid rather than
@@ -115,7 +120,7 @@ function CardArrow({ memorial }) {
 export default function FeaturedInvitations({ onNavigate = () => {} }) {
   return (
     <section id="collection" className="shell section-y">
-      <div className="grid grid-cols-1 items-end gap-6 border-b border-line pb-8 lg:grid-cols-12">
+      <Reveal className="grid grid-cols-1 items-end gap-6 border-b border-line pb-8 lg:grid-cols-12">
         <div className="lg:col-span-8">
           <SectionMark number="۰۱" className="mb-4">مجموعهٔ منتخب</SectionMark>
           <h2 className="display-section max-w-2xl text-ink">
@@ -129,13 +134,13 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
             مشاهدهٔ همهٔ نمونهها
           </button>
         </div>
-      </div>
+      </Reveal>
 
       <div className="mt-12 grid grid-cols-1 gap-x-6 gap-y-14 md:grid-cols-12">
         {ITEMS.map((item, i) => {
           if (item.wide) {
             return (
-              <div key={item.id} className="md:col-span-12">
+              <Reveal key={item.id} className="md:col-span-12">
                 <button
                   type="button"
                   onClick={() => onNavigate(item.id)}
@@ -173,12 +178,21 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
                     </div>
                   </div>
                 </button>
-              </div>
+              </Reveal>
             );
           }
 
           return (
-            <div key={item.id} className={item.span}>
+            /* The first four cards arrive together as one move. The last two are
+               left without a delay, so they land on their own as the grid
+               scrolls further — a uniform coat over all six is what makes a
+               page read as generated. STAGGER_CAP is what stops a longer grid
+               from running past 400ms and reading as broken. */
+            <Reveal
+              key={item.id}
+              delay={i < STAGGER_CAP ? i * STAGGER_STEP : 0}
+              className={item.span}
+            >
               <button
                 type="button"
                 onClick={() => onNavigate(item.id)}
@@ -226,7 +240,7 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
                   <CardArrow memorial={item.memorial} />
                 </div>
               </button>
-            </div>
+            </Reveal>
           );
         })}
       </div>

@@ -14,7 +14,12 @@ import { CheckCircle2 } from 'lucide-react';
 export default function CopyToast({ show = false, label }) {
   if (!show) return null;
   return (
-    <div className="fixed left-1/2 top-20 z-toast flex -translate-x-1/2 items-center gap-2 border border-line bg-ink px-5 py-2.5 text-xs text-canvas shadow-lift">
+    /* `animate-reveal-up` carries its own transform, and with `fill-mode: both`
+       its final `translateY(0)` overwrites the `-translate-x-1/2` centring for
+       the animation's whole life — which would slide the toast half its width
+       off centre. Centring by `inset-x-0` + `mx-auto` + `w-fit` is immune to
+       the animation, so the existing reveal token is safe to reuse here. */
+    <div className="fixed inset-x-0 top-20 z-toast mx-auto flex w-fit animate-reveal-up items-center gap-2 border border-line bg-ink px-5 py-2.5 text-xs text-canvas shadow-lift">
       <CheckCircle2 className="size-3.5" aria-hidden="true" />
       {label}
     </div>

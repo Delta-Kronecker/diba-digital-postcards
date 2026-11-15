@@ -14,16 +14,41 @@ const AXE_OPTIONS = {
   runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'] },
 };
 
-/** Wait for lazy images to load and every animation to settle, so the page is
- *  in the state a visitor ends up in rather than the state it starts in. */
+/** Wait for lazy images to load and every scroll reveal to fire, so the page is
+ *  in the state a visitor ends up in rather than the state it starts in.
+ *
+ *  Scrolling is done with real wheel events, not `window.scrollTo`. Chromium
+ *  does not reliably deliver IntersectionObserver callbacks when the scroll
+ *  position is teleported without an input event, so a `scrollTo` sweep leaves
+ *  the reveals unfired — and a section sitting at `opacity: 0` hides its own
+ *  overflow from the checks below. The loop verifies it actually reached the
+ *  bottom for the same reason: a stalled sweep would otherwise pass silently. */
 async function settle(page) {
-  const height = await page.evaluate(() => document.body.scrollHeight);
-  for (let y = 0; y < height; y += 700) {
-    await page.evaluate((top) => window.scrollTo(0, top), y);
-    await page.waitForTimeout(30);
+  // The home page arrives in a lazily-loaded route chunk, so on a cold load
+  // there is a window where nothing below the shell exists at all. Wait for the
+  // content to mount rather than guessing a timeout — measuring a half-mounted
+  // page is how a reveal assertion ends up testing an empty document.
+  await page.waitForSelector('#collection', { state: 'attached', timeout: 30_000 });
+
+  // Loop until the bottom is actually reached rather than for a computed number
+  // of steps: the document height changes as reveals settle, so a fixed step
+  // count stops short by however much the page grew on the way down.
+  const step = 300;
+  for (let i = 0; i < 300; i += 1) {
+    const atBottom = await page.evaluate(
+      () => scrollY >= document.documentElement.scrollHeight - innerHeight - 2,
+    );
+    if (atBottom) break;
+    await page.mouse.wheel(0, step);
+    await page.waitForTimeout(60);
   }
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.waitForTimeout(400);
+  await page.waitForTimeout(1200);
+
+  const { reached, max } = await page.evaluate(() => ({
+    reached: scrollY,
+    max: document.documentElement.scrollHeight - innerHeight,
+  }));
+  expect(reached, 'the settle sweep must reach the bottom of the page').toBeGreaterThanOrEqual(max - 4);
 }
 
 for (const width of WIDTHS) {
@@ -164,3 +189,143 @@ test('every generated image variant exists and is honest about its width', async
   }
   expect(missing, JSON.stringify(missing, null, 2)).toEqual([]);
 });
+
+/* ------------------------------------------------------------------ *
+ * Scroll reveal (the motion pass)
+ *
+ * The reveal rests in `.motion-hidden` (opacity 0, translateY(24px)) and is
+ * swapped to `animate-reveal-up` by an IntersectionObserver. The contract
+ * these tests hold:
+ *
+ *   1. With motion, every reveal fires as the page is scrolled — nothing is
+ *      stranded at opacity 0.
+ *   2. With `prefers-reduced-motion: reduce`, everything is visible
+ *      IMMEDIATELY, without scrolling at all, and carries no offset.
+ *
+ * (2) is the one that hurts most: the reduced-motion block in index.css
+ * clamps `animation-duration` to 0.01ms, so a reveal that waited on an
+ * animation — or worse on `animationend` — would leave the page blank for
+ * exactly the people who asked for less motion.
+ * ------------------------------------------------------------------ */
+
+const REVEAL_SELECTOR = '[data-reveal], .motion-hidden, [class*="animate-reveal-up"]';
+
+/** Wait for the browser to paint. Any assertion about rendered pixels needs at
+ *  least one frame: reading `opacity` in the same tick the content mounts
+ *  samples the animation's first frame, not the settled element. */
+const nextPaint = (page) =>
+  page.evaluate(() => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))));
+
+/** Geometry of every revealable element, independent of scroll position. */
+const readReveals = (page) =>
+  page.evaluate((selector) =>
+    [...document.querySelectorAll(selector)].map((el) => {
+      const cs = getComputedStyle(el);
+      // `translateY(0)` resolves to a float residue like -7.1e-15, which is not
+      // movement. Compare numerically rather than against the string `none`.
+      let offsetY = 0;
+      const m = cs.transform && cs.transform.match(/matrix\(([^)]+)\)/);
+      if (m) offsetY = Math.abs(Number(m[1].split(',')[5]) || 0);
+      return { opacity: Number(cs.opacity), offsetY, hidden: el.classList.contains('motion-hidden') };
+    }),
+    REVEAL_SELECTOR,
+  );
+
+for (const width of WIDTHS) {
+  test.describe(`scroll reveal at ${width}px`, () => {
+    test.use({ viewport: { width, height: 900 } });
+
+    test('every reveal fires while scrolling, with motion enabled', async ({ page }) => {
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await page.waitForSelector('#collection', { state: 'attached', timeout: 30_000 });
+
+      const before = await readReveals(page);
+      expect(before.length, 'the page should carry revealable elements').toBeGreaterThan(0);
+      expect(
+        before.some((r) => r.hidden),
+        'before scrolling, at least one element should still be waiting to reveal',
+      ).toBe(true);
+
+      await settle(page);
+
+      const after = await readReveals(page);
+      const stranded = after.filter((r) => r.hidden || r.opacity < 0.99 || r.offsetY > 0.5);
+      expect(
+        stranded,
+        `${stranded.length} of ${after.length} elements never revealed`,
+      ).toEqual([]);
+    });
+
+    test('screenshots with motion enabled', async ({ page }) => {
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await settle(page);
+      await page.screenshot({ path: `test-results/motion/home-${width}.png`, fullPage: true });
+    });
+  });
+
+  test.describe(`reduced motion at ${width}px`, () => {
+    test.use({ viewport: { width, height: 900 }, reducedMotion: 'reduce' });
+
+    test('the whole page is visible before any scrolling', async ({ page }) => {
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await page.waitForSelector('#collection', { state: 'attached', timeout: 30_000 });
+      // Nothing else: reduced motion must be visible on arrival, with no scroll
+      // and no waiting for choreography. One paint, then the assertion.
+      await nextPaint(page);
+
+      const reveals = await readReveals(page);
+      expect(reveals.length, 'the page should carry revealable elements').toBeGreaterThan(0);
+
+      const wrong = reveals.filter((r) => r.hidden || r.opacity < 0.99 || r.offsetY > 0.5);
+      expect(
+        wrong,
+        `${wrong.length} of ${reveals.length} elements are not fully visible without scrolling ` +
+          `under prefers-reduced-motion: ${JSON.stringify(wrong.slice(0, 5))}`,
+      ).toEqual([]);
+    });
+
+    test('screenshots with reduced motion', async ({ page }) => {
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      // No scrolling: reduced motion must render everything on arrival, and a
+      // scroll sweep here would hide a failure where it does not. What the sweep
+      // DOES legitimately do is fetch the `loading="lazy"` images below the fold
+      // — so decode them directly instead. Without this the shot shows grey
+      // placeholders where the card imagery belongs, which reads as a layout
+      // defect when it is only an unfetched bitmap.
+      await page.waitForSelector('#collection', { state: 'attached', timeout: 30_000 });
+      // `loading="lazy"` images off-screen are never requested, and `decode()`
+      // on one of those never settles — so trigger the fetch first, then wait.
+      // A full-page screenshot stitches the page together without scrolling it,
+      // and `decoding="async"` images then rasterise as blank boxes — a capture
+      // artefact that reads exactly like a missing image. Forcing the fetch and
+      // a synchronous decode first is what makes the shot tell the truth.
+      await page.evaluate(async () => {
+        const imgs = [...document.images];
+        imgs.forEach((i) => {
+          i.loading = 'eager';
+          i.decoding = 'sync';
+        });
+        await Promise.all(imgs.map((i) => i.decode().catch(() => {})));
+      });
+      await page.waitForFunction(
+        () => [...document.images].every((i) => i.complete && i.naturalWidth > 0),
+        null,
+        { timeout: 25_000 },
+      );
+      await nextPaint(page);
+      await page.screenshot({ path: `test-results/reduced/home-${width}.png`, fullPage: true });
+    });
+
+    test('no horizontal overflow in RTL at 375', async ({ page }) => {
+      test.skip(width !== 375, 'the overflow check is pinned to the narrowest breakpoint');
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await page.waitForSelector('#collection', { state: 'attached', timeout: 30_000 });
+
+      const { scrollWidth, clientWidth } = await page.evaluate(() => ({
+        scrollWidth: document.documentElement.scrollWidth,
+        clientWidth: document.documentElement.clientWidth,
+      }));
+      expect(scrollWidth, 'the document must not scroll horizontally').toBeLessThanOrEqual(clientWidth + 1);
+    });
+  });
+}

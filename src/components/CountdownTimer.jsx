@@ -57,8 +57,14 @@ function CountdownTimer({ targetDate = '2027-06-18T19:00:00', accentColor = 'var
               key={unit.label}
               className={`px-1 py-5 text-center ${i !== 0 ? 'border-s border-line' : ''}`}
             >
+              {/* The key changes with the value, so the tick replays on the
+                  second that actually changes and holds still on the ones that
+                  do not — a minus-only roll would twitch `05` every second.
+                  The tick is a transform, so the digit is never hidden: if the
+                  animation is clamped away, the number is simply there. */}
               <span
-                className="block font-display text-[1.7rem] font-medium leading-none tabular-nums sm:text-4xl"
+                key={unit.value}
+                className="block animate-digit-roll font-display text-[1.7rem] font-medium leading-none tabular-nums motion-reduce:animate-none sm:text-4xl"
                 style={{ color: hasGold ? 'var(--color-gold-deep)' : accentColor }}
               >
                 {toPersianDigits(String(unit.value).padStart(2, '0'))}

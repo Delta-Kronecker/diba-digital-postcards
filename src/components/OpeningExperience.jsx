@@ -1,3 +1,4 @@
+import Reveal from './Reveal';
 import SectionMark from './SectionMark';
 import React, { useState } from 'react';
 import { ArrowUpLeft, Check } from 'lucide-react';
@@ -34,7 +35,7 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
 
       <div className="shell relative z-10">
         <div className="grid grid-cols-1 items-center gap-14 lg:grid-cols-12 lg:gap-16">
-          <div className="lg:col-span-5">
+          <Reveal className="lg:col-span-5">
             <SectionMark number="۰۲" tone="dark">تجربهٔ گشودن پاکت</SectionMark>
             <h2 className="display-section mt-6 text-cream">
               تجربه‌ای که با
@@ -67,7 +68,7 @@ export default function OpeningExperience({ onNavigate = () => {} }) {
               تجربهٔ کامل کارت عروسی
               <ArrowUpLeft className="size-4" aria-hidden="true" />
             </button>
-          </div>
+          </Reveal>
 
           <div className="lg:col-span-7">
             {/* The fill was `bg-cream/[0.03]` — a 3 % wash over an ink band it is

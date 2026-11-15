@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpLeft, Mail, Phone } from 'lucide-react';
 import Ornament from './Ornament';
 import Picture from './Picture';
+import Reveal from './Reveal';
 import { imageSize } from '../utils/imageSize';
 import SectionMark from './SectionMark';
 
@@ -33,7 +34,7 @@ export default function FinalCTA({ onNavigate = () => {} }) {
       <span aria-hidden="true" className="band-vignette -z-10" />
 
       <div className="shell relative z-10">
-        <div className="mx-auto max-w-4xl text-center">
+        <Reveal className="mx-auto max-w-4xl text-center">
           <Ornament className="mx-auto mb-8 size-6 text-gold" />
           <SectionMark number="۰۶" tone="dark" align="center"><span lang="en" className="latin">Begin your invitation</span></SectionMark>
           <h2 className="display-section mt-5 text-cream">
@@ -72,7 +73,7 @@ export default function FinalCTA({ onNavigate = () => {} }) {
               تهران، خیابان فرشته
             </span>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

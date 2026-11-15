@@ -4,6 +4,7 @@ import { INVITATIONS_DATA } from '../data/invitations';
 import { imageSize } from '../utils/imageSize';
 import { toPersianDigits } from '../utils/numbers';
 import Picture from './Picture';
+import Reveal from './Reveal';
 import SectionMark from './SectionMark';
 
 /* The preview figure only exists from `lg`, and there it is 5 of 12 columns
@@ -64,7 +65,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
 
   return (
     <section id="gallery" className="shell section-y">
-      <div className="grid grid-cols-1 items-end gap-6 border-b border-line pb-8 lg:grid-cols-12">
+      <Reveal className="grid grid-cols-1 items-end gap-6 border-b border-line pb-8 lg:grid-cols-12">
         <div className="lg:col-span-8">
           <SectionMark number="۰۴" className="mb-4">گالری نمونهها</SectionMark>
           <h2 className="display-section max-w-2xl text-ink">
@@ -77,7 +78,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
             هر کارت یک دنیای مستقل است؛ از پالت رنگ و تایپوگرافی تا ریتم باز شدن پاکت.
           </p>
         </div>
-      </div>
+      </Reveal>
 
       <div className="flex items-center gap-3 border-b border-line py-3">
         <SlidersHorizontal className="size-3.5 shrink-0 text-ink-subtle" aria-hidden="true" />
@@ -139,7 +140,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
           </button>
         </div>
       ) : (
-        <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
+        <Reveal className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
           {/* Index list, right column in RTL */}
           <div className="lg:col-span-7">
             <div className="border-b border-line">
@@ -293,7 +294,7 @@ export default function GallerySection({ onNavigate = () => {} }) {
               </p>
             </div>
           </div>
-        </div>
+        </Reveal>
       )}
     </section>
   );
