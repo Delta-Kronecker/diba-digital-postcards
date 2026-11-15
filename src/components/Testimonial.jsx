@@ -2,6 +2,7 @@ import SectionMark from './SectionMark';
 import React from 'react';
 import { Star } from 'lucide-react';
 import Picture from './Picture';
+import { imageSize } from '../utils/imageSize';
 
 export default function Testimonial() {
   const base = import.meta.env.BASE_URL;
@@ -60,8 +61,8 @@ export default function Testimonial() {
           <Picture
             src={`${base}images/wedding-hall.jpg`}
             alt="فضای تالار در شب مراسم عروسی"
-            width="600"
-            height="720"
+            {...imageSize('wedding-hall.jpg')}
+            sizes="(min-width:1024px) 42vw, 100vw"
             loading="lazy"
             decoding="async"
             className="h-[360px] w-full object-cover lg:absolute lg:inset-0 lg:h-full"

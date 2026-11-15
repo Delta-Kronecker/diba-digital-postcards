@@ -3,6 +3,7 @@ import { Calendar, Image as ImageIcon, MapPin, MessageSquare, Send, Share2 } fro
 import CountdownTimer from './CountdownTimer';
 import Ornament from './Ornament';
 import Picture from './Picture';
+import { imageSize } from '../utils/imageSize';
 import { toPersianDigits } from '../utils/numbers';
 
 export default function InvitationCard({
@@ -182,8 +183,8 @@ export default function InvitationCard({
                 <Picture
                   src={image.url}
                   alt=""
-                  width="400"
-                  height="300"
+                  {...imageSize(image.url)}
+                  sizes="(min-width:640px) 5rem, 4rem"
                   loading="lazy"
                   decoding="async"
                   className={`h-full w-full object-cover ${

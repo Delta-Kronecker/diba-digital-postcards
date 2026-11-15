@@ -1,0 +1,275 @@
+{
+  "birthday-cake.jpg": {
+    "width": 1200,
+    "height": 882,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/birthday-cake-480.webp",
+        "jpg": "images/birthday-cake-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/birthday-cake-960.webp",
+        "jpg": "images/birthday-cake-960.jpg"
+      },
+      {
+        "width": 1200,
+        "webp": "images/birthday-cake.webp",
+        "jpg": "images/birthday-cake.jpg"
+      }
+    ]
+  },
+  "birthday-cover.jpg": {
+    "width": 1672,
+    "height": 941,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/birthday-cover-480.webp",
+        "jpg": "images/birthday-cover-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/birthday-cover-960.webp",
+        "jpg": "images/birthday-cover-960.jpg"
+      },
+      {
+        "width": 1672,
+        "webp": "images/birthday-cover.webp",
+        "jpg": "images/birthday-cover.jpg"
+      }
+    ]
+  },
+  "festival-cover.jpg": {
+    "width": 1672,
+    "height": 941,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/festival-cover-480.webp",
+        "jpg": "images/festival-cover-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/festival-cover-960.webp",
+        "jpg": "images/festival-cover-960.jpg"
+      },
+      {
+        "width": 1672,
+        "webp": "images/festival-cover.webp",
+        "jpg": "images/festival-cover.jpg"
+      }
+    ]
+  },
+  "festival-lights.jpg": {
+    "width": 1200,
+    "height": 800,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/festival-lights-480.webp",
+        "jpg": "images/festival-lights-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/festival-lights-960.webp",
+        "jpg": "images/festival-lights-960.jpg"
+      },
+      {
+        "width": 1200,
+        "webp": "images/festival-lights.webp",
+        "jpg": "images/festival-lights.jpg"
+      }
+    ]
+  },
+  "general-arch.jpg": {
+    "width": 1200,
+    "height": 801,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/general-arch-480.webp",
+        "jpg": "images/general-arch-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/general-arch-960.webp",
+        "jpg": "images/general-arch-960.jpg"
+      },
+      {
+        "width": 1200,
+        "webp": "images/general-arch.webp",
+        "jpg": "images/general-arch.jpg"
+      }
+    ]
+  },
+  "general-cover.jpg": {
+    "width": 1672,
+    "height": 941,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/general-cover-480.webp",
+        "jpg": "images/general-cover-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/general-cover-960.webp",
+        "jpg": "images/general-cover-960.jpg"
+      },
+      {
+        "width": 1672,
+        "webp": "images/general-cover.webp",
+        "jpg": "images/general-cover.jpg"
+      }
+    ]
+  },
+  "memorial-candle.jpg": {
+    "width": 1200,
+    "height": 1800,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/memorial-candle-480.webp",
+        "jpg": "images/memorial-candle-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/memorial-candle-960.webp",
+        "jpg": "images/memorial-candle-960.jpg"
+      },
+      {
+        "width": 1200,
+        "webp": "images/memorial-candle.webp",
+        "jpg": "images/memorial-candle.jpg"
+      }
+    ]
+  },
+  "memorial-cover.jpg": {
+    "width": 1672,
+    "height": 941,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/memorial-cover-480.webp",
+        "jpg": "images/memorial-cover-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/memorial-cover-960.webp",
+        "jpg": "images/memorial-cover-960.jpg"
+      },
+      {
+        "width": 1672,
+        "webp": "images/memorial-cover.webp",
+        "jpg": "images/memorial-cover.jpg"
+      }
+    ]
+  },
+  "opening-cover.jpg": {
+    "width": 1672,
+    "height": 941,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/opening-cover-480.webp",
+        "jpg": "images/opening-cover-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/opening-cover-960.webp",
+        "jpg": "images/opening-cover-960.jpg"
+      },
+      {
+        "width": 1672,
+        "webp": "images/opening-cover.webp",
+        "jpg": "images/opening-cover.jpg"
+      }
+    ]
+  },
+  "opening-venue.jpg": {
+    "width": 1200,
+    "height": 800,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/opening-venue-480.webp",
+        "jpg": "images/opening-venue-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/opening-venue-960.webp",
+        "jpg": "images/opening-venue-960.jpg"
+      },
+      {
+        "width": 1200,
+        "webp": "images/opening-venue.webp",
+        "jpg": "images/opening-venue.jpg"
+      }
+    ]
+  },
+  "wedding-cover.jpg": {
+    "width": 1672,
+    "height": 941,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/wedding-cover-480.webp",
+        "jpg": "images/wedding-cover-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/wedding-cover-960.webp",
+        "jpg": "images/wedding-cover-960.jpg"
+      },
+      {
+        "width": 1672,
+        "webp": "images/wedding-cover.webp",
+        "jpg": "images/wedding-cover.jpg"
+      }
+    ]
+  },
+  "wedding-flowers.jpg": {
+    "width": 1200,
+    "height": 1800,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/wedding-flowers-480.webp",
+        "jpg": "images/wedding-flowers-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/wedding-flowers-960.webp",
+        "jpg": "images/wedding-flowers-960.jpg"
+      },
+      {
+        "width": 1200,
+        "webp": "images/wedding-flowers.webp",
+        "jpg": "images/wedding-flowers.jpg"
+      }
+    ]
+  },
+  "wedding-hall.jpg": {
+    "width": 1200,
+    "height": 775,
+    "sources": [
+      {
+        "width": 480,
+        "webp": "images/wedding-hall-480.webp",
+        "jpg": "images/wedding-hall-480.jpg"
+      },
+      {
+        "width": 960,
+        "webp": "images/wedding-hall-960.webp",
+        "jpg": "images/wedding-hall-960.jpg"
+      },
+      {
+        "width": 1200,
+        "webp": "images/wedding-hall.webp",
+        "jpg": "images/wedding-hall.jpg"
+      }
+    ]
+  }
+}

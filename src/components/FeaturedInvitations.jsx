@@ -1,10 +1,27 @@
 import React from 'react';
 import { ArrowUpLeft, Sparkles } from 'lucide-react';
 import Picture from './Picture';
+import { imageSize } from '../utils/imageSize';
 import { toPersianDigits } from '../utils/numbers';
 import SectionMark from './SectionMark';
 
 const BASE = import.meta.env.BASE_URL;
+
+/**
+ * `sizes` for a card in this section, derived from the grid rather than
+ * guessed: the shell caps at 84rem and its gutter is 1.5rem, 2.5rem from 768,
+ * 3.5rem from 1280; twelve columns share eleven gutters. Verified against
+ * measured frame widths at 768 / 1024 / 1440.
+ *
+ * `gap` is the section's own horizontal gap — 1.5rem in the small-card grid,
+ * 3rem in the wide plate's.
+ */
+function cardSizes(span, gap = 1.5) {
+  const gutters = 11 * gap;
+  const rail = (shellGutter) =>
+    `calc((min(100vw, 84rem) - ${shellGutter} - ${gutters}rem) / 12 * ${span} + ${(span - 1) * gap}rem)`;
+  return `(min-width:1280px) ${rail('7rem')}, (min-width:768px) ${rail('5rem')}, calc(100vw - 3rem)`;
+}
 
 const ITEMS = [
   {
@@ -128,8 +145,8 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
                     <Picture
                       src={item.image}
                       alt={item.alt}
-                      width="960"
-                      height="540"
+                      {...imageSize(item.image)}
+                      sizes={cardSizes(7, 3)}
                       loading="lazy"
                       decoding="async"
                       className="h-[280px] w-full object-cover sm:h-[340px]"
@@ -171,8 +188,8 @@ export default function FeaturedInvitations({ onNavigate = () => {} }) {
                   <Picture
                     src={item.image}
                     alt={item.alt}
-                    width="800"
-                    height="1000"
+                    {...imageSize(item.image)}
+                    sizes={cardSizes(Number(item.span.match(/(\d+)$/)?.[1] ?? 4))}
                     loading={i < 2 ? 'eager' : 'lazy'}
                     decoding="async"
                     className="h-full w-full object-cover"

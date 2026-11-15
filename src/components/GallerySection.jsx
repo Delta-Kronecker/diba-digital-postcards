@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { ArrowUpLeft, SlidersHorizontal } from 'lucide-react';
 import { INVITATIONS_DATA } from '../data/invitations';
+import { imageSize } from '../utils/imageSize';
 import { toPersianDigits } from '../utils/numbers';
 import Picture from './Picture';
 import SectionMark from './SectionMark';
+
+/* The preview figure only exists from `lg`, and there it is 5 of 12 columns
+   (measured: 433px at 1024, 459px at 1440). Nothing is fetched below `lg`,
+   so one entry is enough. */
+const galleryPreviewSizes = '(min-width:1024px) 41vw, 100vw';
 
 const FILTERS = [
   { id: 'all', label: 'همه' },
@@ -233,8 +239,8 @@ export default function GallerySection({ onNavigate = () => {} }) {
                         /* only the front layer carries the name; the outgoing one is
                            kept for the cross-fade and stays out of the a11y tree */
                         alt={isFront ? card.title : ''}
-                        width="720"
-                        height="900"
+                        {...imageSize(card.coverImage)}
+                        sizes={galleryPreviewSizes}
                         loading="lazy"
                         decoding="async"
                         /* item 64 — the card a visitor meets first is the one worth

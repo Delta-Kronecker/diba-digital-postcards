@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowUpLeft, Play } from 'lucide-react';
 import Picture from './Picture';
+import { imageSize } from '../utils/imageSize';
 import WaxSeal from './WaxSeal';
 
 export default function Hero({ onNavigate = () => {} }) {
@@ -93,8 +94,8 @@ export default function Hero({ onNavigate = () => {} }) {
               <Picture
                 src={`${base}images/wedding-cover.jpg`}
                 alt="جزئیات گلآرایی و دعوتنامهٔ عروسی دیبا"
-                width="520"
-                height="650"
+                {...imageSize('wedding-cover.jpg')}
+                sizes="(min-width:1024px) 520px, min(100vw - 3rem, 520px)"
                 fetchPriority="high"
                 className="h-full w-full object-cover"
               />

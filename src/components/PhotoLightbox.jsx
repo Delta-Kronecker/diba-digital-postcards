@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useScrollLock } from '../hooks/useScrollLock';
 import Picture from './Picture';
+import { imageSize } from '../utils/imageSize';
 
 export default function PhotoLightbox({
   isOpen = false,
@@ -117,6 +118,8 @@ export default function PhotoLightbox({
           <Picture
             src={currentImage.url}
             alt={currentImage.title || 'تصویر گالری'}
+            {...imageSize(currentImage.url)}
+            sizes="(min-width:1024px) 1024px, 100vw"
             className="max-h-[68dvh] w-auto max-w-full select-none object-contain shadow-photo"
             loading="eager"
             decoding="async"
@@ -172,7 +175,7 @@ export default function PhotoLightbox({
                       : 'border-transparent opacity-40 hover:opacity-80'
                   }`}
                 >
-                  <Picture src={image.url} alt="" className="h-full w-full object-cover" loading="lazy" decoding="async" />
+                  <Picture src={image.url} alt="" {...imageSize(image.url)} sizes="5rem" className="h-full w-full object-cover" loading="lazy" decoding="async" />
                 </button>
               ))}
             </div>

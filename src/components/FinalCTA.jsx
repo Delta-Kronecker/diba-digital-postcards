@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowUpLeft, Mail, Phone } from 'lucide-react';
 import Ornament from './Ornament';
 import Picture from './Picture';
+import { imageSize } from '../utils/imageSize';
 import SectionMark from './SectionMark';
 
 export default function FinalCTA({ onNavigate = () => {} }) {
@@ -14,8 +15,8 @@ export default function FinalCTA({ onNavigate = () => {} }) {
         src={`${base}images/wedding-flowers.jpg`}
         alt=""
         aria-hidden="true"
-        width="1600"
-        height="900"
+        {...imageSize('wedding-flowers.jpg')}
+        sizes="100vw"
         loading="lazy"
         decoding="async"
         className="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover opacity-45"
