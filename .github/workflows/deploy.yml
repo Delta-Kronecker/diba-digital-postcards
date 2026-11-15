@@ -15,7 +15,41 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm install
+
+      # Fails when an image was added or replaced without regenerating
+      # src/data/image-dimensions.json or the resized variants.
+      - name: Check image manifest is current
+        run: npm run images:check
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Run tests
+        run: npm test
+
+      - name: Upload screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-screenshots
+          path: test-results/
+          if-no-files-found: ignore
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

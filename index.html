@@ -35,11 +35,24 @@
           var onHome = !/\/invite\//.test(window.location.pathname) &&
             (!hash || hash === 'home' || hash === 'gallery' || hash === 'categories');
           if (onHome) {
+            /* The hero photograph, started before the route module loads. It must
+               offer the same ladder and the same sizes as <Picture> in
+               src/components/Hero.jsx, or the preload competes with the srcset
+               and the full-size file wins: a 143 KB download on a 375px phone.
+               `href` stays as the fallback for browsers without imagesrcset, and
+               points at the middle rung rather than the original.
+               The three rung names mirror src/data/image-dimensions.json, which
+               `npm run images` generates and `npm run images:check` guards. */
             var preload = document.createElement('link');
             preload.rel = 'preload';
             preload.as = 'image';
             preload.type = 'image/webp';
-            preload.href = '/diba-digital-postcards/images/wedding-cover.webp';
+            preload.href = '/diba-digital-postcards/images/wedding-cover-960.webp';
+            preload.setAttribute('imagesrcset',
+              '/diba-digital-postcards/images/wedding-cover-480.webp 480w, ' +
+              '/diba-digital-postcards/images/wedding-cover-960.webp 960w, ' +
+              '/diba-digital-postcards/images/wedding-cover.webp 1672w');
+            preload.setAttribute('imagesizes', '(min-width:1024px) 520px, min(100vw - 3rem, 520px)');
             preload.setAttribute('fetchpriority', 'high');
             document.head.appendChild(preload);
           }
