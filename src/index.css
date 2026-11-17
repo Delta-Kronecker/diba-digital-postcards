@@ -79,6 +79,19 @@
     --space-section: 5rem;
     --space-section-lg: 7rem;
 
+    /* --- plate book: the armature every band is built on (see DIRECTION.md) ---
+       The folio margin is the outer gutter the plate numbers live in. It is
+       added *outside* the text column, so a band's prose is never pushed
+       off-centre by it: the shell keeps its measure and the margin borrows
+       from the page gutter instead. */
+    --folio-w: 0px;
+    --plate-gap: 1px;
+    /* The engraved rule is a pair: a 1px rule and a hairline 3px under it.
+       Drawn from two gradients rather than a border so it can sit inside a
+       padded box without adding to the layout height. */
+    --rule-thick: 1px;
+    --rule-gap: 3px;
+
     --color-scrim-rgb: 21 18 14;
     --color-scrim-deep-rgb: 13 11 9;
     --color-paper-rgb: 247 242 232;
@@ -376,19 +389,41 @@
   }
 
   /* ---------- Typography ---------- */
+  /* Tracking is 0 on Persian display, deliberately and permanently: Persian is a
+     joined script and any `letter-spacing` value above zero pulls the joins
+     apart, while a negative one collides the ascenders. The old pair carried
+     `-0.01em` — small enough to look like a refinement and large enough to
+     break the cursive. Negative tracking belongs to `.latin` only. */
   .display-hero {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(2.6rem, 6.4vw, 5.75rem);
-    line-height: 1.05;
-    letter-spacing: -0.01em;
+    font-size: clamp(2.75rem, 7vw, 6.25rem);
+    line-height: 1.04;
+    letter-spacing: 0;
   }
 
   .display-section {
     font-family: var(--font-display);
     font-weight: 500;
-    font-size: clamp(2rem, 4.2vw, 3.6rem);
-    line-height: 1.14;
+    font-size: clamp(2.1rem, 4.4vw, 3.85rem);
+    line-height: 1.12;
+    letter-spacing: 0;
+  }
+
+  /* The standfirst under a display line. Persian wants the extra leading and a
+     measure that does not run the full shell width. */
+  .lede {
+    font-size: 1.0625rem;
+    line-height: 1.95;
+    max-width: 34rem;
+  }
+  @media (min-width: 768px) {
+    .lede { font-size: 1.1875rem; }
+  }
+
+  /* Latin display runs keep the tracking the Persian ones must not have. */
+  .latin-display {
+    font-family: var(--font-latin);
     letter-spacing: -0.01em;
   }
 
@@ -594,6 +629,120 @@
     opacity: 0;
     transform: translateY(24px);
     transition: opacity var(--duration-ui) var(--ease-ui-out);
+  }
+
+  /* ---------- Plate book armature ---------- */
+  /* The page is a suite of numbered plates. Five devices carry that idea and
+     nothing else does, so the armature stays legible:
+
+       1. `.plate-head`   the engraved double rule that opens every band
+       2. `.folio`        the number in the outer margin
+       3. `.plate-mount`  a cream mount with a hairline — a tipped-in photograph
+       4. `.crop-marks`   printer's registration at the four corners
+       5. `.plate-caption` the museum label under a tipped-in plate
+
+     They are additive: a band that omits them is still a band, it is just not
+     a plate. That is the emphasis the old page did not have. */
+
+  /* An engraved rule is a heavy line with a hairline beneath it — the way a
+     letterpress rule prints when the platen bites. Drawn as a background so it
+     never adds to the layout box: `padding-block-start` owns the air above it. */
+  .plate-head {
+    position: relative;
+    padding-block-start: 1.25rem;
+    background-image:
+      linear-gradient(to bottom, var(--color-line-strong) 0 var(--rule-thick), transparent var(--rule-thick)),
+      linear-gradient(to bottom, transparent calc(var(--rule-thick) + var(--rule-gap)), var(--color-line) calc(var(--rule-thick) + var(--rule-gap)), var(--color-line) calc(var(--rule-thick) + var(--rule-gap) + 1px), transparent calc(var(--rule-thick) + var(--rule-gap) + 1px));
+    background-repeat: no-repeat;
+    background-size: 100% calc(var(--rule-thick) + var(--rule-gap) + 2px);
+  }
+
+  .plate-head-dark {
+    background-image:
+      linear-gradient(to bottom, color-mix(in srgb, var(--color-cream) 34%, transparent) 0 var(--rule-thick), transparent var(--rule-thick)),
+      linear-gradient(to bottom, transparent calc(var(--rule-thick) + var(--rule-gap)), color-mix(in srgb, var(--color-cream) 16%, transparent) calc(var(--rule-thick) + var(--rule-gap)), color-mix(in srgb, var(--color-cream) 16%, transparent) calc(var(--rule-thick) + var(--rule-gap) + 1px), transparent calc(var(--rule-thick) + var(--rule-gap) + 1px));
+  }
+
+  /* The plate number, printed large. Persian numerals are already wide; the
+     rule beside them is what makes the pair read as a folio rather than as a
+     decorative glyph. */
+  .folio {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--color-gold-deep);
+  }
+
+  .folio-rule {
+    display: block;
+    width: 2.5rem;
+    height: 1px;
+    background: currentColor;
+    opacity: 0.5;
+    transform: translateY(-0.28em);
+  }
+
+  /* A tipped-in photograph: the sheet is mounted on a slightly deeper stock,
+     with a 1px hairline and an inset shadow where the mount overlaps it. No
+     drop shadow — depth here is a lit surface, not a floating card. */
+  .plate-mount {
+    position: relative;
+    background-color: var(--color-surface);
+    padding: 0.75rem;
+    box-shadow: 0 0 0 1px var(--color-line);
+  }
+  @media (min-width: 768px) {
+    .plate-mount { padding: 1rem; }
+  }
+  html[data-theme="dark"] .plate-mount {
+    background-color: var(--color-surface-2);
+  }
+
+  /* Printer's registration: four truncated L marks at the corners of a plate.
+     They are decoration and are always `aria-hidden`. */
+  .crop-marks > .crop {
+    position: absolute;
+    width: 0.75rem;
+    height: 0.75rem;
+    border-color: color-mix(in srgb, var(--color-gold) 70%, transparent);
+    border-style: solid;
+    border-width: 0;
+    pointer-events: none;
+  }
+  .crop-marks > .crop:nth-child(1) { inset-block-start: 0; inset-inline-start: 0; border-block-start-width: 2px; border-inline-start-width: 2px; }
+  .crop-marks > .crop:nth-child(2) { inset-block-start: 0; inset-inline-end: 0; border-block-start-width: 2px; border-inline-end-width: 2px; }
+  .crop-marks > .crop:nth-child(3) { inset-block-end: 0; inset-inline-start: 0; border-block-end-width: 2px; border-inline-start-width: 2px; }
+  .crop-marks > .crop:nth-child(4) { inset-block-end: 0; inset-inline-end: 0; border-block-end-width: 2px; border-inline-end-width: 2px; }
+
+  /* The museum label. Sets a plate's subject the way a gallery sets a work:
+     a Latin collection line, the Persian title, then the medium. */
+  .plate-caption {
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--color-ink-muted);
+  }
+
+  /* The paper itself: a warm stock with a faint lengthwise fibre, so a large
+     cream field has tooth instead of reading as flat fill. Two very low-alpha
+     gradients; no image, no grain overlay, nothing to decode. */
+  .paper-field {
+    background-color: var(--color-canvas);
+    background-image:
+      repeating-linear-gradient(92deg,
+        color-mix(in srgb, var(--color-gold-deep) 2.5%, transparent) 0 1px,
+        transparent 1px 5px),
+      radial-gradient(120% 88% at 50% 0%, color-mix(in srgb, var(--color-frost) 30%, transparent) 0%, transparent 62%);
+  }
+  html[data-theme="dark"] .paper-field {
+    background-image:
+      repeating-linear-gradient(92deg,
+        color-mix(in srgb, var(--color-frost) 2%, transparent) 0 1px,
+        transparent 1px 5px),
+      radial-gradient(120% 88% at 50% 0%, color-mix(in srgb, var(--color-frost) 4%, transparent) 0%, transparent 62%);
   }
 
   /* ---------- Paper ---------- */

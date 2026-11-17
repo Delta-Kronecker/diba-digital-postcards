@@ -75,12 +75,19 @@ export default {
         latin: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         sans: ['Vazirmatn', 'Estedad', 'sans-serif'],
       },
+      /* The Persian floor. The previous scale bottomed out at 12px for `xs`,
+         which is a Latin size applied to a joined script with deeper
+         ascenders: most of the page's prose, every caption and every meta line
+         was set there, so five different kinds of information all spoke at the
+         same volume. `xs` is now 13px (the floor, used only for folios and
+         meta) and `base` is 17px, which is the Persian body size. Line-heights
+         are unchanged — all already at or above the script's 1.7 minimum. */
       fontSize: {
-        xs: ['0.75rem', { lineHeight: '1.75' }],
-        sm: ['0.875rem', { lineHeight: '1.85' }],
-        base: ['1rem', { lineHeight: '1.9' }],
-        lg: ['1.125rem', { lineHeight: '1.85' }],
-        xl: ['1.25rem', { lineHeight: '1.7' }],
+        xs: ['0.8125rem', { lineHeight: '1.75' }],
+        sm: ['0.9375rem', { lineHeight: '1.85' }],
+        base: ['1.0625rem', { lineHeight: '1.9' }],
+        lg: ['1.1875rem', { lineHeight: '1.85' }],
+        xl: ['1.3125rem', { lineHeight: '1.7' }],
         '2xl': ['1.5rem', { lineHeight: '1.55' }],
         '3xl': ['1.875rem', { lineHeight: '1.4' }],
         '4xl': ['2.35rem', { lineHeight: '1.3' }],
